@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/template/template",
+    "pages/personage/personage"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "backgroundColor": "#fff",
+    "color": "#808080",
+    "selectedColor": "#4F78FF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "/static/1.png",
+        "selectedIconPath": "/static/11.png",
+        "text": "主页",
+        "iconSize": 28
+      },
+      {
+        "pagePath": "pages/template/template",
+        "iconPath": "/static/2.png",
+        "selectedIconPath": "/static/22.png",
+        "text": "简历模板",
+        "iconSize": 28
+      },
+      {
+        "pagePath": "pages/personage/personage",
+        "iconPath": "/static/3.png",
+        "selectedIconPath": "/static/33.png",
+        "text": "个人中心",
+        "iconSize": 28
+      }
+    ]
+  },
+  "usingComponents": {}
+}
