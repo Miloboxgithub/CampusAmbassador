@@ -4,6 +4,14 @@
     "pages/template/template",
     "pages/personage/personage"
   ],
+  "subPackages": [
+    {
+      "root": "pkgA",
+      "pages": [
+        "preview/preview"
+      ]
+    }
+  ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",

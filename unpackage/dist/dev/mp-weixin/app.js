@@ -5,6 +5,7 @@ if (!Math) {
   "./pages/index/index.js";
   "./pages/template/template.js";
   "./pages/personage/personage.js";
+  "./pkgA/preview/preview.js";
 }
 const _sfc_main = {
   onLaunch: function() {

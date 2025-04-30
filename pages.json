@@ -1,6 +1,5 @@
 {
-	"pages": [ 
-		{
+	"pages": [{
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom"
@@ -20,6 +19,19 @@
 			}
 		}
 	],
+	"subPackages": [{
+		"root": "pkgA",
+		"pages": [{
+			"path": "preview/preview",
+			"style": {
+				"navigationBarTitleText": "模板预览",
+				"navigationBarBackgroundColor": "#ffffff", 
+				"navigationBarTextStyle": "black" 
+			}
+		}]
+
+	}],
+
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
