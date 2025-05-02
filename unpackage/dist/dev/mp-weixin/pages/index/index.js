@@ -60,14 +60,20 @@ const _sfc_main = {
         look: "5000"
       }
     ]);
+    const navs1 = () => {
+      common_vendor.index.navigateTo({
+        url: "/pkgA/search/search"
+      });
+    };
     return (_ctx, _cache) => {
       return {
         a: common_assets._imports_0,
-        b: common_assets._imports_1,
-        c: common_assets._imports_2,
-        d: common_assets._imports_3,
-        e: common_assets._imports_4,
-        f: common_vendor.f(items.value, (item, k0, i0) => {
+        b: common_vendor.o(navs1),
+        c: common_assets._imports_1,
+        d: common_assets._imports_2,
+        e: common_assets._imports_3,
+        f: common_assets._imports_4,
+        g: common_vendor.f(items.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: common_vendor.f(item.tags, (tag, k1, i1) => {
@@ -84,8 +90,8 @@ const _sfc_main = {
             h: item.id
           };
         }),
-        g: common_assets._imports_5,
-        h: common_assets._imports_6
+        h: common_assets._imports_5,
+        i: common_assets._imports_6
       };
     };
   }

@@ -22,13 +22,20 @@
 	"subPackages": [{
 		"root": "pkgA",
 		"pages": [{
-			"path": "preview/preview",
-			"style": {
-				"navigationBarTitleText": "模板预览",
-				"navigationBarBackgroundColor": "#ffffff", 
-				"navigationBarTextStyle": "black" 
+				"path": "preview/preview",
+				"style": {
+					"navigationBarTitleText": "模板预览",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
+			},
+			{
+				"path": "search/search",
+				"style": {
+					"navigationStyle": "custom"
+				}
 			}
-		}]
+		]
 
 	}],
 
