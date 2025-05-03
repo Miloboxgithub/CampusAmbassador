@@ -42,6 +42,14 @@
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black"
 				}
+			},
+			{
+				"path": "detail/detail",
+				"style": {
+					"navigationBarTitleText": "职位详情",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
 			}
 		]
 

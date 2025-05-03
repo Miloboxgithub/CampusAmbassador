@@ -25,7 +25,7 @@
 			<img src="../../static/筛选@2x.png" alt="" />
 		</view>
 		<view class="items">
-			<view class="item" v-for="item in items" :key="item.id">
+			<view class="item" v-for="item in items" :key="item.id" @click="navs3">
 				<view class="name">{{ item.name }}</view>
 				<view class="tags">
 					<view class="tag" v-for="tag in item.tags" :key="tag">
@@ -115,6 +115,11 @@
 	const navs2 = () => {
 		uni.navigateTo({
 			url: '/pkgA/screen/screen'
+		})
+	}
+	const navs3 = () => {
+		uni.navigateTo({
+			url: '/pkgA/detail/detail'
 		})
 	}
 </script>

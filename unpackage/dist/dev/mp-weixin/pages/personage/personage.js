@@ -4,13 +4,13 @@ const common_assets = require("../../common/assets.js");
 const _sfc_main = {};
 function _sfc_render(_ctx, _cache) {
   return {
-    a: common_assets._imports_0$2,
+    a: common_assets._imports_0$3,
     b: common_vendor.t(_ctx.username),
     c: common_assets._imports_1$2,
     d: common_assets._imports_2$3,
     e: common_assets._imports_2$2,
     f: common_assets._imports_4$1,
-    g: common_assets._imports_5$1,
+    g: common_assets._imports_5,
     h: common_assets._imports_6$1,
     i: common_assets._imports_7
   };

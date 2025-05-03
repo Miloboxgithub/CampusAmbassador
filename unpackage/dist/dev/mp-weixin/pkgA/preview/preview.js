@@ -33,7 +33,7 @@ const _sfc_main = {
     });
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0$3,
+        a: common_assets._imports_0$4,
         b: common_assets._imports_1$3,
         c: common_assets._imports_2$2,
         d: common_vendor.o(collectsClick),

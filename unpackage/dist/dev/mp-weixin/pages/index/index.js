@@ -70,6 +70,11 @@ const _sfc_main = {
         url: "/pkgA/screen/screen"
       });
     };
+    const navs3 = () => {
+      common_vendor.index.navigateTo({
+        url: "/pkgA/detail/detail"
+      });
+    };
     return (_ctx, _cache) => {
       return {
         a: common_assets._imports_0,
@@ -93,10 +98,11 @@ const _sfc_main = {
             e: item.status === "已结束" ? 1 : "",
             f: item.coicon,
             g: common_vendor.t(item.look),
-            h: item.id
+            h: item.id,
+            i: common_vendor.o(navs3, item.id)
           };
         }),
-        i: common_assets._imports_5,
+        i: common_assets._imports_0$1,
         j: common_assets._imports_6
       };
     };

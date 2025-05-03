@@ -39,7 +39,7 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_assets._imports_0$4,
+        a: common_assets._imports_0$5,
         b: common_vendor.o(inputed),
         c: contents.value,
         d: msg.value,

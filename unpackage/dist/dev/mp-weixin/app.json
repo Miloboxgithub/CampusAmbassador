@@ -10,7 +10,8 @@
       "pages": [
         "preview/preview",
         "search/search",
-        "screen/screen"
+        "screen/screen",
+        "detail/detail"
       ]
     }
   ],
