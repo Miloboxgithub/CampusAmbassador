@@ -9,7 +9,8 @@
       "root": "pkgA",
       "pages": [
         "preview/preview",
-        "search/search"
+        "search/search",
+        "screen/screen"
       ]
     }
   ],

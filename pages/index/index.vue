@@ -20,7 +20,7 @@
 				<image src="../../static/neitui .svg" mode="" class="imim" />
 			</view>
 		</view>
-		<view class="screen">
+		<view class="screen" @click="navs2">
 			<view> 筛选 </view>
 			<img src="../../static/筛选@2x.png" alt="" />
 		</view>
@@ -110,6 +110,11 @@
 	const navs1 = () => {
 		uni.navigateTo({
 			url: '/pkgA/search/search'
+		})
+	}
+	const navs2 = () => {
+		uni.navigateTo({
+			url: '/pkgA/screen/screen'
 		})
 	}
 </script>

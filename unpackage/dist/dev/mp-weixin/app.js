@@ -7,6 +7,7 @@ if (!Math) {
   "./pages/personage/personage.js";
   "./pkgA/preview/preview.js";
   "./pkgA/search/search.js";
+  "./pkgA/screen/screen.js";
 }
 const _sfc_main = {
   onLaunch: function() {

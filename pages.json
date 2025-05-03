@@ -34,6 +34,14 @@
 				"style": {
 					"navigationStyle": "custom"
 				}
+			},
+			{
+				"path": "screen/screen",
+				"style": {
+					"navigationBarTitleText": "筛选",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
 			}
 		]
 

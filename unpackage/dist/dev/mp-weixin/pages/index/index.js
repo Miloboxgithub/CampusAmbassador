@@ -65,6 +65,11 @@ const _sfc_main = {
         url: "/pkgA/search/search"
       });
     };
+    const navs2 = () => {
+      common_vendor.index.navigateTo({
+        url: "/pkgA/screen/screen"
+      });
+    };
     return (_ctx, _cache) => {
       return {
         a: common_assets._imports_0,
@@ -73,7 +78,8 @@ const _sfc_main = {
         d: common_assets._imports_2,
         e: common_assets._imports_3,
         f: common_assets._imports_4,
-        g: common_vendor.f(items.value, (item, k0, i0) => {
+        g: common_vendor.o(navs2),
+        h: common_vendor.f(items.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: common_vendor.f(item.tags, (tag, k1, i1) => {
@@ -90,8 +96,8 @@ const _sfc_main = {
             h: item.id
           };
         }),
-        h: common_assets._imports_5,
-        i: common_assets._imports_6
+        i: common_assets._imports_5,
+        j: common_assets._imports_6
       };
     };
   }
