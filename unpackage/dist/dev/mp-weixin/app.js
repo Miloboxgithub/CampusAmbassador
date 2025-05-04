@@ -9,6 +9,11 @@ if (!Math) {
   "./pkgA/search/search.js";
   "./pkgA/screen/screen.js";
   "./pkgA/detail/detail.js";
+  "./pkgA/about/about.js";
+  "./pkgA/privacy/privacy.js";
+  "./pkgA/service/service.js";
+  "./pkgA/law/law.js";
+  "./pkgA/mysubmit/mysubmit.js";
 }
 const _sfc_main = {
   onLaunch: function() {

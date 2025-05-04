@@ -11,7 +11,12 @@
         "preview/preview",
         "search/search",
         "screen/screen",
-        "detail/detail"
+        "detail/detail",
+        "about/about",
+        "privacy/privacy",
+        "service/service",
+        "law/law",
+        "mysubmit/mysubmit"
       ]
     }
   ],

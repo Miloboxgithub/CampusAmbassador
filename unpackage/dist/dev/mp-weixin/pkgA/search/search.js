@@ -44,12 +44,12 @@ const _sfc_main = {
         c: contents.value,
         d: msg.value,
         e: common_vendor.o(($event) => msg.value = $event.detail.value),
-        f: common_assets._imports_1$4,
+        f: common_assets._imports_1$5,
         g: common_vendor.o(clear),
         h: flag.value
       }, flag.value ? {
         i: common_vendor.o(shanchu),
-        j: common_assets._imports_2$4
+        j: common_assets._imports_2$3
       } : {}, {
         k: flag.value
       }, flag.value ? {
@@ -63,7 +63,7 @@ const _sfc_main = {
       } : {}, {
         m: !flag.value
       }, !flag.value ? {
-        n: common_assets._imports_3$2
+        n: common_assets._imports_3$3
       } : {});
     };
   }

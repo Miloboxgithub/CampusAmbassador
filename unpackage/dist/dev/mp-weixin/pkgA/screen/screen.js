@@ -100,7 +100,7 @@ const _sfc_main = {
         w: common_vendor.t(guimo.value),
         x: common_assets._imports_0$6,
         y: common_vendor.o(($event) => openPopup("公司规模")),
-        z: common_assets._imports_1$5,
+        z: common_assets._imports_1$6,
         A: common_vendor.o(closePopup),
         B: common_vendor.o(queren),
         C: common_vendor.t(theme.value),

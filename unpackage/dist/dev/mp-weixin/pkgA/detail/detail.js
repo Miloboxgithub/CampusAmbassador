@@ -23,6 +23,24 @@ const _sfc_main = {
     const introduce = common_vendor.ref(
       `振石控股集团，作为浙江省首批股份制改造试点企业，形成了包括玻纤制造、风电基材、特种钢材、复合新材、自控技术等产业。已在国内及印尼、埃及、土耳其、美国、西班牙等国家设立了五十余家控(参) 股子公司。`
     );
+    const isCollected = common_vendor.ref(false);
+    function collectsClick() {
+      isCollected.value = !isCollected.value;
+      if (isCollected.value)
+        common_vendor.index.showToast({
+          title: "收藏成功",
+          icon: "success"
+        });
+    }
+    const submited = common_vendor.ref(false);
+    function submits() {
+      submited.value = !submited.value;
+      if (submited.value)
+        common_vendor.index.showToast({
+          title: "投递成功",
+          icon: "success"
+        });
+    }
     return (_ctx, _cache) => {
       return {
         a: common_vendor.f(tags.value, (tag, k0, i0) => {
@@ -41,10 +59,11 @@ const _sfc_main = {
         i: common_vendor.t(expect.value),
         j: common_vendor.t(target.value),
         k: common_vendor.t(introduce.value),
-        l: common_assets._imports_1$3,
-        m: common_assets._imports_2$2,
-        n: common_vendor.o((...args) => _ctx.collectsClick && _ctx.collectsClick(...args)),
-        o: common_vendor.o((...args) => _ctx.downloadWord && _ctx.downloadWord(...args))
+        l: common_assets._imports_1$4,
+        m: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
+        n: common_vendor.o(collectsClick),
+        o: common_vendor.t(submited.value ? "已投递" : "立即投递"),
+        p: common_vendor.o(submits)
       };
     };
   }

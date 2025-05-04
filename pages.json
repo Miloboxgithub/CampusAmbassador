@@ -50,6 +50,46 @@
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black"
 				}
+			},
+			{
+				"path": "about/about",
+				"style": {
+					"navigationBarTitleText": "关于我们",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
+			},
+			{
+				"path": "privacy/privacy",
+				"style": {
+					"navigationBarTitleText": "隐私政策",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
+			},
+			{
+				"path": "service/service",
+				"style": {
+					"navigationBarTitleText": "服务协议",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
+			},
+			{
+				"path": "law/law",
+				"style": {
+					"navigationBarTitleText": "法律声明",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
+			},
+			{
+				"path": "mysubmit/mysubmit",
+				"style": {
+					"navigationBarTitleText": "我的投递",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
 			}
 		]
 

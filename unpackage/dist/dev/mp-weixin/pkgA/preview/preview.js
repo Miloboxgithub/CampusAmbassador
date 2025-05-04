@@ -11,11 +11,14 @@ const _sfc_main = {
         menus: ["shareAppMessage", "shareTimeline"]
       });
     });
+    const isCollected = common_vendor.ref(false);
     const collectsClick = () => {
-      common_vendor.index.showToast({
-        title: "收藏成功",
-        icon: "success"
-      });
+      isCollected.value = !isCollected.value;
+      if (isCollected.value)
+        common_vendor.index.showToast({
+          title: "收藏成功",
+          icon: "success"
+        });
     };
     const downloadWord = () => {
       common_vendor.index.showToast({
@@ -34,9 +37,9 @@ const _sfc_main = {
     return (_ctx, _cache) => {
       return {
         a: common_assets._imports_0$4,
-        b: common_assets._imports_1$3,
-        c: common_assets._imports_2$2,
-        d: common_vendor.o(collectsClick),
+        b: common_assets._imports_1$4,
+        c: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
+        d: common_vendor.o((...args) => collectsClick && collectsClick(...args)),
         e: common_vendor.o(downloadWord)
       };
     };

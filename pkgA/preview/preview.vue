@@ -9,7 +9,8 @@
 	<view class="bottom">
 		<button open-type="share" class="btns"><img src="../../static/share.png" alt="" class="share" />
 		</button><text class="ss">分享</text>
-		<img src="../../static/collect.png" @click="collectsClick" alt="" class="collects" />
+		<img :src="isCollected ? '../../static/collected.png' : '../../static/collect.png'" @click=" collectsClick"
+			alt="" class="collects" />
 		<text class="cc">收藏</text>
 		<view class="btn" @click="downloadWord"> 下载word模板 </view>
 	</view>
@@ -30,12 +31,14 @@
 			menus: ["shareAppMessage", "shareTimeline"]
 		})
 	});
-
+	const isCollected = ref(false); // 是否已收藏
 	const collectsClick = () => {
-		uni.showToast({
-			title: "收藏成功",
-			icon: "success"
-		});
+		isCollected.value = !isCollected.value; // 切换收藏状态
+		if (isCollected.value)
+			uni.showToast({
+				title: "收藏成功",
+				icon: "success"
+			});
 	};
 	const downloadWord = () => {
 		uni.showToast({
@@ -52,6 +55,11 @@
 </script>
 
 <style lang="scss" scoped>
+	.collects:active {
+		transform: scale(1.3);
+		/* 点击时的放大效果 */
+	}
+
 	.page-container {
 		background: rgb(245, 245, 245);
 		height: 100vh;
@@ -129,7 +137,7 @@
 	}
 
 	.share {
-        position: absolute;
+		position: absolute;
 		left: 0px;
 		bottom: 0px;
 		width: 23px;
@@ -141,20 +149,22 @@
 		left: 41px;
 		bottom: 37px;
 		background-color: rgba(255, 255, 255, 1);
-        width: 30px;
+		width: 30px;
 		height: 30px;
 		/* 移除默认样式 */
 		border: none;
 		border-radius: 0;
 		padding: 0;
 		margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
-    .btns::after{
-  border: none;
-}
+
+	.btns::after {
+		border: none;
+	}
+
 	.ss {
 		position: absolute;
 		left: 41px;
@@ -169,6 +179,7 @@
 	}
 
 	.collects {
+		transition: transform 0.3s ease, color 0.3s ease;
 		position: absolute;
 		left: 30%;
 		bottom: 37px;
