@@ -49,7 +49,7 @@ const _sfc_main = {
             b: tag
           };
         }),
-        b: common_assets._imports_0$1,
+        b: common_assets._imports_2$1,
         c: common_vendor.t(type.value),
         d: common_vendor.t(status.value),
         e: status.value === "已结束" ? 1 : "",
@@ -59,7 +59,7 @@ const _sfc_main = {
         i: common_vendor.t(expect.value),
         j: common_vendor.t(target.value),
         k: common_vendor.t(introduce.value),
-        l: common_assets._imports_1$4,
+        l: common_assets._imports_1$3,
         m: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
         n: common_vendor.o(collectsClick),
         o: common_vendor.t(submited.value ? "已投递" : "立即投递"),

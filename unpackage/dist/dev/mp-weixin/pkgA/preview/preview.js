@@ -36,8 +36,8 @@ const _sfc_main = {
     });
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0$4,
-        b: common_assets._imports_1$4,
+        a: common_assets._imports_0$3,
+        b: common_assets._imports_1$3,
         c: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
         d: common_vendor.o((...args) => collectsClick && collectsClick(...args)),
         e: common_vendor.o(downloadWord)

@@ -29,9 +29,9 @@
 						<image src="../../static/分组 1@2x.png" mode="" />
 						<view style="margin-top: 5px">我的简历</view>
 					</view>
-					<view class="s1" @click="navigate" data-url="/pkgA/pages/collection/collection">
+					<view class="s1" @click="navigate" data-url="/pkgA/collection/collection">
 						<image src="../../static/collect.png" mode="" />
-						<view style="margin-top: 5px">收藏</view>
+						<view style="margin-top: 5px">我的收藏</view>
 					</view>
 
 				</view>

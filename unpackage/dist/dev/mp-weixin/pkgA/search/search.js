@@ -39,17 +39,17 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_assets._imports_0$5,
+        a: common_assets._imports_0$4,
         b: common_vendor.o(inputed),
         c: contents.value,
         d: msg.value,
         e: common_vendor.o(($event) => msg.value = $event.detail.value),
-        f: common_assets._imports_1$5,
+        f: common_assets._imports_1$4,
         g: common_vendor.o(clear),
         h: flag.value
       }, flag.value ? {
         i: common_vendor.o(shanchu),
-        j: common_assets._imports_2$3
+        j: common_assets._imports_2$4
       } : {}, {
         k: flag.value
       }, flag.value ? {

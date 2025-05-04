@@ -14,6 +14,7 @@ if (!Math) {
   "./pkgA/service/service.js";
   "./pkgA/law/law.js";
   "./pkgA/mysubmit/mysubmit.js";
+  "./pkgA/collection/collection.js";
 }
 const _sfc_main = {
   onLaunch: function() {

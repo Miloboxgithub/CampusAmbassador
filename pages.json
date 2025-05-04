@@ -90,6 +90,15 @@
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black"
 				}
+			},
+			{
+				"path" : "collection/collection",
+				"style" : 
+				{
+					"navigationBarTitleText" : "我的收藏",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
 			}
 		]
 
