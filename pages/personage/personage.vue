@@ -25,7 +25,7 @@
 						<image src="../../static/submit.png" mode="" />
 						<view style="margin-top: 5px">我的投递</view>
 					</view>
-					<view class="s1" @click="navigate" data-url="/pkgA/pages/collection/collection">
+					<view class="s1" @click="navigate" data-url="/pkgA/resume/resume">
 						<image src="../../static/分组 1@2x.png" mode="" />
 						<view style="margin-top: 5px">我的简历</view>
 					</view>

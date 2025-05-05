@@ -17,7 +17,8 @@
         "service/service",
         "law/law",
         "mysubmit/mysubmit",
-        "collection/collection"
+        "collection/collection",
+        "resume/resume"
       ]
     }
   ],

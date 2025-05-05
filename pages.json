@@ -99,6 +99,15 @@
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black"
 				}
+			},
+			{
+				"path" : "resume/resume",
+				"style" : 
+				{
+					"navigationBarTitleText" : "我的简历",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
 			}
 		]
 
