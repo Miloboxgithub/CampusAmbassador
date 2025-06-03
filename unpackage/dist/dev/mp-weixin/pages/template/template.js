@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+const api_index = require("../../api/index.js");
 const _sfc_main = {
   __name: "template",
   setup(__props) {
@@ -52,6 +53,15 @@ const _sfc_main = {
         sum: 5e3
       }
     ]);
+    const getInfo = common_vendor.ref({
+      page: 1,
+      pageSize: 20,
+      type: ""
+    });
+    common_vendor.onShow(() => {
+      common_vendor.index.__f__("log", "at pages/template/template.vue:96", "页面显示");
+      api_index.getResumeTemplate(getInfo.value);
+    });
     const changeType = (i) => {
       types.value.forEach((item) => {
         item.flag = false;

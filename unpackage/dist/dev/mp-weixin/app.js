@@ -20,16 +20,28 @@ if (!Math) {
 const _sfc_main = {
   onLaunch: function() {
     common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
+    const fs = common_vendor.wx$1.getFileSystemManager();
+    fs.access({
+      path: "wxfile://usr/miniprogramLog/log2",
+      success: function(res) {
+        common_vendor.index.__f__("log", "at App.vue:9", "文件存在");
+      },
+      fail: function(err) {
+        common_vendor.index.__f__("error", "at App.vue:12", "文件不存在", err);
+      }
+    });
   },
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:7", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:17", "App Show");
   },
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:10", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:20", "App Hide");
   }
 };
 function createApp() {
   const app = common_vendor.createSSRApp(_sfc_main);
+  const pinia = common_vendor.createPinia();
+  app.use(pinia);
   return {
     app
   };
