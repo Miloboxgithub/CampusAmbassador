@@ -2,9 +2,16 @@
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
 const api_index = require("../../api/index.js");
+const store_index = require("../../store/index.js");
+if (!Math) {
+  Loading();
+}
+const Loading = () => "../../components/Loading.js";
 const _sfc_main = {
   __name: "template",
   setup(__props) {
+    const isLoading = common_vendor.ref(true);
+    const pageInfo = store_index.pageStore();
     const types = common_vendor.ref([
       {
         name: "通用",
@@ -53,20 +60,95 @@ const _sfc_main = {
         sum: 5e3
       }
     ]);
-    const getInfo = common_vendor.ref({
-      page: 1,
-      pageSize: 20,
-      type: ""
+    common_vendor.onLoad(async () => {
+      common_vendor.index.__f__("log", "at pages/template/template.vue:96", "页面加载");
+      mobans.value = [];
+      try {
+        isLoading.value = true;
+        const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:102", "获取到的简历模板数据:", arr);
+        arr.forEach((e) => {
+          mobans.value.push({
+            id: e.id,
+            img: "https://picsum.photos/400",
+            sum: e.downloadNumber
+          });
+        });
+        isLoading.value = false;
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/template/template.vue:112", "获取数据失败:", error);
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
+      }
     });
     common_vendor.onShow(() => {
-      common_vendor.index.__f__("log", "at pages/template/template.vue:96", "页面显示");
-      api_index.getResumeTemplate(getInfo.value);
+      common_vendor.index.__f__("log", "at pages/template/template.vue:122", "页面显示");
     });
-    const changeType = (i) => {
+    common_vendor.onReachBottom(async () => {
+      pageInfo.getTemplatePage();
+      common_vendor.index.__f__("log", "at pages/template/template.vue:127", "触底了", pageInfo.templateInfo);
+      try {
+        isLoading.value = true;
+        const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:131", "获取到的更多简历模板数据:", arr);
+        if (arr.length === 0) {
+          common_vendor.index.showToast({
+            title: "没有更多数据了",
+            icon: "none"
+          });
+          isLoading.value = false;
+          pageInfo.lowTemplatePage();
+          return;
+        }
+        arr.forEach((e) => {
+          mobans.value.push({
+            id: e.id,
+            img: "https://picsum.photos/400",
+            sum: e.downloadNumber
+          });
+        });
+        isLoading.value = false;
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/template/template.vue:150", "获取数据失败:", error);
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
+      }
+    });
+    const changeType = async (i) => {
       types.value.forEach((item) => {
         item.flag = false;
       });
       i.flag = true;
+      pageInfo.filterTemplatePage({
+        type: i.name
+      });
+      mobans.value = [];
+      try {
+        isLoading.value = true;
+        const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:171", "获取到的新简历模板数据:", arr);
+        arr.forEach((e) => {
+          mobans.value.push({
+            id: e.id,
+            img: "https://picsum.photos/400",
+            sum: e.downloadNumber
+          });
+        });
+        isLoading.value = false;
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/template/template.vue:181", "获取数据失败:", error);
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
+      }
     };
     const navs = () => {
       common_vendor.index.navigateTo({
@@ -75,10 +157,13 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0$1,
-        b: common_assets._imports_1$1,
-        c: common_assets._imports_2$2,
-        d: common_vendor.f(types.value, (item, index, i0) => {
+        a: common_vendor.p({
+          show: isLoading.value
+        }),
+        b: common_assets._imports_0$1,
+        c: common_assets._imports_1$1,
+        d: common_assets._imports_2$2,
+        e: common_vendor.f(types.value, (item, index, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: item.flag ? 1 : "",
@@ -86,7 +171,7 @@ const _sfc_main = {
             d: common_vendor.o(($event) => changeType(item), index)
           };
         }),
-        e: common_vendor.f(mobans.value, (item, index, i0) => {
+        f: common_vendor.f(mobans.value, (item, index, i0) => {
           return {
             a: item.img,
             b: common_vendor.t(item.sum),
@@ -94,8 +179,8 @@ const _sfc_main = {
             d: common_vendor.o(navs, index)
           };
         }),
-        f: common_assets._imports_6,
-        g: common_assets._imports_3$2
+        g: common_assets._imports_6,
+        h: common_assets._imports_2$3
       };
     };
   }

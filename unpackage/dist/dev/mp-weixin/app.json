@@ -18,7 +18,8 @@
         "law/law",
         "mysubmit/mysubmit",
         "collection/collection",
-        "resume/resume"
+        "resume/resume",
+        "msg/msg"
       ]
     }
   ],

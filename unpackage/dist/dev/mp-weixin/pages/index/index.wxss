@@ -54,7 +54,7 @@
   vertical-align: top;
 }
 .search.data-v-1cf27b2a {
-  position: relative;
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: 100px;

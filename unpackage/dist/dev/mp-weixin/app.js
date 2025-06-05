@@ -16,20 +16,11 @@ if (!Math) {
   "./pkgA/mysubmit/mysubmit.js";
   "./pkgA/collection/collection.js";
   "./pkgA/resume/resume.js";
+  "./pkgA/msg/msg.js";
 }
 const _sfc_main = {
   onLaunch: function() {
     common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
-    const fs = common_vendor.wx$1.getFileSystemManager();
-    fs.access({
-      path: "wxfile://usr/miniprogramLog/log2",
-      success: function(res) {
-        common_vendor.index.__f__("log", "at App.vue:9", "文件存在");
-      },
-      fail: function(err) {
-        common_vendor.index.__f__("error", "at App.vue:12", "文件不存在", err);
-      }
-    });
   },
   onShow: function() {
     common_vendor.index.__f__("log", "at App.vue:17", "App Show");

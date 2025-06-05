@@ -1,6 +1,6 @@
 <template>
-  <loading :show="isLoading" ></loading>
-  <scroll-view class="page-container" scroll-y="true">
+  <loading :show="isLoading"></loading>
+  <view class="page-container">
     <view class="theme">校园大使汇</view>
     <view class="search" @click="navs1">
       <img src="../../static/搜索@2x.png" alt="" />
@@ -25,12 +25,17 @@
       <img src="../../static/筛选@2x.png" alt="" />
     </view>
     <view class="items">
-      <view class="item" v-for="item in items" :key="item.id" @click="navs3">
+      <view
+        class="item"
+        v-for="item in items"
+        :key="item.id"
+        @click="navs3(item.id)"
+      >
         <view class="name">{{ item.name }}</view>
         <view class="tags">
           <view class="tag" v-for="tag in item.tags" :key="tag">
-            {{ tag }} </view
-          >
+            {{ tag }}
+          </view>
         </view>
         <img class="icon" src="../../static/行业@2x.png" alt="" />
         <text class="type">{{ item.type }}</text>
@@ -47,16 +52,16 @@
         <text>~已经到底啦~</text>
       </view>
     </view>
-  </scroll-view>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { onShow, onLoad ,onReachBottom} from "@dcloudio/uni-app";
-import { getCampusByPage, getCampusDetail,fetchData } from "@/api/index.js";
+import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
+import { getCampusByPage, getCampusDetail } from "@/api/index.js";
 import { pageStore } from "@/store";
-import Loading from '@/components/Loading.vue';
-const isLoading = ref(true);
+import Loading from "../../components/Loading.vue";
+const isLoading = ref(false);
 const pageInfo = pageStore();
 const items = ref([
   {
@@ -67,72 +72,79 @@ const items = ref([
     status: "招募中",
     coicon: "https://picsum.photos/200",
     look: "5000",
-  }
+  },
 ]);
 // 页面加载时执行的逻辑
-onLoad(async() => {
-  fetchData()
+onLoad(async () => {
   console.log("页面加载");
   items.value = []; // 清空 items 数组
   try {
-  isLoading.value = true; // 显示加载状态
-  const arr = await getCampusByPage(pageInfo.indexInfo);
-  
-  console.log("获取到的校园大使数据:", arr);
-  arr.forEach((e) => {
-    items.value.push({
-      id: e.id,
-      name: e.name,
-      tags: [e.type,e.scale, '校园大使'],
-      type: e.industries,
-      status: e.isRecruit ? "招募中" : "已结束",
-      coicon: "https://picsum.photos/200",
-      look: e.pageView
+    isLoading.value = true; // 显示加载状态
+    const arr = await getCampusByPage(pageInfo.indexInfo);
+
+    console.log("获取到的校园大使数据:", arr);
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: "https://picsum.photos/200",
+        look: e.pageView,
+      });
     });
-  });
-  isLoading.value = false; // 隐藏加载状态
-} catch (error) {
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
     console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
   }
 });
 
-onShow(() => {
+onShow(async () => {
   // 页面显示时执行的逻辑
   console.log("页面显示");
-  //getCampusByPage(pageInfo.indexInfo);
-  getCampusDetail(3900);
 });
 // 监听触底事件
- onReachBottom (async() =>  {
+onReachBottom(async () => {
   pageInfo.getNewPage();
-  console.log("触底了",pageInfo.indexInfo);
+  console.log("触底了", pageInfo.indexInfo);
   try {
-  isLoading.value = true; // 显示加载状态
-  const arr = await getCampusByPage(pageInfo.indexInfo);
-  console.log("获取到的校园大使数据:", arr);
-  if (arr.length === 0) {
-    uni.showToast({
-      title: '没有更多数据了',
-      icon: 'none'
+    isLoading.value = true; // 显示加载状态
+    const arr = await getCampusByPage(pageInfo.indexInfo);
+    console.log("获取到的校园大使数据:", arr);
+    if (arr.length === 0) {
+      uni.showToast({
+        title: "没有更多数据了",
+        icon: "none",
+      });
+      isLoading.value = false; // 隐藏加载状态
+      pageInfo.lowPage();
+      return;
+    }
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: "https://picsum.photos/200",
+        look: e.pageView,
+      });
     });
     isLoading.value = false; // 隐藏加载状态
-    pageInfo.lowPage();
-    return;
-  }
-  arr.forEach((e) => {
-    items.value.push({
-      id: e.id,
-      name: e.name,
-      tags: [e.type,e.scale, '校园大使'],
-      type: e.industries,
-      status: e.isRecruit ? "招募中" : "已结束",
-      coicon: "https://picsum.photos/200",
-      look: e.pageView
-    });
-  });
-  isLoading.value = false; // 隐藏加载状态
-} catch (error) {
+  } catch (error) {
     console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
   }
 });
 const navs1 = () => {
@@ -145,9 +157,9 @@ const navs2 = () => {
     url: "/pkgA/screen/screen",
   });
 };
-const navs3 = () => {
+const navs3 = (id) => {
   uni.navigateTo({
-    url: "/pkgA/detail/detail",
+    url: `/pkgA/detail/detail?id=${id}`,
   });
 };
 </script>
@@ -185,7 +197,7 @@ const navs3 = () => {
 }
 
 .search {
-  position: relative;
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: 100px;

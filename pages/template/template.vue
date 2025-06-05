@@ -1,5 +1,6 @@
 <template>
-  <scroll-view class="page-container" scroll-y="true">
+  <loading :show="isLoading"></loading>
+  <view class="page-container">
     <view class="theme">简历模板</view>
     <img class="tu1" src="../../static/Vertical@2x.png" alt="" />
     <img class="tu2" src="../../static/_recruitment@2x.png" alt="" />
@@ -31,13 +32,17 @@
         </view>
       </view>
     </view>
-  </scroll-view>
+  </view>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import { onShow, onLoad } from "@dcloudio/uni-app";
+import { onShow, onLoad,onReachBottom } from "@dcloudio/uni-app";
 import { getResumeTemplate } from "@/api/index.js";
+import { pageStore } from "@/store";
+import Loading from "../../components/Loading.vue";
+const isLoading = ref(true);
+const pageInfo = pageStore();
 const types = ref([
   {
     name: "通用",
@@ -86,21 +91,100 @@ const mobans = ref([
     sum: 5000,
   },
 ]);
-const getInfo = ref({
-  page:  1,
-  pageSize:  20,
-  type: "",
+// 页面加载时执行的逻辑
+onLoad(async () => {
+  console.log("页面加载");
+  mobans.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getResumeTemplate(pageInfo.templateInfo);
+
+    console.log("获取到的简历模板数据:", arr);
+    arr.forEach((e) => {
+      mobans.value.push({
+        id: e.id,
+        img: 'https://picsum.photos/400'||e.templateSampleGraph,
+        sum: e.downloadNumber,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+  }
 });
 onShow(() => {
   // 页面显示时执行的逻辑
   console.log("页面显示");
-  getResumeTemplate(getInfo.value);
 });
-const changeType = (i) => {
+// 监听触底事件
+onReachBottom (async() =>  {
+  pageInfo.getTemplatePage();
+  console.log("触底了",pageInfo.templateInfo);
+  try {
+  isLoading.value = true; // 显示加载状态
+  const arr = await getResumeTemplate(pageInfo.templateInfo);
+  console.log("获取到的更多简历模板数据:", arr);
+  if (arr.length === 0) {
+    uni.showToast({
+      title: '没有更多数据了',
+      icon: 'none'
+    });
+    isLoading.value = false; // 隐藏加载状态
+    pageInfo.lowTemplatePage();
+    return;
+  }
+  arr.forEach((e) => {
+    mobans.value.push({
+      id: e.id,
+      img: 'https://picsum.photos/400'||e.templateSampleGraph,
+      sum: e.downloadNumber,
+    });
+  });
+  isLoading.value = false; // 隐藏加载状态
+} catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: '加载数据失败',
+      icon: 'error'
+    });
+  }
+});
+const changeType = async (i) => {
   types.value.forEach((item) => {
     item.flag = false;
   });
   i.flag = true;
+  pageInfo.filterTemplatePage({
+    type: i.name,
+  });
+  mobans.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getResumeTemplate(pageInfo.templateInfo);
+
+    console.log("获取到的新简历模板数据:", arr);
+    arr.forEach((e) => {
+      mobans.value.push({
+        id: e.id,
+        img:  'https://picsum.photos/400'||e.templateSampleGraph,
+        sum: e.downloadNumber,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+  }
 };
 const navs = () => {
   uni.navigateTo({
@@ -113,7 +197,7 @@ const navs = () => {
 .page-container {
   background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 50%);
   backdrop-filter: blur(87px);
-  height: 100vh;
+  height: 120vh;
   /* 使用视口高度确保填充整个页面 */
   width: 100vw;
   /* 使用视口宽度确保填充整个页面 */

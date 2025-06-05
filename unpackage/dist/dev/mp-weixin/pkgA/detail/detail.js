@@ -1,9 +1,45 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+const api_index = require("../../api/index.js");
+require("../../store/index.js");
+if (!Math) {
+  Loading();
+}
+const Loading = () => "../../components/Loading.js";
 const _sfc_main = {
   __name: "detail",
   setup(__props) {
+    const isLoading = common_vendor.ref(false);
+    const id = common_vendor.ref(null);
+    common_vendor.onLoad(async (option) => {
+      isLoading.value = true;
+      id.value = option.id;
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:87", "接收到的 id:", id.value);
+      const res = await api_index.getCampusDetail(id.value);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:89", "获取到的详情:", res);
+      if (res.statusCode === 200) {
+        let deta = res.data.data;
+        tags.value = [deta.type, deta.scale, "校园大使"];
+        type.value = deta.industries || "未知类型";
+        status.value = deta.isRecruit ? "招募中" : "已结束";
+        coicon.value = deta.logo || "https://picsum.photos/200";
+        name.value = deta.name || "未知名称";
+        task.value = deta.task || "暂无任务信息";
+        harvest.value = deta.harvest || "暂无收获信息";
+        expect.value = deta.expected || "暂无期望信息";
+        target.value = deta.targetCollege || "暂无目标院校信息";
+        introduce.value = deta.description || "暂无公司介绍";
+        isLoading.value = false;
+      } else {
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "获取详情失败",
+          icon: "error"
+        });
+      }
+    });
+    const name = common_vendor.ref("振石控股集团校园大使计划");
     const tags = common_vendor.ref(["民营", "2000人以上", "校园大使"]);
     const type = common_vendor.ref("汽车|机械|创造");
     const status = common_vendor.ref("招募中");
@@ -24,13 +60,21 @@ const _sfc_main = {
       `振石控股集团，作为浙江省首批股份制改造试点企业，形成了包括玻纤制造、风电基材、特种钢材、复合新材、自控技术等产业。已在国内及印尼、埃及、土耳其、美国、西班牙等国家设立了五十余家控(参) 股子公司。`
     );
     const isCollected = common_vendor.ref(false);
-    function collectsClick() {
+    async function collectsClick() {
+      if (!common_vendor.index.getStorageSync("loginStatus")) {
+        common_vendor.index.showToast({
+          title: "请先登录",
+          icon: "none"
+        });
+        return;
+      }
       isCollected.value = !isCollected.value;
-      if (isCollected.value)
+      if (isCollected.value) {
         common_vendor.index.showToast({
           title: "收藏成功",
           icon: "success"
         });
+      }
     }
     const submited = common_vendor.ref(false);
     function submits() {
@@ -43,27 +87,31 @@ const _sfc_main = {
     }
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.f(tags.value, (tag, k0, i0) => {
+        a: common_vendor.p({
+          show: isLoading.value
+        }),
+        b: common_vendor.t(name.value),
+        c: common_vendor.f(tags.value, (tag, k0, i0) => {
           return {
             a: common_vendor.t(tag),
             b: tag
           };
         }),
-        b: common_assets._imports_2$1,
-        c: common_vendor.t(type.value),
-        d: common_vendor.t(status.value),
-        e: status.value === "已结束" ? 1 : "",
-        f: coicon.value,
-        g: common_vendor.t(task.value),
-        h: common_vendor.t(harvest.value),
-        i: common_vendor.t(expect.value),
-        j: common_vendor.t(target.value),
-        k: common_vendor.t(introduce.value),
-        l: common_assets._imports_1$3,
-        m: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
-        n: common_vendor.o(collectsClick),
-        o: common_vendor.t(submited.value ? "已投递" : "立即投递"),
-        p: common_vendor.o(submits)
+        d: common_assets._imports_2$1,
+        e: common_vendor.t(type.value),
+        f: common_vendor.t(status.value),
+        g: status.value === "已结束" ? 1 : "",
+        h: coicon.value,
+        i: common_vendor.t(task.value),
+        j: common_vendor.t(harvest.value),
+        k: common_vendor.t(expect.value),
+        l: common_vendor.t(target.value),
+        m: common_vendor.t(introduce.value),
+        n: common_assets._imports_1$3,
+        o: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
+        p: common_vendor.o(collectsClick),
+        q: common_vendor.t(submited.value ? "已投递" : "立即投递"),
+        r: common_vendor.o(submits)
       };
     };
   }

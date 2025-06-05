@@ -10,7 +10,7 @@ const Loading = () => "../../components/Loading.js";
 const _sfc_main = {
   __name: "index",
   setup(__props) {
-    const isLoading = common_vendor.ref(true);
+    const isLoading = common_vendor.ref(false);
     const pageInfo = store_index.pageStore();
     const items = common_vendor.ref([
       {
@@ -24,13 +24,12 @@ const _sfc_main = {
       }
     ]);
     common_vendor.onLoad(async () => {
-      api_index.fetchData();
-      common_vendor.index.__f__("log", "at pages/index/index.vue:75", "页面加载");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:79", "页面加载");
       items.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:81", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:85", "获取到的校园大使数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -44,20 +43,24 @@ const _sfc_main = {
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:95", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:99", "获取数据失败:", error);
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
       }
     });
-    common_vendor.onShow(() => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:101", "页面显示");
-      api_index.getCampusDetail(3900);
+    common_vendor.onShow(async () => {
+      common_vendor.index.__f__("log", "at pages/index/index.vue:110", "页面显示");
     });
     common_vendor.onReachBottom(async () => {
       pageInfo.getNewPage();
-      common_vendor.index.__f__("log", "at pages/index/index.vue:108", "触底了", pageInfo.indexInfo);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:115", "触底了", pageInfo.indexInfo);
       try {
         isLoading.value = true;
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:112", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:119", "获取到的校园大使数据:", arr);
         if (arr.length === 0) {
           common_vendor.index.showToast({
             title: "没有更多数据了",
@@ -80,7 +83,12 @@ const _sfc_main = {
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:135", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:142", "获取数据失败:", error);
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
       }
     });
     const navs1 = () => {
@@ -93,9 +101,9 @@ const _sfc_main = {
         url: "/pkgA/screen/screen"
       });
     };
-    const navs3 = () => {
+    const navs3 = (id) => {
       common_vendor.index.navigateTo({
-        url: "/pkgA/detail/detail"
+        url: `/pkgA/detail/detail?id=${id}`
       });
     };
     return (_ctx, _cache) => {
@@ -125,7 +133,7 @@ const _sfc_main = {
             f: item.coicon,
             g: common_vendor.t(item.look),
             h: item.id,
-            i: common_vendor.o(navs3, item.id)
+            i: common_vendor.o(($event) => navs3(item.id), item.id)
           };
         }),
         j: common_assets._imports_2$1,
