@@ -22,7 +22,7 @@
           class="moban"
           v-for="(item, index) in mobans"
           :key="index"
-          @click="navs"
+          @click="navs(item.id)"
         >
           <img class="moban-img" :src="item.img" alt="" />
           <view class="line"></view>
@@ -37,7 +37,12 @@
 
 <script setup>
 import { ref } from "vue";
-import { onShow, onLoad,onReachBottom } from "@dcloudio/uni-app";
+import {
+  onShow,
+  onLoad,
+  onReachBottom,
+  onPullDownRefresh,
+} from "@dcloudio/uni-app";
 import { getResumeTemplate } from "@/api/index.js";
 import { pageStore } from "@/store";
 import Loading from "../../components/Loading.vue";
@@ -103,7 +108,7 @@ onLoad(async () => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img: 'https://picsum.photos/400'||e.templateSampleGraph,
+        img: "https://picsum.photos/400" || e.templateSampleGraph,
         sum: e.downloadNumber,
       });
     });
@@ -122,37 +127,66 @@ onShow(() => {
   console.log("页面显示");
 });
 // 监听触底事件
-onReachBottom (async() =>  {
+onReachBottom(async () => {
   pageInfo.getTemplatePage();
-  console.log("触底了",pageInfo.templateInfo);
+  console.log("触底了", pageInfo.templateInfo);
   try {
-  isLoading.value = true; // 显示加载状态
-  const arr = await getResumeTemplate(pageInfo.templateInfo);
-  console.log("获取到的更多简历模板数据:", arr);
-  if (arr.length === 0) {
-    uni.showToast({
-      title: '没有更多数据了',
-      icon: 'none'
+    isLoading.value = true; // 显示加载状态
+    const arr = await getResumeTemplate(pageInfo.templateInfo);
+    console.log("获取到的更多简历模板数据:", arr);
+    if (arr.length === 0) {
+      uni.showToast({
+        title: "没有更多数据了",
+        icon: "none",
+      });
+      isLoading.value = false; // 隐藏加载状态
+      pageInfo.lowTemplatePage();
+      return;
+    }
+    arr.forEach((e) => {
+      mobans.value.push({
+        id: e.id,
+        img: "https://picsum.photos/400" || e.templateSampleGraph,
+        sum: e.downloadNumber,
+      });
     });
     isLoading.value = false; // 隐藏加载状态
-    pageInfo.lowTemplatePage();
-    return;
-  }
-  arr.forEach((e) => {
-    mobans.value.push({
-      id: e.id,
-      img: 'https://picsum.photos/400'||e.templateSampleGraph,
-      sum: e.downloadNumber,
-    });
-  });
-  isLoading.value = false; // 隐藏加载状态
-} catch (error) {
+  } catch (error) {
     console.error("获取数据失败:", error);
     isLoading.value = false; // 隐藏加载状态
     uni.showToast({
-      title: '加载数据失败',
-      icon: 'error'
+      title: "加载数据失败",
+      icon: "error",
     });
+  }
+});
+
+onPullDownRefresh(async () => {
+  console.log("下拉刷新了");
+  pageInfo.initTemplateInfo();
+  mobans.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getResumeTemplate(pageInfo.templateInfo);
+
+    console.log("获取到的简历模板数据:", arr);
+    arr.forEach((e) => {
+      mobans.value.push({
+        id: e.id,
+        img: "https://picsum.photos/400" || e.templateSampleGraph,
+        sum: e.downloadNumber,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+    uni.stopPullDownRefresh();
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+    uni.stopPullDownRefresh();
   }
 });
 const changeType = async (i) => {
@@ -172,7 +206,7 @@ const changeType = async (i) => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img:  'https://picsum.photos/400'||e.templateSampleGraph,
+        img: "https://picsum.photos/400" || e.templateSampleGraph,
         sum: e.downloadNumber,
       });
     });
@@ -186,9 +220,9 @@ const changeType = async (i) => {
     });
   }
 };
-const navs = () => {
+const navs = (id) => {
   uni.navigateTo({
-    url: "/pkgA/preview/preview",
+    url: `/pkgA/preview/preview?id=${id}`,
   });
 };
 </script>

@@ -57,7 +57,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
+import { onShow, onLoad, onReachBottom ,onPullDownRefresh} from "@dcloudio/uni-app";
 import { getCampusByPage, getCampusDetail } from "@/api/index.js";
 import { pageStore } from "@/store";
 import Loading from "../../components/Loading.vue";
@@ -147,6 +147,39 @@ onReachBottom(async () => {
     });
   }
 });
+onPullDownRefresh(async()=>{
+  console.log('下拉刷新了')
+  pageInfo.initIndexInfo();
+  items.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getCampusByPage(pageInfo.indexInfo);
+
+    console.log("获取到的校园大使数据:", arr);
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: "https://picsum.photos/200",
+        look: e.pageView,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+    uni.stopPullDownRefresh();
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+    uni.stopPullDownRefresh();
+  }
+})
+
 const navs1 = () => {
   uni.navigateTo({
     url: "/pkgA/search/search",

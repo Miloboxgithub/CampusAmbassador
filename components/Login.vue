@@ -103,7 +103,7 @@ export default {
                 success: (res) => {
                   console.log("登录请求结果:", res);
                   // 向父组件发送登录成功的通知
-                  
+
                   if (res.statusCode === 200) {
                     wx.showToast({
                       title: "登录成功！",
@@ -113,7 +113,8 @@ export default {
                     uni.setStorageSync("jwt", res.data.data.jwt);
                     uni.setStorageSync("account", res.data.data.account);
                     uni.setStorageSync("resumeId", res.data.data.resumeId);
-                    emit("loginSuccess",true);
+                    uni.setStorageSync("userId", res.data.data.id);
+                    emit("loginSuccess", true);
                     // 获取用户信息
                     //getUserInfo();
                   } else {
@@ -152,6 +153,7 @@ export default {
       wx.navigateTo({
         url: url,
       });
+      hideview();
     };
 
     // 获取用户信息

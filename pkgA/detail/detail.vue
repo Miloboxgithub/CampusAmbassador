@@ -71,14 +71,30 @@
       {{ submited ? "已投递" : "立即投递" }}
     </view>
   </view>
+  <uni-popup ref="popups" type="bottom" mask="true" @change="change">
+    <view class="popup-content">
+      <Login
+        :show="showLogin"
+        @loginSuccess="handleLoginSuccess"
+        @hideLoginView="handleClose"
+      />
+    </view>
+  </uni-popup>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { onShow, onLoad, onReachBottom } from "@dcloudio/uni-app";
-import { getCampusByPage, getCampusDetail ,postCampusApply} from "@/api/index.js";
+import {
+  getCampusByPage,
+  getCampusDetail,
+  postCampusApply,
+  collectCampusDetail,
+  offCollectCampusDetail
+} from "@/api/index.js";
 import { pageStore } from "@/store";
 import Loading from "@/components/Loading.vue";
+import Login from "../../components/Login.vue";
 const isLoading = ref(false);
 const id = ref(null);
 onLoad(async (option) => {
@@ -129,27 +145,92 @@ const introduce = ref(
   `振石控股集团，作为浙江省首批股份制改造试点企业，形成了包括玻纤制造、风电基材、特种钢材、复合新材、自控技术等产业。已在国内及印尼、埃及、土耳其、美国、西班牙等国家设立了五十余家控(参) 股子公司。`
 );
 const isCollected = ref(false); // 是否已收藏
-
+const loginStatus = ref(uni.getStorageSync("loginStatus") || false); // 登录状态
 async function collectsClick() {
-  if(!uni.getStorageSync("loginStatus")){
-    uni.showToast({
-      title: "请先登录",
-      icon: "none",
-    });
+  if (!loginStatus.value) {
+    // uni.showToast({
+    //   title: "请先登录",
+    //   icon: "none",
+    // });
+    openPopup();
     return;
   }
+
   isCollected.value = !isCollected.value; // 切换收藏状态
-  if (isCollected.value){
-    uni.showToast({
-      title: "收藏成功",
-      icon: "success",
-    });
-    // const res = await postCampusApply({
-    //   campusId: id.value,
-    //   resumeId: uni.getStorageSync("resumeId"),
-    // });
+  if (isCollected.value) {
+    const res = await collectCampusDetail(id.value);
+    if (res.statusCode === 200 && res.data.code === 1) {
+      uni.showToast({
+        title: "收藏成功",
+        icon: "success",
+      });
+    } else {
+      uni.showToast({
+        title: "收藏失败",
+        icon: "error",
+      });
+    }
+  }
+  else {
+    const res = await offCollectCampusDetail(id.value);
+    if (res.statusCode === 200 && res.data.code === 1) {
+      uni.showToast({
+        title: "取消收藏成功",
+        icon: "success",
+      });
+    } else {
+      uni.showToast({
+        title: "取消收藏失败",
+        icon: "error",
+      });
+    }
   }
 }
+const showLogin = ref(false);
+const popups = ref();
+// 打开弹窗
+const openPopup = (e) => {
+  if (loginStatus.value) {
+    return; // 如果已登录，则不打开弹窗
+  }
+  if (popups.value) {
+    //uni.hideTabBar();
+    showLogin.value = true;
+    popups.value.open();
+  }
+};
+
+// 关闭弹窗
+const closePopup = () => {
+  if (popups.value) {
+    popups.value.close();
+  }
+};
+const change = (event) => {
+  console.log("Popup state changed");
+  if (!event.show) {
+    console.log("点击了蒙层，弹窗已关闭");
+    showLogin.value = false;
+    // 在这里写点击蒙层后的逻辑
+    //uni.showTabBar();
+  }
+};
+
+function handleLoginSuccess(payload) {
+  // 可以在这里执行登录成功后的其他逻辑
+  if (payload) {
+    loginStatus.value = true; // 更新登录状态
+    showLogin.value = false;
+    closePopup();
+  }
+}
+
+function handleClose(e) {
+  // 处理关闭事件
+  showLogin.value = false;
+  closePopup();
+}
+
 const submited = ref(false);
 
 function submits() {
@@ -435,5 +516,13 @@ function submits() {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.popup-content {
+  background-color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  min-height: 254px;
+  width: 100%;
 }
 </style>

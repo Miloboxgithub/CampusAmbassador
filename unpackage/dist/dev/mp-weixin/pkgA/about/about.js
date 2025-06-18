@@ -47,7 +47,7 @@ const _sfc_main = {
         a: common_vendor.o(copyText),
         b: common_vendor.o(copyText),
         c: common_vendor.o(copyText),
-        d: common_assets._imports_0$6,
+        d: common_assets._imports_0$5,
         e: common_vendor.o(onLongPress)
       };
     };

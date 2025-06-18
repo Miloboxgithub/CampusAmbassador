@@ -1,9 +1,9 @@
 <template>
 	<view class="page-container">
 		<view class="moban">
-			<img class="moban-img" src="../../static/模板1@2x (1).png" alt="" />
+			<img class="moban-img" :src="TemplateImg" alt="" />
 			<view class="line"></view>
-			<text class="data">500人浏览过 | 88人使用过</text>
+			<text class="data">150人浏览过 | {{downloadNumber}}人使用过</text>
 		</view>
 	</view>
 	<view class="bottom">
@@ -24,14 +24,48 @@
 		onLoad,
 		onShareAppMessage
 	} from '@dcloudio/uni-app';
-	onLoad(() => {
+	import {
+		getResumeTemplateDetail
+	} from "@/api/index.js";
+	import {
+		pageStore
+	} from "@/store";
+	import Loading from "@/components/Loading.vue";
+import Template from "../../pages/template/template.vue";
+	const isLoading = ref(false);
+	const id = ref(null);
+	const TemplateImg = ref("../../static/template.png"); // 模板图片路径
+	const downloadNumber = ref(0); // 下载次数
+	const isCollected = ref(false); // 是否已收藏
+	const downloadUrl = ref(""); // 下载链接
+	onLoad(async (option) => {
 		wx.showShareMenu({
 			withShareTicket: true,
 			//设置下方的Menus菜单，才能够让发送给朋友与分享到朋友圈两个按钮可以点击
 			menus: ["shareAppMessage", "shareTimeline"]
 		})
+		isLoading.value = true; // 显示加载状态
+		id.value = option.id; // 获取传递的 id
+		console.log("接收到的 id:", id.value);
+		const res = await getResumeTemplateDetail(id.value);
+		console.log("获取到的详情:", res);
+		if (res.statusCode === 200&&res.data.code==1) {
+			isLoading.value = false; // 隐藏加载状态
+			// 处理获取到的模板详情数据
+			let info = res.data.data;
+			TemplateImg.value = info.templateSampleGraph; // 设置模板图片路径
+			downloadNumber.value = info.downloadNumber; // 设置下载次数
+			isCollected.value = info.isFavorite; // 设置收藏状态
+			downloadUrl.value = info.path; // 设置下载链接
+		} else {
+			isLoading.value = false; // 隐藏加载状态
+			uni.showToast({
+				title: "获取详情失败",
+				icon: "error",
+			});
+		}
 	});
-	const isCollected = ref(false); // 是否已收藏
+	
 	const collectsClick = () => {
 		isCollected.value = !isCollected.value; // 切换收藏状态
 		if (isCollected.value)
@@ -41,9 +75,28 @@
 			});
 	};
 	const downloadWord = () => {
-		uni.showToast({
-			title: "下载链接已复制成功请在外部浏览器中粘贴链接下载",
-			icon: "none"
+		if (!downloadUrl.value) {
+			uni.showToast({
+				title: "下载链接不存在",
+				icon: "none"
+			});
+			return;
+		}
+		// 将下载链接复制到剪贴板
+		uni.setClipboardData({
+			data: downloadUrl.value,
+			success: () => {
+				uni.showToast({
+					title: "下载链接已复制成功，请在外部浏览器中粘贴链接下载",
+					icon: "none"
+				});
+			},
+			fail: () => {
+				uni.showToast({
+					title: "复制链接失败，请手动复制",
+					icon: "none"
+				});
+			}
 		});
 	}
 	onShareAppMessage(() => {

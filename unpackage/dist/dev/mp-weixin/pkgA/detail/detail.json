@@ -3,6 +3,8 @@
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black",
   "usingComponents": {
-    "loading": "../../components/Loading"
+    "uni-popup": "../../uni_modules/uni-popup/components/uni-popup/uni-popup",
+    "loading": "../../components/Loading",
+    "login": "../../components/Login"
   }
 }

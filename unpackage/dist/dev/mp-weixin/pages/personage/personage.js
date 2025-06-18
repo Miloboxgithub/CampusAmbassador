@@ -13,8 +13,20 @@ const Login = () => "../../components/Login.js";
 const _sfc_main = {
   __name: "personage",
   setup(__props) {
+    common_vendor.onShow(async () => {
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:86", "页面显示");
+      loginStatus.value = common_vendor.index.getStorageSync("loginStatus") || false;
+      if (loginStatus.value) {
+        account.value = formatPhoneNumber(common_vendor.index.getStorageSync("account"));
+      }
+    });
     function navigate(e) {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:106", e.currentTarget.dataset);
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:94", e.currentTarget.dataset);
+      let url = e.currentTarget.dataset.url;
+      if (!loginStatus.value && (url == "/pkgA/mysubmit/mysubmit" || url == "/pkgA/resume/resume" || url == "/pkgA/collection/collection")) {
+        openPopup();
+        return;
+      }
       common_vendor.index.navigateTo({
         url: e.currentTarget.dataset.url
       });
@@ -28,6 +40,9 @@ const _sfc_main = {
     const showLogin = common_vendor.ref(false);
     const popups = common_vendor.ref();
     const openPopup = (e) => {
+      if (loginStatus.value) {
+        return;
+      }
       if (popups.value) {
         showLogin.value = true;
         popups.value.open();
@@ -39,9 +54,9 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:136", "Popup state changed");
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:132", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pages/personage/personage.vue:138", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pages/personage/personage.vue:134", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };

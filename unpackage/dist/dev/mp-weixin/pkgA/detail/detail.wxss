@@ -264,3 +264,10 @@
   align-items: center;
   justify-content: center;
 }
+.popup-content.data-v-35bfcc75 {
+  background-color: #fff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  min-height: 254px;
+  width: 100%;
+}

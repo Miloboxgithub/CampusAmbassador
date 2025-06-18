@@ -3,10 +3,16 @@ const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
 const api_index = require("../../api/index.js");
 require("../../store/index.js");
+if (!Array) {
+  const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
+  _easycom_uni_popup2();
+}
+const _easycom_uni_popup = () => "../../uni_modules/uni-popup/components/uni-popup/uni-popup.js";
 if (!Math) {
-  Loading();
+  (Loading + Login + _easycom_uni_popup)();
 }
 const Loading = () => "../../components/Loading.js";
+const Login = () => "../../components/Login.js";
 const _sfc_main = {
   __name: "detail",
   setup(__props) {
@@ -15,9 +21,9 @@ const _sfc_main = {
     common_vendor.onLoad(async (option) => {
       isLoading.value = true;
       id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:87", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:103", "接收到的 id:", id.value);
       const res = await api_index.getCampusDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:89", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:105", "获取到的详情:", res);
       if (res.statusCode === 200) {
         let deta = res.data.data;
         tags.value = [deta.type, deta.scale, "校园大使"];
@@ -60,21 +66,74 @@ const _sfc_main = {
       `振石控股集团，作为浙江省首批股份制改造试点企业，形成了包括玻纤制造、风电基材、特种钢材、复合新材、自控技术等产业。已在国内及印尼、埃及、土耳其、美国、西班牙等国家设立了五十余家控(参) 股子公司。`
     );
     const isCollected = common_vendor.ref(false);
+    const loginStatus = common_vendor.ref(common_vendor.index.getStorageSync("loginStatus") || false);
     async function collectsClick() {
-      if (!common_vendor.index.getStorageSync("loginStatus")) {
-        common_vendor.index.showToast({
-          title: "请先登录",
-          icon: "none"
-        });
+      if (!loginStatus.value) {
+        openPopup();
         return;
       }
       isCollected.value = !isCollected.value;
       if (isCollected.value) {
-        common_vendor.index.showToast({
-          title: "收藏成功",
-          icon: "success"
-        });
+        const res = await api_index.collectCampusDetail(id.value);
+        if (res.statusCode === 200 && res.data.code === 1) {
+          common_vendor.index.showToast({
+            title: "收藏成功",
+            icon: "success"
+          });
+        } else {
+          common_vendor.index.showToast({
+            title: "收藏失败",
+            icon: "error"
+          });
+        }
+      } else {
+        const res = await api_index.offCollectCampusDetail(id.value);
+        if (res.statusCode === 200 && res.data.code === 1) {
+          common_vendor.index.showToast({
+            title: "取消收藏成功",
+            icon: "success"
+          });
+        } else {
+          common_vendor.index.showToast({
+            title: "取消收藏失败",
+            icon: "error"
+          });
+        }
       }
+    }
+    const showLogin = common_vendor.ref(false);
+    const popups = common_vendor.ref();
+    const openPopup = (e) => {
+      if (loginStatus.value) {
+        return;
+      }
+      if (popups.value) {
+        showLogin.value = true;
+        popups.value.open();
+      }
+    };
+    const closePopup = () => {
+      if (popups.value) {
+        popups.value.close();
+      }
+    };
+    const change = (event) => {
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:210", "Popup state changed");
+      if (!event.show) {
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:212", "点击了蒙层，弹窗已关闭");
+        showLogin.value = false;
+      }
+    };
+    function handleLoginSuccess(payload) {
+      if (payload) {
+        loginStatus.value = true;
+        showLogin.value = false;
+        closePopup();
+      }
+    }
+    function handleClose(e) {
+      showLogin.value = false;
+      closePopup();
     }
     const submited = common_vendor.ref(false);
     function submits() {
@@ -111,7 +170,20 @@ const _sfc_main = {
         o: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
         p: common_vendor.o(collectsClick),
         q: common_vendor.t(submited.value ? "已投递" : "立即投递"),
-        r: common_vendor.o(submits)
+        r: common_vendor.o(submits),
+        s: common_vendor.o(handleLoginSuccess),
+        t: common_vendor.o(handleClose),
+        v: common_vendor.p({
+          show: showLogin.value
+        }),
+        w: common_vendor.sr(popups, "35bfcc75-1", {
+          "k": "popups"
+        }),
+        x: common_vendor.o(change),
+        y: common_vendor.p({
+          type: "bottom",
+          mask: "true"
+        })
       };
     };
   }

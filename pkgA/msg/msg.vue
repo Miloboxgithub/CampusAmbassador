@@ -18,7 +18,7 @@
         <view class="sad"></view>
       </view>
       <input
-        type="text"
+        type="number"
         pattern="[0-9]*"
         style="color: #000"
         placeholder="请输入手机号"
@@ -34,7 +34,7 @@
       />
       <view
         style="position: absolute; right: 22px"
-        :style="getCodeBtnStyle"
+        :class="{ act: isPhoneValid() }"
         v-if="canGetCode"
         @tap="sendCode"
       >
@@ -87,13 +87,13 @@ const sendCode = () => {
     });
     return;
   }
-  console.log("发送验证码请求，手机号:", phone.value, phone.value.length);
+  console.log("发送验证码请求，手机号:", phone.value);
   uni.request({
-    url: `https://xydsh.cn/api/user/sendMsg`, // 拼接完整的 URL
+    url: `https://api.xydsh.cn/api/wechat/sendMsg`, // 拼接完整的 URL
     method: "POST",
     data: {
-      account: phone.value,
-      //countryCode: "86",
+      account: phone.value.toString(), // 确保手机号是字符串类型
+      countryCode: "86",
     },
     header: {
       "content-type": "application/json",
@@ -130,7 +130,7 @@ const isPhoneValid = () => phone.value && phone.value.length === 11;
 
 // 获取验证码按钮样式
 const getCodeBtnStyle = {
-  color: isPhoneValid() ? 'rgba(88, 127, 255, 1)' : ''
+  color: isPhoneValid() ? "rgba(88, 127, 255, 1)" : "",
 };
 const getUserInfo = () => {
   uni.request({
@@ -172,27 +172,52 @@ const startCountDown = () => {
 };
 
 const login = () => {
+  if (phone.value === "") {
+    uni.showToast({
+      title: "请填写手机号！",
+      icon: "none",
+    });
+    return;
+  }
+  const phoneRegex = /^1[3-9]\d{9}$/; // 中国大陆手机号正则表达式
+  if (!phoneRegex.test(phone.value)) {
+    uni.showToast({
+      title: "手机号格式不正确！",
+      icon: "none",
+    });
+    return;
+  }
+  if (code.value.length == 0) {
+    uni.showToast({
+      title: "请填写验证码！",
+      icon: "none",
+    });
+    return;
+  }
   uni.login({
     success: (res) => {
       if (res.code) {
         uni.request({
-          url: `https://xydsh.cn/api/user/mlogin`, // 拼接完整的 URL
+          url: `https://api.xydsh.cn/api/wechat/codeLogin`, // 拼接完整的 URL
           method: "POST",
           data: {
-            account: phone.value,
-            code: code.value,
+            account: phone.value.toString(), // 确保手机号是字符串类型
+            code: code.value.toString(), // 确保验证码是字符串类型
           },
           header: {
             "content-type": "application/json",
           },
           success: (res) => {
             console.log("登录请求结果:", res);
-            if (res.statusCode === 200) {
+            if (res.data.code != 0) {
               uni.showToast({
                 title: "登录成功！",
               });
               uni.setStorageSync("loginStatus", true);
               uni.setStorageSync("jwt", res.data.data.jwt);
+              uni.setStorageSync("account", res.data.data.account);
+              uni.setStorageSync("resumeId", res.data.data.resumeId);
+              uni.setStorageSync("userId", res.data.data.id);
               setTimeout(() => {
                 uni.switchTab({
                   url: "/pages/personage/personage",
@@ -201,8 +226,8 @@ const login = () => {
             } else {
               console.error("请求失败:", res);
               uni.showToast({
-                title: "登录失败",
-                icon: "error",
+                title: res.data.msg,
+                icon: "none",
               });
             }
           },
@@ -299,7 +324,12 @@ const login = () => {
   text-align: justify;
   vertical-align: top;
 }
+
 .active {
   background: rgba(88, 127, 255, 1) !important;
+}
+
+.act {
+  color: rgba(88, 127, 255, 1) !important;
 }
 </style>

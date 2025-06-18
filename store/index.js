@@ -20,6 +20,10 @@ export const pageStore = defineStore('pageInfo', {
             page: 1,
             pageSize: 20,
             type: "通用",
+        },
+        collectCampusInfo: {
+            page: 1,
+            pageSize: 20,
         }
 	}),
 	actions: {
@@ -40,6 +44,20 @@ export const pageStore = defineStore('pageInfo', {
             this.indexInfo.majorRequire = e.majorRequire || '';
             this.indexInfo.gradeRequire = e.gradeRequire || '';
         },
+        initIndexInfo()
+        {
+            this.indexInfo = {
+                page: 1,
+                pageSize: 20,
+                keyword:'',
+                industry: '',
+                scale:  '',
+                type: '',
+                educationalRequire:  '',
+                majorRequire: '',
+                gradeRequire: '',
+            };
+        },
         getTemplatePage(){
             this.templateInfo.page ++;
         },
@@ -50,6 +68,26 @@ export const pageStore = defineStore('pageInfo', {
             this.templateInfo.page = 1;
             this.templateInfo.pageSize = 20;
             this.templateInfo.type = e.type || "通用";
-        }
+        },
+        initTemplateInfo()
+        {
+            this.templateInfo = {
+                page: 1,
+                pageSize: 20,
+            };
+        },
+        getCollectCampusPage(){
+            this.collectCampusInfo.page ++;
+        },
+        lowCollectCampusPage(){
+            this.collectCampusInfo.page --;
+        },
+        initCollectCampusInfo()
+        {
+            this.collectCampusInfo = {
+                page: 1,
+                pageSize: 20,
+            };
+        },
 	},
 });

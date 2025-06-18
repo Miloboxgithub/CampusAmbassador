@@ -1,4 +1,5 @@
 <template>
+  <loading :show="isLoading"></loading>
   <scroll-view class="page-container" scroll-y="true">
     <view
       @click="changeTab(false)"
@@ -15,8 +16,13 @@
     <view class="line"></view>
     <view class="activeLine" :class="activeindex ? 'tabtrue' : ''"></view>
     <view class="items" v-if="!activeindex">
-      <view class="item" v-for="(item, index) in items" :key="index">
-        <view class="abc" @click="dianji" data-id="{{index}}"
+      <view
+        class="item"
+        v-for="(item, index) in items"
+        :key="index"
+        @click="navs3(item.id)"
+      >
+        <view class="abc" @click.stop="dianji" data-id="{{index}}"
           ><image src="../img/圆形 1.png" class="blacks" mode="" /><image
             src="../img/圆形 2.png"
             :style="{ display: item.isdian ? '' : 'none' }"
@@ -42,35 +48,30 @@
       </view>
     </view>
     <view class="ke" v-if="activeindex">
-			<view class="mobans">
-				<view class="moban" v-for="(item ,index) in mobans" :key="index">
-					<img class="moban-img" :src="item.img" alt="" />
-					<view class="lined"></view>
+      <view class="mobans">
+        <view class="moban" v-for="(item, index) in mobans" :key="index">
+          <img class="moban-img" :src="item.img" alt="" />
+          <view class="lined"></view>
           <view class="abcd" @click="dianji2" data-id="{{index}}"
-          ><image src="../img/圆形 1.png" class="blacks" mode="" /><image
-            src="../img/圆形 2.png"
-            :style="{ display: item.isdian ? '' : 'none' }"
-            class="blues"
-            mode=""
-        /></view>
-					<img src="../../static/下载@2x.png" alt="" class="download">
-					<text class="sum">{{ item.sum }}</text>
-					<img src="../../static/collected.png" alt="" class="collect">
-				</view>
-			</view>
-		</view>
+            ><image src="../img/圆形 1.png" class="blacks" mode="" /><image
+              src="../img/圆形 2.png"
+              :style="{ display: item.isdian ? '' : 'none' }"
+              class="blues"
+              mode=""
+          /></view>
+          <img src="../../static/下载@2x.png" alt="" class="download" />
+          <text class="sum">{{ item.sum }}</text>
+          <img src="../../static/collected.png" alt="" class="collect" />
+        </view>
+      </view>
+    </view>
   </scroll-view>
-  <view class="chico" v-if="numbs!=0">
-    <view
-      style="
-        display: flex;
-        justify-content: space-around;
-      "
-    >
+  <view class="chico" v-if="numbs != 0">
+    <view style="display: flex; justify-content: space-around">
       <view class="xuan"
         ><view
           >已选<text style="color: rgba(88, 127, 255, 1)">{{ numbs }}</text
-          >个{{st}}</view
+          >个{{ st }}</view
         >
         <view @click="quanxuans"
           ><image src="../img/圆形 1.png" mode="" /><image
@@ -88,6 +89,18 @@
 
 <script setup>
 import { ref } from "vue";
+import { getUserCollects } from "@/api/index.js";
+import {
+  onShow,
+  onLoad,
+  onReachBottom,
+  onPullDownRefresh,
+} from "@dcloudio/uni-app";
+import { pageStore } from "@/store";
+import Loading from "@/components/Loading.vue";
+import Login from "../../components/Login.vue";
+const isLoading = ref(false);
+const pageInfo = pageStore();
 const activeindex = ref(false);
 const numbs = ref(0);
 const numbsmoban = ref(0);
@@ -135,6 +148,113 @@ const items = ref([
     isdian: false,
   },
 ]);
+// 页面加载时执行的逻辑
+onLoad(async () => {
+  console.log("页面加载");
+  items.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getUserCollects(pageInfo.collectCampusInfo);
+
+    console.log("获取用户收藏的校园大使职位数据:", arr);
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: "https://picsum.photos/200",
+        look: e.pageView,
+        isdian: false,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+  }
+});
+
+onShow(async () => {
+  // 页面显示时执行的逻辑
+  console.log("页面显示");
+});
+// 监听触底事件
+onReachBottom(async () => {
+  pageInfo.getCollectCampusPage();
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getUserCollects(pageInfo.collectCampusInfo);
+    console.log("获取用户收藏的校园大使职位数据:", arr);
+    if (arr.length === 0) {
+      uni.showToast({
+        title: "没有更多数据了",
+        icon: "none",
+      });
+      isLoading.value = false; // 隐藏加载状态
+      pageInfo.lowCollectCampusPage();
+      return;
+    }
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: "https://picsum.photos/200",
+        look: e.pageView,
+        isdian: false,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+  }
+});
+onPullDownRefresh(async () => {
+  console.log("下拉刷新了");
+  pageInfo.initCollectCampusInfo();
+  items.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getUserCollects(pageInfo.collectCampusInfo);
+
+    console.log("获取用户收藏的校园大使职位数据:", arr);
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: "https://picsum.photos/200",
+        look: e.pageView,
+        isdian: false,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+    uni.stopPullDownRefresh();
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+    uni.stopPullDownRefresh();
+  }
+});
 const changeTab = (flag) => {
   activeindex.value = flag;
   if (flag) {
@@ -143,67 +263,67 @@ const changeTab = (flag) => {
     st.value = "校园大使";
   }
   items.value.forEach((item) => {
-      item.isdian = false;
-    });
-    mobans.value.forEach((item) => {
-      item.isdian = false;
-    })
+    item.isdian = false;
+  });
+  mobans.value.forEach((item) => {
+    item.isdian = false;
+  });
   numbs.value = 0;
-}
-const navs3 = () => {
+};
+const navs3 = (id) => {
   uni.navigateTo({
-    url: "/pkgA/detail/detail",
+    url: `/pkgA/detail/detail?id=${id}`,
   });
 };
 const dianji = (e) => {
   const index = parseInt(e.currentTarget.dataset.id, 10); // 转换为数字
   if (items.value[index]) {
     items.value[index].isdian = !items.value[index].isdian;
-    if(items.value[index].isdian){
-      numbs.value++
-    }else{
-      numbs.value--
+    if (items.value[index].isdian) {
+      numbs.value++;
+    } else {
+      numbs.value--;
     }
   } else {
     console.error(`Item at index ${index} is undefined`);
   }
-  if(numbs.value==mobans.value.length){
-    quanxuan.value = true
-  }else{
-    quanxuan.value = false
+  if (numbs.value == mobans.value.length) {
+    quanxuan.value = true;
+  } else {
+    quanxuan.value = false;
   }
 };
 const dianji2 = (e) => {
   const index = parseInt(e.currentTarget.dataset.id, 10); // 转换为数字
   if (mobans.value[index]) {
     mobans.value[index].isdian = !mobans.value[index].isdian;
-    if(mobans.value[index].isdian){
-      numbs.value++
-    }else{
-      numbs.value--
+    if (mobans.value[index].isdian) {
+      numbs.value++;
+    } else {
+      numbs.value--;
     }
   } else {
     console.error(`Item at index ${index} is undefined`);
   }
-  if(numbs.value==mobans.value.length){
-    quanxuan.value = true
-  }else{
-    quanxuan.value = false
+  if (numbs.value == mobans.value.length) {
+    quanxuan.value = true;
+  } else {
+    quanxuan.value = false;
   }
 };
 function quanxuans() {
   quanxuan.value = !quanxuan.value;
   if (quanxuan.value) {
-    if(st.value=="校园大使"){
-    items.value.forEach((item) => {
-      item.isdian = true;
-    });
-  }
-  if(st.value=="简历模板"){
-    mobans.value.forEach((item) => {
-      item.isdian = true;
-    });
-  }
+    if (st.value == "校园大使") {
+      items.value.forEach((item) => {
+        item.isdian = true;
+      });
+    }
+    if (st.value == "简历模板") {
+      mobans.value.forEach((item) => {
+        item.isdian = true;
+      });
+    }
     numbs.value = items.value.length;
   } else {
     items.value.forEach((item) => {
@@ -211,7 +331,7 @@ function quanxuans() {
     });
     mobans.value.forEach((item) => {
       item.isdian = false;
-    })
+    });
     numbs.value = 0;
   }
 }
@@ -221,49 +341,46 @@ function deletes() {
   });
   mobans.value.forEach((item) => {
     item.isdian = false;
-  })
+  });
   numbs.value = 0;
   uni.showToast({
-    title: '取消成功',
-    icon: 'success',
-    image: '',
+    title: "取消成功",
+    icon: "success",
+    image: "",
     duration: 1500,
     mask: false,
-    success: (result) => {
-      
-    },
+    success: (result) => {},
     fail: () => {},
-    complete: () => {}
+    complete: () => {},
   });
-    
 }
-const mobans = ref([{
-			img: "../../static/模板1@2x.png",
-			sum: 5000,
-			isdian: false
-		},
-		{
-			img: "../../static/模板1@2x (1).png",
-			sum: 5000,
-			isdian: false
-		},
-		{
-			img: "../../static/模板1@2x (2).png",
-			sum: 5000,
-			isdian: false
-		},
-		{
-			img: "../../static/模板1@2x (3).png",
-			sum: 5000,
-			isdian: false
-		},
-
-	])
-  const navs = () => {
-		uni.navigateTo({
-			url: '/pkgA/preview/preview'
-		})
-  }
+const mobans = ref([
+  {
+    img: "../../static/模板1@2x.png",
+    sum: 5000,
+    isdian: false,
+  },
+  {
+    img: "../../static/模板1@2x (1).png",
+    sum: 5000,
+    isdian: false,
+  },
+  {
+    img: "../../static/模板1@2x (2).png",
+    sum: 5000,
+    isdian: false,
+  },
+  {
+    img: "../../static/模板1@2x (3).png",
+    sum: 5000,
+    isdian: false,
+  },
+]);
+const navs = () => {
+  uni.navigateTo({
+    url: "/pkgA/preview/preview",
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -557,7 +674,7 @@ const mobans = ref([{
   margin-top: 10px;
   margin-left: 5px;
 }
-.xuan{
+.xuan {
   position: relative;
   left: 0;
 }
@@ -592,100 +709,100 @@ const mobans = ref([{
   right: 12px;
 }
 .ke {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 92vw;
-		top: 55px;
-		padding-bottom: 30px;
-	}
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92vw;
+  top: 55px;
+  padding-bottom: 30px;
+}
 
-	.typed {
-		width: 46px;
-		height: 24px;
-		opacity: 1;
-		border-radius: 12.5px;
-		background: rgb(255, 255, 255);
-		font-size: 11px;
-		font-weight: 500;
-		letter-spacing: 0px;
-		color: rgb(0, 0, 0);
-		text-align: center;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+.typed {
+  width: 46px;
+  height: 24px;
+  opacity: 1;
+  border-radius: 12.5px;
+  background: rgb(255, 255, 255);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-	.activeType {
-		background: rgba(79, 120, 255, 1);
-		color: rgba(255, 255, 255, 1);
-	}
+.activeType {
+  background: rgba(79, 120, 255, 1);
+  color: rgba(255, 255, 255, 1);
+}
 
-	.mobans {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-	}
+.mobans {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
-	.moban {
-		width: 48%;
-		margin-top: 12px;
-		height: 261.51px;
-		opacity: 1;
-		border-radius: 5px;
-		background: rgba(255, 255, 255, 1);
-		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
-		position: relative;
-		overflow: hidden;
-	}
+.moban {
+  width: 48%;
+  margin-top: 12px;
+  height: 261.51px;
+  opacity: 1;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
 
-	.lined {
-		position: absolute;
-		bottom: 22px;
-		top: 239.52px;
-		width: 100%;
-		height: 0px;
-		opacity: 1;
-		border: 0.01px solid rgba(0, 0, 0, 0.3);
-	}
+.lined {
+  position: absolute;
+  bottom: 22px;
+  top: 239.52px;
+  width: 100%;
+  height: 0px;
+  opacity: 1;
+  border: 0.01px solid rgba(0, 0, 0, 0.3);
+}
 
-	.moban-img {
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		top: 5px;
-		width: 96%;
-		height: 231px;
-		opacity: 1;
-	}
+.moban-img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 5px;
+  width: 96%;
+  height: 231px;
+  opacity: 1;
+}
 
-	.download {
-		position: absolute;
-		left: 24px;
-		bottom: 5.5px;
-		width: 12px;
-		height: 12px;
-		opacity: 1;
-	}
+.download {
+  position: absolute;
+  left: 24px;
+  bottom: 5.5px;
+  width: 12px;
+  height: 12px;
+  opacity: 1;
+}
 
-	.sum {
-		position: absolute;
-		left: 40px;
-		bottom: 5.5px;
-		font-size: 7px;
-		font-weight: 400;
-		letter-spacing: 0px;
-		line-height: 10.14px;
-		color: rgba(67, 79, 120, 1);
-		text-align: left;
-		vertical-align: top;
-	}
+.sum {
+  position: absolute;
+  left: 40px;
+  bottom: 5.5px;
+  font-size: 7px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  line-height: 10.14px;
+  color: rgba(67, 79, 120, 1);
+  text-align: left;
+  vertical-align: top;
+}
 
-	.collect {
-		position: absolute;
-		width: 11px;
-		height: 11px;
-		right: 13px;
-		bottom: 5.5px;
-	}
+.collect {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  right: 13px;
+  bottom: 5.5px;
+}
 </style>

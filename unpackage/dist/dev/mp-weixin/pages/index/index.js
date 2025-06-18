@@ -91,6 +91,37 @@ const _sfc_main = {
         });
       }
     });
+    common_vendor.onPullDownRefresh(async () => {
+      common_vendor.index.__f__("log", "at pages/index/index.vue:151", "下拉刷新了");
+      pageInfo.initIndexInfo();
+      items.value = [];
+      try {
+        isLoading.value = true;
+        const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:158", "获取到的校园大使数据:", arr);
+        arr.forEach((e) => {
+          items.value.push({
+            id: e.id,
+            name: e.name,
+            tags: [e.type, e.scale, "校园大使"],
+            type: e.industries,
+            status: e.isRecruit ? "招募中" : "已结束",
+            coicon: "https://picsum.photos/200",
+            look: e.pageView
+          });
+        });
+        isLoading.value = false;
+        common_vendor.index.stopPullDownRefresh();
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/index/index.vue:173", "获取数据失败:", error);
+        isLoading.value = false;
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
+        common_vendor.index.stopPullDownRefresh();
+      }
+    });
     const navs1 = () => {
       common_vendor.index.navigateTo({
         url: "/pkgA/search/search"
