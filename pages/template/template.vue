@@ -108,7 +108,7 @@ onLoad(async () => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img: "https://picsum.photos/400" || e.templateSampleGraph,
+        img: e.templateSampleGraph,
         sum: e.downloadNumber,
       });
     });
@@ -146,7 +146,7 @@ onReachBottom(async () => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img: "https://picsum.photos/400" || e.templateSampleGraph,
+        img: e.templateSampleGraph,
         sum: e.downloadNumber,
       });
     });

@@ -167,7 +167,7 @@ export const getResumeTemplate = (e) => {
 	console.log(e)
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: 'https://xydsh.cn/api/templates/page',
+			url: 'https://api.xydsh.cn/wechat/templates/page',
 			data: {
 				page: e.page || 1,
 				pageSize: e.pageSize || 10,
@@ -181,7 +181,7 @@ export const getResumeTemplate = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, '获取简历模板列表');
-				resolve(result.data.data.records); // 返回数据
+				resolve(result.data.data.templates); // 返回数据
 			},
 			fail: (err) => {
 				reject('获取简历模板列表失败', err); // 处理失败情况
@@ -194,7 +194,7 @@ export const getResumeTemplate = (e) => {
 export const getResumeTemplateDetail = (id) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `https://api.xydsh.cn/api/wechat/templates/${id}`,
+			url: `https://api.xydsh.cn/wechat/templates/${id}`,
 			data: {},
 			header: {
 				'content-type': 'application/json'
@@ -208,6 +208,171 @@ export const getResumeTemplateDetail = (id) => {
 			},
 			fail: (err) => {
 				reject('获取简历模板列表失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//获取模板分享链接
+export const getResumeTemplateLink = (id) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/templates/miniapp/share/${id}`,
+			data: {},
+			header: {
+				'content-type': 'application/json'
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取模板分享链接');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('获取模板分享链接失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//增加简历浏览量
+
+export const addResumeViewCount = (resumeid) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/resume/view/${resumeid}`,
+			data: {},
+			header: {
+				'content-type': 'application/json'
+			},
+			method: 'POST',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '增加简历浏览量');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('增加简历浏览量失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//获取简历浏览量
+export const getResumeViewCount = (resumeid) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/resume/view/${resumeid}`,
+			data: {},
+			header: {
+				'content-type': 'application/json'
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取简历浏览量');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('获取简历浏览量失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//增加简历模板使用次数
+export const addResumeTemplateUseCount = (templateid) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/templates/use/${templateid}`,
+			data: {},
+			header: {
+				'content-type': 'application/json'
+			},
+			method: 'POST',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '增加简历模板使用次数');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('增加简历模板使用次数失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//获取简历模板使用次数
+export const getResumeTemplateUseCount = (templateid) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/templates/use/${templateid}`,
+			data: {},
+			header: {
+				'content-type': 'application/json'
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取简历模板使用次数');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('获取简历模板使用次数失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//收藏简历模板
+export const collectResumeTemplate = (resumeId) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/favorite/resume/${resumeId}`,
+			data: {
+			},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'POST',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '收藏简历模板成功');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('收藏简历模板失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+//取消收藏简历模板
+export const offCollectResumeTemplate = (resumeId) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/favorite/resume/${resumeId}`,
+			data: {},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'DELETE',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '取消收藏简历模板成功');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('取消收藏简历模板失败', err); // 处理失败情况
 			},
 			complete: () => {}
 		});

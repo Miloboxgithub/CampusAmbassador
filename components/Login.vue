@@ -104,7 +104,7 @@ export default {
                   console.log("登录请求结果:", res);
                   // 向父组件发送登录成功的通知
 
-                  if (res.statusCode === 200) {
+                  if (res.statusCode === 200&&res.data.code === 1) {
                     wx.showToast({
                       title: "登录成功！",
                     });

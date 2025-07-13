@@ -25,7 +25,14 @@
 		onShareAppMessage
 	} from '@dcloudio/uni-app';
 	import {
-		getResumeTemplateDetail
+		getResumeTemplateDetail,
+		getResumeTemplateLink,
+		getResumeTemplateUseCount,
+		addResumeTemplateUseCount,
+		getResumeViewCount,
+		addResumeViewCount,
+		collectResumeTemplate,
+		offCollectResumeTemplate
 	} from "@/api/index.js";
 	import {
 		pageStore
@@ -38,6 +45,7 @@ import Template from "../../pages/template/template.vue";
 	const downloadNumber = ref(0); // 下载次数
 	const isCollected = ref(false); // 是否已收藏
 	const downloadUrl = ref(""); // 下载链接
+	const shareData = ref()
 	onLoad(async (option) => {
 		wx.showShareMenu({
 			withShareTicket: true,
@@ -64,15 +72,52 @@ import Template from "../../pages/template/template.vue";
 				icon: "error",
 			});
 		}
+		// 增加浏览次数
+		await addResumeViewCount(id.value);
+		// 获取下载次数
+		const countRes = await getResumeTemplateUseCount(id.value);
+		 // 获取浏览次数
+		 const viewCountRes = await getResumeViewCount(id.value);
+		 console.log("浏览次数:", viewCountRes,countRes);
+		const ress = await getResumeTemplateLink(id.value);
+		if (ress.statusCode !== 200 || ress.data.code !== 1) {
+			uni.showToast({
+				title: "获取分享链接失败",
+				icon: "error"
+			});
+			return;
+		}
+		const shareLink = ress.data.data.shareLink; // 获取分享链接
+		shareData.value = ress.data.data.shareData; // 设置分享链接
 	});
 	
-	const collectsClick = () => {
-		isCollected.value = !isCollected.value; // 切换收藏状态
-		if (isCollected.value)
-			uni.showToast({
-				title: "收藏成功",
-				icon: "success"
-			});
+	const collectsClick = async () => {
+		if(!isCollected.value){
+			// 如果当前未收藏，则执行收藏操作
+			const res  = await collectResumeTemplate(id.value);
+			if(res.statusCode == 200 || res.data.code == 1) {
+				isCollected.value = !isCollected.value; // 切换收藏状态
+				uni.showToast({
+					title: "收藏成功",
+					icon: "success"
+				});
+				return;
+			}
+		} else {
+			// 如果当前已收藏，则执行取消收藏操作
+			const res  = await offCollectResumeTemplate(id.value);
+			if(res.statusCode == 200 || res.data.code == 1) {
+				isCollected.value = !isCollected.value; // 切换收藏状态
+				uni.showToast({
+					title: "取消收藏成功",
+					icon: "success"
+				});
+				return;
+			}
+		}
+		
+		
+
 	};
 	const downloadWord = () => {
 		if (!downloadUrl.value) {
@@ -99,10 +144,12 @@ import Template from "../../pages/template/template.vue";
 			}
 		});
 	}
-	onShareAppMessage(() => {
+	onShareAppMessage(async() => {
+		
 		return {
-			title: '这是分享标题', // 分享标题
-			path: '/pkgA/preview/preview', // 分享路径
+			title: shareData.value.title, // 分享标题
+			path: `/pkgA/preview/preview?id=${id.value}`, // 分享路径
+			imageUrl: shareData.value.imageUrl, // 分享图片
 		}
 	})
 </script>

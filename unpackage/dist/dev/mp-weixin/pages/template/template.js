@@ -70,7 +70,7 @@ const _sfc_main = {
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
-            img: "https://picsum.photos/400",
+            img: e.templateSampleGraph,
             sum: e.downloadNumber
           });
         });
@@ -106,7 +106,7 @@ const _sfc_main = {
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
-            img: "https://picsum.photos/400",
+            img: e.templateSampleGraph,
             sum: e.downloadNumber
           });
         });

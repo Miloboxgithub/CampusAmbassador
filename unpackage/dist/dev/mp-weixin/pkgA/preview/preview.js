@@ -12,6 +12,7 @@ const _sfc_main = {
     const downloadNumber = common_vendor.ref(0);
     const isCollected = common_vendor.ref(false);
     const downloadUrl = common_vendor.ref("");
+    const shareData = common_vendor.ref();
     common_vendor.onLoad(async (option) => {
       common_vendor.wx$1.showShareMenu({
         withShareTicket: true,
@@ -20,9 +21,9 @@ const _sfc_main = {
       });
       isLoading.value = true;
       id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:49", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:57", "接收到的 id:", id.value);
       const res = await api_index.getResumeTemplateDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:51", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:59", "获取到的详情:", res);
       if (res.statusCode === 200 && res.data.code == 1) {
         isLoading.value = false;
         let info = res.data.data;
@@ -37,14 +38,43 @@ const _sfc_main = {
           icon: "error"
         });
       }
-    });
-    const collectsClick = () => {
-      isCollected.value = !isCollected.value;
-      if (isCollected.value)
+      await api_index.addResumeViewCount(id.value);
+      const countRes = await api_index.getResumeTemplateUseCount(id.value);
+      const viewCountRes = await api_index.getResumeViewCount(id.value);
+      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:81", "浏览次数:", viewCountRes, countRes);
+      const ress = await api_index.getResumeTemplateLink(id.value);
+      if (ress.statusCode !== 200 || ress.data.code !== 1) {
         common_vendor.index.showToast({
-          title: "收藏成功",
-          icon: "success"
+          title: "获取分享链接失败",
+          icon: "error"
         });
+        return;
+      }
+      ress.data.data.shareLink;
+      shareData.value = ress.data.data.shareData;
+    });
+    const collectsClick = async () => {
+      if (!isCollected.value) {
+        const res = await api_index.collectResumeTemplate(id.value);
+        if (res.statusCode == 200 || res.data.code == 1) {
+          isCollected.value = !isCollected.value;
+          common_vendor.index.showToast({
+            title: "收藏成功",
+            icon: "success"
+          });
+          return;
+        }
+      } else {
+        const res = await api_index.offCollectResumeTemplate(id.value);
+        if (res.statusCode == 200 || res.data.code == 1) {
+          isCollected.value = !isCollected.value;
+          common_vendor.index.showToast({
+            title: "取消收藏成功",
+            icon: "success"
+          });
+          return;
+        }
+      }
     };
     const downloadWord = () => {
       if (!downloadUrl.value) {
@@ -70,12 +100,14 @@ const _sfc_main = {
         }
       });
     };
-    common_vendor.onShareAppMessage(() => {
+    common_vendor.onShareAppMessage(async () => {
       return {
-        title: "这是分享标题",
+        title: shareData.value.title,
         // 分享标题
-        path: "/pkgA/preview/preview"
+        path: `/pkgA/preview/preview?id=${id.value}`,
         // 分享路径
+        imageUrl: shareData.value.imageUrl
+        // 分享图片
       };
     });
     return (_ctx, _cache) => {
