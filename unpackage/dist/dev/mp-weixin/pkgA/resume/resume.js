@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+require("../../store/index.js");
 const _sfc_main = {
   __name: "resume",
   setup(__props) {
@@ -130,7 +131,7 @@ const _sfc_main = {
         // 从相册或相机选择
         success(res) {
           const tempFilePaths = res.tempFiles;
-          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:301", tempFilePaths);
+          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:304", tempFilePaths);
           uploadImages(tempFilePaths);
         }
       });

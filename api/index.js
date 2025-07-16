@@ -379,20 +379,93 @@ export const offCollectResumeTemplate = (resumeId) => {
 	});
 }
 //获取用户简历信息
-export const getResumeInfo = async (resumeid) => {
-	uni.request({
-		url: `https://xydsh.cn/api/resume/${resumeid}`,
-		data: {},
-		header: {
-			'content-type': 'application/json'
-		},
-		method: 'GET',
-		dataType: 'json',
-		responseType: 'text',
-		success: (result) => {
-			console.log(result, '获取用户简历信息');
-		},
-		fail: () => {},
-		complete: () => {}
+// export const getResumeInfo = async (resumeid) => {
+// 	uni.request({
+// 		url: `https://xydsh.cn/api/resume/${resumeid}`,
+// 		data: {},
+// 		header: {
+// 			'content-type': 'application/json'
+// 		},
+// 		method: 'GET',
+// 		dataType: 'json',
+// 		responseType: 'text',
+// 		success: (result) => {
+// 			console.log(result, '获取用户简历信息');
+// 		},
+// 		fail: () => {},
+// 		complete: () => {}
+// 	});
+// }
+
+//获取用户简历信息
+export const getUserResumeInfo = (userId) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/wechat/resume/info`,
+			data: {},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取用户简历信息');
+				resolve(result.data.data); // 返回数据
+			},
+			fail: (err) => {
+				reject('获取用户简历信息失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+
+//上传简历信息
+export const uploadResumeInfo = (resumeData) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://api.xydsh.cn/wechat/resume',
+			data: resumeData,
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'POST',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '上传简历信息成功');
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject('上传简历信息失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
+	});
+}
+
+//上传简历附件
+export const uploadResumeAttachment = (filePath) => {
+	return new Promise((resolve, reject) => {
+		uni.uploadFile({
+			url: 'https://api.xydsh.cn/wechat/resume/upload-file',
+			filePath: filePath,
+			name: 'file',
+			header: {
+				'content-type': 'multipart/form-data',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			success: (result) => {
+				console.log(result, '上传简历附件成功');
+				resolve(JSON.parse(result.data)); // 返回数据
+			},
+			fail: (err) => {
+				reject('上传简历附件失败', err); // 处理失败情况
+			},
+			complete: () => {}
+		});
 	});
 }

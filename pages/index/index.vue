@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 import { onShow, onLoad, onReachBottom ,onPullDownRefresh} from "@dcloudio/uni-app";
 import { getCampusByPage, getCampusDetail } from "@/api/index.js";
 import { pageStore } from "@/store";
