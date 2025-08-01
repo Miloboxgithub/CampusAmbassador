@@ -5,22 +5,22 @@ const _sfc_main = {
   __name: "about",
   setup(__props) {
     function onLongPress(event) {
-      const imageUrl = "https://shixi.xydsh.cn/images/companyLogo/3ab27cae-54b1-490d-82db-134005ae7760.png";
-      common_vendor.wx$1.previewImage({
+      const imageUrl = "/static/校园大使汇公众号二维码.png";
+      common_vendor.index.previewImage({
         current: imageUrl,
         // 当前要显示的图片url
         urls: [imageUrl],
         // 需要预览的图片url列表数组
         success: function(res) {
-          common_vendor.index.__f__("log", "at pkgA/about/about.vue:29", "图片预览成功", res);
+          common_vendor.index.__f__("log", "at pkgA/about/about.vue:30", "图片预览成功", res);
         },
         fail: function(err) {
-          common_vendor.index.__f__("error", "at pkgA/about/about.vue:32", "图片预览失败", err);
+          common_vendor.index.__f__("error", "at pkgA/about/about.vue:33", "图片预览失败", err);
         }
       });
     }
     function copyText(event) {
-      common_vendor.index.__f__("log", "at pkgA/about/about.vue:38", event);
+      common_vendor.index.__f__("log", "at pkgA/about/about.vue:39", event);
       const textToCopy = event.currentTarget.dataset.text;
       common_vendor.wx$1.setClipboardData({
         data: textToCopy,
@@ -33,7 +33,7 @@ const _sfc_main = {
           });
         },
         fail: function(err) {
-          common_vendor.index.__f__("error", "at pkgA/about/about.vue:50", "复制失败", err);
+          common_vendor.index.__f__("error", "at pkgA/about/about.vue:51", "复制失败", err);
           common_vendor.wx$1.showToast({
             title: "复制失败",
             icon: "none",

@@ -14,14 +14,14 @@ const _sfc_main = {
   __name: "personage",
   setup(__props) {
     common_vendor.onShow(async () => {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:86", "页面显示");
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:90", "页面显示");
       loginStatus.value = common_vendor.index.getStorageSync("loginStatus") || false;
       if (loginStatus.value) {
         account.value = formatPhoneNumber(common_vendor.index.getStorageSync("account"));
       }
     });
     function navigate(e) {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:94", e.currentTarget.dataset);
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:98", e.currentTarget.dataset);
       let url = e.currentTarget.dataset.url;
       if (!loginStatus.value && (url == "/pkgA/mysubmit/mysubmit" || url == "/pkgA/resume/resume" || url == "/pkgA/collection/collection")) {
         openPopup();
@@ -54,9 +54,9 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:132", "Popup state changed");
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:137", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pages/personage/personage.vue:134", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pages/personage/personage.vue:139", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };
@@ -99,16 +99,18 @@ const _sfc_main = {
         p: common_vendor.o(navigate),
         q: common_assets._imports_6$1,
         r: common_vendor.o(navigate),
-        s: common_vendor.o(handleLoginSuccess),
-        t: common_vendor.o(handleClose),
-        v: common_vendor.p({
+        s: common_assets._imports_7,
+        t: common_vendor.o(navigate),
+        v: common_vendor.o(handleLoginSuccess),
+        w: common_vendor.o(handleClose),
+        x: common_vendor.p({
           show: showLogin.value
         }),
-        w: common_vendor.sr(popups, "d78f6be3-0", {
+        y: common_vendor.sr(popups, "d78f6be3-0", {
           "k": "popups"
         }),
-        x: common_vendor.o(change),
-        y: common_vendor.p({
+        z: common_vendor.o(change),
+        A: common_vendor.p({
           type: "bottom",
           mask: "true"
         })
@@ -117,5 +119,6 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d78f6be3"]]);
+_sfc_main.__runtimeHooks = 2;
 wx.createPage(MiniProgramPage);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/personage/personage.js.map

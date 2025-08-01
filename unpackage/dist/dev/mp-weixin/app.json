@@ -19,7 +19,8 @@
         "mysubmit/mysubmit",
         "collection/collection",
         "resume/resume",
-        "msg/msg"
+        "msg/msg",
+        "contact/contact"
       ]
     }
   ],

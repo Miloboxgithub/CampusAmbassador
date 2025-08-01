@@ -17,6 +17,7 @@ if (!Math) {
   "./pkgA/collection/collection.js";
   "./pkgA/resume/resume.js";
   "./pkgA/msg/msg.js";
+  "./pkgA/contact/contact.js";
 }
 const _sfc_main = {
   onLaunch: function() {

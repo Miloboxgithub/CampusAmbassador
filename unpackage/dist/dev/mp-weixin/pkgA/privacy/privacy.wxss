@@ -23,16 +23,49 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.containers.data-v-eb6325d1 {
+.container.data-v-eb6325d1 {
   width: 92vw;
   margin-left: 4vw;
-  white-space: pre;
-  white-space: pre-wrap;
-  font-size: 16px;
-  font-weight: 400;
-  letter-spacing: 0px;
-  line-height: 23.17px;
-  color: #191919;
   padding-top: 30px;
   padding-bottom: 50px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #191919;
+}
+.intro-text.data-v-eb6325d1 {
+  display: block;
+  margin-bottom: 20px;
+  font-weight: 400;
+  text-align: justify;
+}
+.section.data-v-eb6325d1 {
+  margin-bottom: 20px;
+}
+.section-title.data-v-eb6325d1 {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: justify;
+}
+.subsection-title.data-v-eb6325d1 {
+  display: block;
+  font-weight: 600;
+  margin: 15px 0 5px 0;
+  text-align: justify;
+}
+.section-content.data-v-eb6325d1 {
+  display: block;
+  margin-bottom: 10px;
+  text-align: justify;
+}
+.highlight-text.data-v-eb6325d1 {
+  font-weight: 600;
+}
+.footer.data-v-eb6325d1 {
+  margin-top: 30px;
+  text-align: right;
+}
+.footer-text.data-v-eb6325d1 {
+  display: block;
+  font-weight: 600;
 }

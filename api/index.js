@@ -411,8 +411,8 @@ export const getUserResumeInfo = (userId) => {
 			dataType: 'json',
 			responseType: 'text',
 			success: (result) => {
-				console.log(result, '获取用户简历信息');
-				resolve(result.data.data); // 返回数据
+				//console.log(result, '获取用户简历信息');
+				resolve(result); // 返回数据
 			},
 			fail: (err) => {
 				reject('获取用户简历信息失败', err); // 处理失败情况
@@ -459,8 +459,8 @@ export const uploadResumeAttachment = (filePath) => {
 				Authorization: uni.getStorageSync('jwt') || ''
 			},
 			success: (result) => {
-				console.log(result, '上传简历附件成功');
-				resolve(JSON.parse(result.data)); // 返回数据
+				//console.log(result, '上传简历附件成功');
+				resolve(result); // 返回数据
 			},
 			fail: (err) => {
 				reject('上传简历附件失败', err); // 处理失败情况

@@ -5,6 +5,9 @@
 				"navigationStyle": "custom",
 				"onReachBottomDistance": 200,
 				"enablePullDownRefresh": true
+			},
+			"sharingInfo": {
+				"shareAppMessage": "onShareAppMessage"
 			}
 		},
 		{
@@ -95,10 +98,9 @@
 				}
 			},
 			{
-				"path" : "collection/collection",
-				"style" : 
-				{
-					"navigationBarTitleText" : "我的收藏",
+				"path": "collection/collection",
+				"style": {
+					"navigationBarTitleText": "我的收藏",
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black",
 					"onReachBottomDistance": 200,
@@ -106,19 +108,25 @@
 				}
 			},
 			{
-				"path" : "resume/resume",
-				"style" : 
-				{
-					"navigationBarTitleText" : "我的简历",
+				"path": "resume/resume",
+				"style": {
+					"navigationBarTitleText": "我的简历",
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black"
 				}
 			},
 			{
-				"path" : "msg/msg",
-				"style" : 
-				{
-					"navigationBarTitleText" : "短信登录",
+				"path": "msg/msg",
+				"style": {
+					"navigationBarTitleText": "短信登录",
+					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "black"
+				}
+			},
+			{
+				"path": "contact/contact",
+				"style": {
+					"navigationBarTitleText": "联系我们",
 					"navigationBarBackgroundColor": "#ffffff",
 					"navigationBarTextStyle": "black"
 				}

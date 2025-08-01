@@ -35,6 +35,10 @@
 						<image src="../../static/分组 1@2x.png" mode="" />
 						<view style="margin-top: 5px">我的简历</view>
 					</view>
+					<view class="s1" @click="navigate" data-url="/pkgA/contact/contact">
+						<image src="../../static/contact.svg" mode="" />
+						<view style="margin-top: 5px">联系我们</view>
+					</view>
 					<view class="s1" @click="navigate" data-url="/pkgA/collection/collection">
 						<image src="../../static/collect.png" mode="" />
 						<view style="margin-top: 5px">我的收藏</view>
@@ -93,7 +97,8 @@
 	function navigate(e) {
 		console.log(e.currentTarget.dataset);
 		let url = e.currentTarget.dataset.url;
-		if(!loginStatus.value&& (url == "/pkgA/mysubmit/mysubmit"|| url == "/pkgA/resume/resume" || url == "/pkgA/collection/collection")) {
+		if (!loginStatus.value && (url == "/pkgA/mysubmit/mysubmit" || url == "/pkgA/resume/resume" || url ==
+				"/pkgA/collection/collection")) {
 			openPopup(e); // 如果未登录且不是登录页面，则打开登录弹窗
 			return;
 		}
@@ -159,6 +164,16 @@
 	function formatPhoneNumber(phone) {
 		if (!phone) return "";
 		return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+	}
+
+	function onShareAppMessage(res) {
+		if (res.from === 'button') { // 来自页面内分享按钮
+			console.log(res.target)
+		}
+		return {
+			title: '自定义分享标题',
+			path: '/pages/index/index', // 分享的路径
+		}
 	}
 </script>
 
