@@ -22,100 +22,16 @@ const _sfc_main = {
       "experienceAndStrengths": ""
     });
     const orders = common_vendor.ref([
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "建筑|地产|家居",
-        isdian: false
-      },
-      {
-        name: "IT|通信|电子",
-        isdian: false
-      },
-      {
-        name: "汽车|机械|制造",
-        isdian: false
-      },
-      {
-        name: "时尚|奢侈品|美妆",
-        isdian: false
-      },
-      {
-        name: "能源|化工|环保",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "互联网|游戏|软件",
-        isdian: false
-      },
-      {
-        name: "住宿|物业服务|餐饮服务",
-        isdian: false
-      },
-      {
-        name: "政府|非营利性机构|其他",
-        isdian: false
-      }
+      // {
+      // 	name: "互联网|游戏|软件",
+      // 	isdian: false,
+      // },
     ]);
     const resourse = common_vendor.ref([
-      {
-        name: "高校社团",
-        isdian: false
-      },
-      {
-        name: "就业办资源",
-        isdian: false
-      },
-      {
-        name: "学生会",
-        isdian: false
-      },
-      {
-        name: "表白墙",
-        isdian: false
-      },
-      {
-        name: "社群",
-        isdian: false
-      },
-      {
-        name: "其他资源",
-        isdian: false
-      }
+      // {
+      // 	name: "高校社团",
+      // 	isdian: false,
+      // },
     ]);
     const graduationYears = common_vendor.ref(["2023", "2024", "2025"]);
     const provinces = common_vendor.ref(["北京", "上海", "广东"]);
@@ -143,10 +59,10 @@ const _sfc_main = {
         success: async (res) => {
           const file = res.tempFiles[0];
           if (file) {
-            common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:282", file, "选择的文件信息");
+            common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:201", file, "选择的文件信息");
             try {
               const uploadRes = await api_index.uploadResumeAttachment(file.path);
-              common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:285", uploadRes, "上传简历附件的响应信息");
+              common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:204", uploadRes, "上传简历附件的响应信息");
               if (uploadRes.statusCode === 200 && uploadRes.errMsg === "uploadFile:ok") {
                 common_vendor.index.showToast({
                   title: "上传成功",
@@ -159,7 +75,7 @@ const _sfc_main = {
                 });
               }
             } catch (error) {
-              common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:299", "上传简历附件失败:", error);
+              common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:218", "上传简历附件失败:", error);
               common_vendor.index.showToast({
                 title: "上传简历附件失败",
                 icon: "none"
@@ -168,7 +84,7 @@ const _sfc_main = {
           }
         },
         fail: (error) => {
-          common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:308", "选择文件失败:", error);
+          common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:227", "选择文件失败:", error);
           common_vendor.index.showToast({
             title: "选择文件失败",
             icon: "none"
@@ -230,9 +146,9 @@ const _sfc_main = {
           intendedIndustry: orders.value.filter((item) => item.isdian).map((item) => item.name).join(","),
           experienceAndStrengths: fromData.value.experienceAndStrengths
         };
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:366", resumeData, "提交的简历信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:285", resumeData, "提交的简历信息");
         const res = await api_index.uploadResumeInfo(resumeData);
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:368", res, "提交简历信息的响应信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:287", res, "提交简历信息的响应信息");
         if (res.statusCode === 200 && res.data.code === 1) {
           common_vendor.index.showToast({
             title: "简历信息提交成功",
@@ -245,7 +161,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:381", "提交简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:300", "提交简历信息失败:", error);
         common_vendor.index.showToast({
           title: "提交简历信息失败",
           icon: "none"
@@ -256,7 +172,7 @@ const _sfc_main = {
       try {
         const res = await api_index.getUserResumeInfo();
         if (res.statusCode === 200 && res.data.code === 1) {
-          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:395", res, "获取到的简历信息");
+          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:314", res, "获取到的简历信息");
           const resumeInfo = res.data.data;
           fromData.value.name = resumeInfo.name || "";
           fromData.value.phone = resumeInfo.phone || "";
@@ -282,13 +198,43 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:423", "获取简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:342", "获取简历信息失败:", error);
         common_vendor.index.showToast({
           title: "获取简历信息失败",
           icon: "none"
         });
       }
     };
+    common_vendor.onLoad(() => {
+      api_index.getResumeOptions().then((res) => {
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:352", res, "获取简历选项的响应信息");
+        if (res.statusCode === 200 && res.data.code === 1) {
+          res.data.data.industryOptions.forEach((item) => {
+            orders.value.push({
+              name: item,
+              isdian: false
+            });
+          });
+          res.data.data.assetOptions.forEach((item) => {
+            resourse.value.push({
+              name: item,
+              isdian: false
+            });
+          });
+        } else {
+          common_vendor.index.showToast({
+            title: res.errMsg,
+            icon: "none"
+          });
+        }
+      }).catch((error) => {
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:373", "获取简历选项失败:", error);
+        common_vendor.index.showToast({
+          title: "获取简历选项失败",
+          icon: "none"
+        });
+      });
+    });
     common_vendor.onShow(() => {
       GetUserResumeInfo();
     });

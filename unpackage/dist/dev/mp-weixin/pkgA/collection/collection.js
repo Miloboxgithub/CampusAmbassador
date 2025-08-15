@@ -18,54 +18,25 @@ const _sfc_main = {
     const quanxuan = common_vendor.ref(false);
     const st = common_vendor.ref("校园大使");
     const items = common_vendor.ref([
-      {
-        id: 1,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "招募中",
-        coicon: "https://picsum.photos/200",
-        look: "5000",
-        isdian: false
-      },
-      {
-        id: 2,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000",
-        isdian: false
-      },
-      {
-        id: 3,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "招募中",
-        coicon: "https://picsum.photos/200",
-        look: "5000",
-        isdian: false
-      },
-      {
-        id: 4,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000",
-        isdian: false
-      }
+      // {
+      //   id: 1,
+      //   name: "振石控股集团有限公司",
+      //   tags: ["民营", "2000人以上", "校园大使"],
+      //   type: "汽车|机械|创造",
+      //   status: "招募中",
+      //   coicon: "https://picsum.photos/200",
+      //   look: "5000",
+      //   isdian: false,
+      // }
     ]);
     common_vendor.onLoad(async () => {
-      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:153", "页面加载");
+      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:123", "页面加载");
       items.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
-        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:159", "获取用户收藏的校园大使职位数据:", arr);
+        const res = await api_index.getTemplateCollects(pageInfo.collectCampusInfo);
+        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:129", "获取用户收藏的校园大使职位数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -73,14 +44,14 @@ const _sfc_main = {
             tags: [e.type, e.scale, "校园大使"],
             type: e.industries,
             status: e.isRecruit ? "招募中" : "已结束",
-            coicon: "https://picsum.photos/200",
+            coicon: e.logo,
             look: e.pageView,
             isdian: false
           });
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:174", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:144", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -89,14 +60,14 @@ const _sfc_main = {
       }
     });
     common_vendor.onShow(async () => {
-      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:185", "页面显示");
+      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:155", "页面显示");
     });
     common_vendor.onReachBottom(async () => {
       pageInfo.getCollectCampusPage();
       try {
         isLoading.value = true;
         const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
-        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:193", "获取用户收藏的校园大使职位数据:", arr);
+        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:163", "获取用户收藏的校园大使职位数据:", arr);
         if (arr.length === 0) {
           common_vendor.index.showToast({
             title: "没有更多数据了",
@@ -113,14 +84,14 @@ const _sfc_main = {
             tags: [e.type, e.scale, "校园大使"],
             type: e.industries,
             status: e.isRecruit ? "招募中" : "已结束",
-            coicon: "https://picsum.photos/200",
+            coicon: e.logo,
             look: e.pageView,
             isdian: false
           });
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:217", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:187", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -129,13 +100,13 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:226", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:196", "下拉刷新了");
       pageInfo.initCollectCampusInfo();
       items.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
-        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:233", "获取用户收藏的校园大使职位数据:", arr);
+        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:203", "获取用户收藏的校园大使职位数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -143,7 +114,7 @@ const _sfc_main = {
             tags: [e.type, e.scale, "校园大使"],
             type: e.industries,
             status: e.isRecruit ? "招募中" : "已结束",
-            coicon: "https://picsum.photos/200",
+            coicon: e.logo,
             look: e.pageView,
             isdian: false
           });
@@ -151,7 +122,7 @@ const _sfc_main = {
         isLoading.value = false;
         common_vendor.index.stopPullDownRefresh();
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:249", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:219", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -160,12 +131,66 @@ const _sfc_main = {
         common_vendor.index.stopPullDownRefresh();
       }
     });
-    const changeTab = (flag) => {
+    const changeTab = async (flag) => {
       activeindex.value = flag;
       if (flag) {
         st.value = "简历模板";
+        pageInfo.initCollectCampusInfo();
+        items.value = [];
+        try {
+          isLoading.value = true;
+          const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
+          common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:238", "获取用户收藏的校园大使职位数据:", arr);
+          arr.forEach((e) => {
+            items.value.push({
+              id: e.id,
+              name: e.name,
+              tags: [e.type, e.scale, "校园大使"],
+              type: e.industries,
+              status: e.isRecruit ? "招募中" : "已结束",
+              coicon: e.logo,
+              look: e.pageView,
+              isdian: false
+            });
+          });
+          isLoading.value = false;
+        } catch (error) {
+          common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:253", "获取数据失败:", error);
+          isLoading.value = false;
+          common_vendor.index.showToast({
+            title: "加载数据失败",
+            icon: "error"
+          });
+        }
       } else {
         st.value = "校园大使";
+        pageInfo.initCollectCampusInfo();
+        items.value = [];
+        try {
+          isLoading.value = true;
+          const arr = await api_index.getTemplateCollects(pageInfo.collectCampusInfo);
+          common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:268", "获取用户收藏的校园大使职位数据:", arr);
+          arr.forEach((e) => {
+            items.value.push({
+              id: e.id,
+              name: e.name,
+              tags: [e.type, e.scale, "校园大使"],
+              type: e.industries,
+              status: e.isRecruit ? "招募中" : "已结束",
+              coicon: e.logo,
+              look: e.pageView,
+              isdian: false
+            });
+          });
+          isLoading.value = false;
+        } catch (error) {
+          common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:283", "获取数据失败:", error);
+          isLoading.value = false;
+          common_vendor.index.showToast({
+            title: "加载数据失败",
+            icon: "error"
+          });
+        }
       }
       items.value.forEach((item) => {
         item.isdian = false;
@@ -190,7 +215,7 @@ const _sfc_main = {
           numbs.value--;
         }
       } else {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:288", `Item at index ${index} is undefined`);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:314", `Item at index ${index} is undefined`);
       }
       if (numbs.value == mobans.value.length) {
         quanxuan.value = true;
@@ -208,7 +233,7 @@ const _sfc_main = {
           numbs.value--;
         }
       } else {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:306", `Item at index ${index} is undefined`);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:332", `Item at index ${index} is undefined`);
       }
       if (numbs.value == mobans.value.length) {
         quanxuan.value = true;

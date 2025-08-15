@@ -2,12 +2,16 @@
 	<view class="loginMode">
 		<view class="temt">欢迎来到校园大使汇</view>
 		<view class="ser">找校园大使，就上校园大使汇！</view>
-		<view class="meng" v-if="!gous" @tap="meng"></view>
-		<view class="mengs" v-if="!gous" @tap="meng"></view>
-		<view class="phonelogin">
+		<!-- <view class="meng" v-if="!gous" @tap="meng"></view>
+		<view class="mengs" v-if="!gous" @tap="meng"></view> -->
+		<view class="phonelogin" v-if="gous&&!tapStatus">
 			<image src="../static/shouji.png"></image>
 			手机号快捷登录
-			<button class="btnLogin" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber"></button>
+			<button class="btnLogin" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" :disabled="tapStatus"></button>
+		</view>
+		<view class="phonelogin" v-else @click="meng">
+			<image src="../static/shouji.png"></image>
+			手机号快捷登录
 		</view>
 		<view class="msglogin" @tap="navigate" data-url="/pkgA/msg/msg">
 			<image src="../static/duanxin.png"></image>
@@ -52,15 +56,17 @@
 
 			// 点击遮罩层
 			const meng = () => {
-				//console.log("点击遮罩层");
+				console.log("点击遮罩层");
 				uni.showToast({
 					title: "请先勾选阅读协议",
 					icon: "none",
 				});
 			};
-
+			const tapStatus = ref(false);
 			// 获取手机号码
 			const getPhoneNumber = (e) => {
+				if (tapStatus.value) return; // 防止重复点击
+				tapStatus.value = true; // 设置状态为已点击
 				console.log("获取手机号码:", e.detail);
 				const {
 					errMsg,
@@ -105,19 +111,25 @@
 											emit("loginSuccess", true);
 											// 获取用户信息
 											//getUserInfo();
+											tapStatus.value = false; // 重置状态为未点击
 										} else {
 											console.error("请求失败:", res);
+											tapStatus.value = false; // 重置状态为未点击
 										}
 									},
 									fail: (err) => {
 										console.error("请求失败:", err);
+										tapStatus.value = false; // 重置状态为未点击
 									},
+									
+
 								});
 							} else {
 								wx.showToast({
 									title: "获取登录凭证失败",
 									icon: "none",
 								});
+								tapStatus.value = false; // 重置状态为未点击
 							}
 						},
 						fail: (err) => {
@@ -133,14 +145,24 @@
 						icon: "none",
 					});
 				}
+				
 			};
 
 			// 跳转页面
 			const navigate = (e) => {
+				tapStatus.value = true; // 防止重复点击
+				if (!gous.value&& e.currentTarget.dataset.url == "/pkgA/msg/msg") {
+					uni.showToast({
+						title: "请先勾选阅读协议",
+						icon: "none",
+					});
+					return;
+				}
 				const url = e.currentTarget.dataset.url;
 				wx.navigateTo({
 					url: url,
 				});
+				tapStatus.value = false; // 重置状态为未点击
 				hideview();
 			};
 
@@ -245,7 +267,7 @@
 		width: 250px;
 		height: 46px;
 		position: absolute;
-		margin-top: 20px;
+		top: 20px;
 		border-radius: 23px;
 		left: 50%;
 		transform: translateX(-50%);

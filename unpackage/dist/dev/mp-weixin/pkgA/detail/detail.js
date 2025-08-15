@@ -21,9 +21,9 @@ const _sfc_main = {
     common_vendor.onLoad(async (option) => {
       isLoading.value = true;
       id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:103", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:102", "接收到的 id:", id.value);
       const res = await api_index.getCampusDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:105", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:104", "获取到的详情:", res);
       if (res.statusCode === 200) {
         let deta = res.data.data;
         tags.value = [deta.type, deta.scale, "校园大使"];
@@ -37,6 +37,7 @@ const _sfc_main = {
         target.value = deta.targetCollege || "暂无目标院校信息";
         introduce.value = deta.description || "暂无公司介绍";
         isLoading.value = false;
+        isCollected.value = deta.isFavorite || false;
       } else {
         isLoading.value = false;
         common_vendor.index.showToast({
@@ -118,16 +119,40 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:210", "Popup state changed");
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:209", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:212", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:211", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };
-    function handleLoginSuccess(payload) {
+    async function handleLoginSuccess(payload) {
       if (payload) {
         loginStatus.value = true;
         showLogin.value = false;
+        isLoading.value = true;
+        const res = await api_index.getCampusDetail(id.value);
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:225", "获取到的详情:", res);
+        if (res.statusCode === 200) {
+          let deta = res.data.data;
+          tags.value = [deta.type, deta.scale, "校园大使"];
+          type.value = deta.industries || "未知类型";
+          status.value = deta.isRecruit ? "招募中" : "已结束";
+          coicon.value = deta.logo || "https://picsum.photos/200";
+          name.value = deta.name || "未知名称";
+          task.value = deta.task || "暂无任务信息";
+          harvest.value = deta.harvest || "暂无收获信息";
+          expect.value = deta.expected || "暂无期望信息";
+          target.value = deta.targetCollege || "暂无目标院校信息";
+          introduce.value = deta.description || "暂无公司介绍";
+          isLoading.value = false;
+          isCollected.value = deta.isFavorite || false;
+        } else {
+          isLoading.value = false;
+          common_vendor.index.showToast({
+            title: "获取详情失败",
+            icon: "error"
+          });
+        }
         closePopup();
       }
     }

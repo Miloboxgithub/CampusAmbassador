@@ -295,7 +295,6 @@
 		width: 28.8px;
 		height: 27.88px;
 	}
-
 	.heads image {
 		border-radius: 50%;
 		width: 65px;
@@ -303,6 +302,8 @@
 	}
 
 	.head-box {
+		display: flex;
+		align-items: center;
 		left: 31px;
 		top: 114px;
 		position: fixed;
@@ -344,9 +345,10 @@
 	}
 
 	.account {
-		position: fixed;
-		left: 112px;
-		top: 125px;
+		// position: fixed;
+		// left: 112px;
+		// top: 125px;
+		margin-left: 12px;
 		width: 98px;
 		height: 28px;
 		opacity: 1;

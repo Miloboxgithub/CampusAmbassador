@@ -97,7 +97,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: "https://picsum.photos/200",
+					coicon: e.logo,
 					look: e.pageView,
 				});
 			});
@@ -123,6 +123,39 @@
 
 	onShow(async () => {
 		// 页面显示时执行的逻辑
+		if(pageInfo.indexInfo.isFilter) {
+			items.value = []; // 清空 items 数组
+		try {
+			isLoading.value = true; // 显示加载状态
+			const arr = await getCampusByPage(pageInfo.indexInfo);
+
+			console.log("获取到的筛选校园大使数据:", arr);
+			arr.forEach((e) => {
+				items.value.push({
+					id: e.id,
+					name: e.name,
+					tags: [e.type, e.scale, "校园大使"],
+					type: e.industries,
+					status: e.isRecruit ? "招募中" : "已结束",
+					coicon: e.logo,
+					look: e.pageView,
+				});
+			});
+			isLoading.value = false; // 隐藏加载状态
+		} catch (error) {
+			console.error("获取数据失败:", error);
+			isLoading.value = false; // 隐藏加载状态
+			uni.showToast({
+				title: "加载数据失败",
+				icon: "error",
+			});
+		}
+			pageInfo.indexInfo.isFilter = false; // 重置筛选状态
+		} else {
+			console.log("没有筛选条件，保持当前数据");
+			// 如果没有筛选条件，则不需要重新加载数据
+			// 可以在这里添加其他逻辑，比如更新页面标题等
+		}
 		console.log("页面显示");
 	});
 	// 监听触底事件
@@ -149,7 +182,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: "https://picsum.photos/200",
+					coicon: e.logo,
 					look: e.pageView,
 				});
 			});
@@ -169,6 +202,7 @@
 		items.value = []; // 清空 items 数组
 		try {
 			isLoading.value = true; // 显示加载状态
+			console.log(pageInfo.indexInfo, "下拉刷新时的页码信息");
 			const arr = await getCampusByPage(pageInfo.indexInfo);
 
 			console.log("获取到的校园大使数据:", arr);
@@ -179,7 +213,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: "https://picsum.photos/200",
+					coicon: e.logo,
 					look: e.pageView,
 				});
 			});
@@ -224,7 +258,7 @@
 	.page-container {
 		background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 50%);
 		backdrop-filter: blur(87px);
-		height: 120vh;
+		min-height: 120vh;
 		/* 使用视口高度确保填充整个页面 */
 		width: 100vw;
 		/* 使用视口宽度确保填充整个页面 */
@@ -392,6 +426,7 @@ top: 274px; */
 		width: 100vw;
 		height: auto;
 		padding-bottom: 20px;
+		background-color: #f5f5f5 ;
 	}
 
 	.item {

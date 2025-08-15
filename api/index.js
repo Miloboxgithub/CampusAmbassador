@@ -1,5 +1,7 @@
+
 //校园招聘岗位分页查询
 export const getCampusByPage = (e) => {
+	console.log(e, '获取校园招聘岗位分页查询参数');
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: 'https://xydsh.cn/api/campus/page',
@@ -7,12 +9,23 @@ export const getCampusByPage = (e) => {
 				page: e.page,
 				pageSize: e.pageSize,
 				keyword: e.keyword || '',
-				industry: e.industry || '',
+				industries: e.industry || '',
 				scale: e.scale || '',
 				type: e.type || '',
 				educationalRequire: e.educationalRequire || '',
 				majorRequire: e.majorRequire || '',
 				gradeRequire: e.gradeRequire || '',
+				status: e.status || '',
+				// page: 1,
+				// pageSize: 20,
+				// keyword: 'hhhhhhhhhhhhhhhhhh',
+				// industry: '',
+				// scale: '',
+				// type: '',
+				// educationalRequire:  '',
+				// majorRequire: '',
+				// gradeRequire: '',
+				// status:  '',
 			},
 			header: {
 				'content-type': 'application/json'
@@ -21,13 +34,60 @@ export const getCampusByPage = (e) => {
 			dataType: 'json',
 			responseType: 'text',
 			success: (result) => {
-				//console.log(result.data.data.records, 'hhhh');
+				console.log(result, 'hhhh');
 				resolve(result.data.data.records); // 返回数据
 			},
 			fail: (error) => {
 				reject(error); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
+		});
+	});
+};
+//获取筛选选项
+export const getFilterOptions = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://xydsh.cn/api/wechat/filter/options',
+			data: {
+			},
+			header: {
+				'content-type': 'application/json'
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				resolve(result); // 返回数据
+			},
+			fail: (error) => {
+				reject(error); // 处理失败情况
+			},
+			complete: () => { }
+		});
+	});
+};
+//获取简历页选项
+export const getResumeOptions = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://xydsh.cn/api/wechat/user/form-data',
+			data: {
+			},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				resolve(result); // 返回数据
+			},
+			fail: (error) => {
+				reject(error); // 处理失败情况
+			},
+			complete: () => { }
 		});
 	});
 };
@@ -38,7 +98,8 @@ export const getCampusDetail = (id) => {
 			url: `https://xydsh.cn/api/campus/${id}`,
 			data: {},
 			header: {
-				'content-type': 'application/json'
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
 			},
 			method: 'GET',
 			dataType: 'json',
@@ -50,7 +111,7 @@ export const getCampusDetail = (id) => {
 			fail: (error) => {
 				reject(error); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -77,7 +138,7 @@ export const collectCampusDetail = (e) => {
 			fail: (err) => {
 				reject('收藏失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -103,7 +164,7 @@ export const offCollectCampusDetail = (e) => {
 			fail: (err) => {
 				reject('取消收藏失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -131,7 +192,34 @@ export const getUserCollects = (e) => {
 			fail: (error) => {
 				reject(error); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
+		});
+	});
+}
+//获取用户收藏的简历模板列表
+export const getTemplateCollects = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: `https://api.xydsh.cn/api/wechat/favorite/resume/list`,
+			data: {
+				page: e.page || 1,
+				pageSize: e.pageSize || 10,
+			},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, 'hhD大调h');
+				resolve(result.data.data.records); // 返回数据
+			},
+			fail: (error) => {
+				reject(error); // 处理失败情况
+			},
+			complete: () => { }
 		});
 	});
 }
@@ -157,7 +245,7 @@ export const postCampusApply = (e) => {
 			fail: (err) => {
 				reject('投递失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -186,7 +274,7 @@ export const getResumeTemplate = (e) => {
 			fail: (err) => {
 				reject('获取简历模板列表失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -209,7 +297,7 @@ export const getResumeTemplateDetail = (id) => {
 			fail: (err) => {
 				reject('获取简历模板列表失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -232,7 +320,7 @@ export const getResumeTemplateLink = (id) => {
 			fail: (err) => {
 				reject('获取模板分享链接失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -256,7 +344,7 @@ export const addResumeViewCount = (resumeid) => {
 			fail: (err) => {
 				reject('增加简历浏览量失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -279,7 +367,7 @@ export const getResumeViewCount = (resumeid) => {
 			fail: (err) => {
 				reject('获取简历浏览量失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -302,7 +390,7 @@ export const addResumeTemplateUseCount = (templateid) => {
 			fail: (err) => {
 				reject('增加简历模板使用次数失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -325,7 +413,7 @@ export const getResumeTemplateUseCount = (templateid) => {
 			fail: (err) => {
 				reject('获取简历模板使用次数失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -350,7 +438,7 @@ export const collectResumeTemplate = (resumeId) => {
 			fail: (err) => {
 				reject('收藏简历模板失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -374,7 +462,7 @@ export const offCollectResumeTemplate = (resumeId) => {
 			fail: (err) => {
 				reject('取消收藏简历模板失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -417,7 +505,7 @@ export const getUserResumeInfo = (userId) => {
 			fail: (err) => {
 				reject('获取用户简历信息失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -442,7 +530,7 @@ export const uploadResumeInfo = (resumeData) => {
 			fail: (err) => {
 				reject('上传简历信息失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }
@@ -465,7 +553,7 @@ export const uploadResumeAttachment = (filePath) => {
 			fail: (err) => {
 				reject('上传简历附件失败', err); // 处理失败情况
 			},
-			complete: () => {}
+			complete: () => { }
 		});
 	});
 }

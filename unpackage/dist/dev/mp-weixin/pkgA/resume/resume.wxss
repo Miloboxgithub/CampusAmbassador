@@ -115,16 +115,15 @@
 .kuais {
   position: absolute;
   top: 43px;
-  width: 92%;
-  left: 4%;
+  left: 2%;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 2%;
+  gap: 6px 3px;
 }
 .kuai {
   min-width: 30%;
-  padding-left: 1%;
-  padding-right: 1%;
+  padding-left: 1px;
+  padding-right: 1px;
   display: flex;
   justify-content: center;
   align-items: center;

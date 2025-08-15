@@ -89,7 +89,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { getUserCollects } from "@/api/index.js";
+import { getUserCollects,getTemplateCollects } from "@/api/index.js";
 import {
   onShow,
   onLoad,
@@ -107,46 +107,16 @@ const numbsmoban = ref(0);
 const quanxuan = ref(false);
 const st = ref("校园大使");
 const items = ref([
-  {
-    id: 1,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "招募中",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-    isdian: false,
-  },
-  {
-    id: 2,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-    isdian: false,
-  },
-  {
-    id: 3,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "招募中",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-    isdian: false,
-  },
-  {
-    id: 4,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-    isdian: false,
-  },
+  // {
+  //   id: 1,
+  //   name: "振石控股集团有限公司",
+  //   tags: ["民营", "2000人以上", "校园大使"],
+  //   type: "汽车|机械|创造",
+  //   status: "招募中",
+  //   coicon: "https://picsum.photos/200",
+  //   look: "5000",
+  //   isdian: false,
+  // }
 ]);
 // 页面加载时执行的逻辑
 onLoad(async () => {
@@ -155,7 +125,7 @@ onLoad(async () => {
   try {
     isLoading.value = true; // 显示加载状态
     const arr = await getUserCollects(pageInfo.collectCampusInfo);
-
+     const res = await getTemplateCollects(pageInfo.collectCampusInfo);
     console.log("获取用户收藏的校园大使职位数据:", arr);
     arr.forEach((e) => {
       items.value.push({
@@ -164,7 +134,7 @@ onLoad(async () => {
         tags: [e.type, e.scale, "校园大使"],
         type: e.industries,
         status: e.isRecruit ? "招募中" : "已结束",
-        coicon: "https://picsum.photos/200",
+        coicon: e.logo,
         look: e.pageView,
         isdian: false,
       });
@@ -207,7 +177,7 @@ onReachBottom(async () => {
         tags: [e.type, e.scale, "校园大使"],
         type: e.industries,
         status: e.isRecruit ? "招募中" : "已结束",
-        coicon: "https://picsum.photos/200",
+        coicon: e.logo,
         look: e.pageView,
         isdian: false,
       });
@@ -238,7 +208,7 @@ onPullDownRefresh(async () => {
         tags: [e.type, e.scale, "校园大使"],
         type: e.industries,
         status: e.isRecruit ? "招募中" : "已结束",
-        coicon: "https://picsum.photos/200",
+        coicon: e.logo,
         look: e.pageView,
         isdian: false,
       });
@@ -255,12 +225,68 @@ onPullDownRefresh(async () => {
     uni.stopPullDownRefresh();
   }
 });
-const changeTab = (flag) => {
+const changeTab = async (flag) => {
   activeindex.value = flag;
   if (flag) {
     st.value = "简历模板";
+    pageInfo.initCollectCampusInfo();
+  items.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getUserCollects(pageInfo.collectCampusInfo);
+
+    console.log("获取用户收藏的校园大使职位数据:", arr);
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: e.logo,
+        look: e.pageView,
+        isdian: false,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+  }
   } else {
     st.value = "校园大使";
+    pageInfo.initCollectCampusInfo();
+  items.value = []; // 清空 items 数组
+  try {
+    isLoading.value = true; // 显示加载状态
+    const arr = await getTemplateCollects(pageInfo.collectCampusInfo);
+
+    console.log("获取用户收藏的校园大使职位数据:", arr);
+    arr.forEach((e) => {
+      items.value.push({
+        id: e.id,
+        name: e.name,
+        tags: [e.type, e.scale, "校园大使"],
+        type: e.industries,
+        status: e.isRecruit ? "招募中" : "已结束",
+        coicon: e.logo,
+        look: e.pageView,
+        isdian: false,
+      });
+    });
+    isLoading.value = false; // 隐藏加载状态
+  } catch (error) {
+    console.error("获取数据失败:", error);
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "加载数据失败",
+      icon: "error",
+    });
+  }
   }
   items.value.forEach((item) => {
     item.isdian = false;

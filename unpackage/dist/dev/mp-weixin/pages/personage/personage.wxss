@@ -130,6 +130,8 @@
   height: 65px;
 }
 .head-box.data-v-d78f6be3 {
+  display: flex;
+  align-items: center;
   left: 31px;
   top: 114px;
   position: fixed;
@@ -168,9 +170,7 @@
   vertical-align: top;
 }
 .account.data-v-d78f6be3 {
-  position: fixed;
-  left: 112px;
-  top: 125px;
+  margin-left: 12px;
   width: 98px;
   height: 28px;
   opacity: 1;

@@ -1,6 +1,8 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+const api_index = require("../../api/index.js");
+const store_index = require("../../store/index.js");
 if (!Array) {
   const _easycom_uni_popup2 = common_vendor.resolveComponent("uni-popup");
   _easycom_uni_popup2();
@@ -12,6 +14,7 @@ if (!Math) {
 const _sfc_main = {
   __name: "screen",
   setup(__props) {
+    const pageInfo = store_index.pageStore();
     const std = common_vendor.ref(true);
     const items = common_vendor.ref([]);
     const edu = common_vendor.ref("");
@@ -20,28 +23,49 @@ const _sfc_main = {
     const ind = common_vendor.ref("");
     const company = common_vendor.ref("");
     const guimo = common_vendor.ref("");
-    const xueli = common_vendor.ref([{
-      n: "学历不限",
-      f: false
-    }, {
-      n: "专科",
-      f: false
-    }, {
-      n: "本科",
-      f: false
-    }, {
-      n: "硕士",
-      f: false
-    }, {
-      n: "博士",
-      f: false
-    }]);
+    const xueli = common_vendor.ref([
+      {
+        n: "学历不限",
+        f: false
+      },
+      {
+        n: "专科",
+        f: false
+      },
+      {
+        n: "本科",
+        f: false
+      },
+      {
+        n: "硕士",
+        f: false
+      },
+      {
+        n: "博士",
+        f: false
+      }
+    ]);
+    const majorOptions = common_vendor.ref([]);
+    const gradeOptions = common_vendor.ref([]);
+    const indOptions = common_vendor.ref([]);
+    const companyOptions = common_vendor.ref([]);
+    const guimoOptions = common_vendor.ref([]);
     const popups = common_vendor.ref();
     const theme = common_vendor.ref("");
     const openPopup = (e) => {
       theme.value = e;
       if (e == "学历要求") {
         items.value = xueli.value;
+      } else if (e == "专业要求") {
+        items.value = majorOptions.value;
+      } else if (e == "年级要求") {
+        items.value = gradeOptions.value;
+      } else if (e == "行业要求") {
+        items.value = indOptions.value;
+      } else if (e == "企业要求") {
+        items.value = companyOptions.value;
+      } else if (e == "公司规模") {
+        items.value = guimoOptions.value;
       }
       if (popups.value) {
         popups.value.open();
@@ -53,7 +77,7 @@ const _sfc_main = {
       }
     };
     const change = () => {
-      common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:126", "Popup state changed");
+      common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:162", "Popup state changed");
     };
     const select = (e) => {
       items.value.forEach((i) => {
@@ -68,12 +92,132 @@ const _sfc_main = {
             edu.value = i.n;
           }
         });
+      } else if (theme.value == "专业要求") {
+        items.value.forEach((i) => {
+          if (i.f) {
+            major.value = i.n;
+          }
+        });
+      } else if (theme.value == "年级要求") {
+        items.value.forEach((i) => {
+          if (i.f) {
+            grade.value = i.n;
+          }
+        });
+      } else if (theme.value == "行业要求") {
+        items.value.forEach((i) => {
+          if (i.f) {
+            ind.value = i.n;
+          }
+        });
+      } else if (theme.value == "企业要求") {
+        items.value.forEach((i) => {
+          if (i.f) {
+            company.value = i.n;
+          }
+        });
+      } else if (theme.value == "公司规模") {
+        items.value.forEach((i) => {
+          if (i.f) {
+            guimo.value = i.n;
+          }
+        });
       }
       closePopup();
     };
     const switchs = (e) => {
       std.value = e;
     };
+    const resets = () => {
+      xueli.value.forEach((i) => {
+        i.f = false;
+      });
+      majorOptions.value.forEach((i) => {
+        i.f = false;
+      });
+      gradeOptions.value.forEach((i) => {
+        i.f = false;
+      });
+      indOptions.value.forEach((i) => {
+        i.f = false;
+      });
+      companyOptions.value.forEach((i) => {
+        i.f = false;
+      });
+      guimoOptions.value.forEach((i) => {
+        i.f = false;
+      });
+      edu.value = xueli.value[0] || "学历不限";
+      major.value = majorOptions.value[0] || "专业不限";
+      grade.value = gradeOptions.value[0] || "年级不限";
+      ind.value = indOptions.value[0] || "行业不限";
+      company.value = companyOptions.value[0] || "企业不限";
+      guimo.value = guimoOptions.value[0] || "规模不限";
+    };
+    const confirms = () => {
+      pageInfo.filterIndexPage({
+        keyword: "",
+        status: std.value ? "招募中" : "已结束",
+        educationalRequire: edu.value,
+        majorRequire: major.value,
+        gradeRequire: grade.value,
+        industry: ind.value,
+        type: company.value,
+        scale: guimo.value
+      });
+      common_vendor.index.navigateBack();
+    };
+    common_vendor.onLoad(async () => {
+      try {
+        const res = await api_index.getFilterOptions();
+        if (res.data.code == 1 && res.statusCode == 200) {
+          const data = res.data.data;
+          xueli.value = data.education.map((item) => ({
+            n: item,
+            f: false
+          }));
+          majorOptions.value = data.major.map((item) => ({
+            n: item,
+            f: false
+          }));
+          gradeOptions.value = data.grade.map((item) => ({
+            n: item,
+            f: false
+          }));
+          indOptions.value = data.industry.map((item) => ({
+            n: item,
+            f: false
+          }));
+          companyOptions.value = data.companyType.map((item) => ({
+            n: item,
+            f: false
+          }));
+          guimoOptions.value = data.companyScale.map((item) => ({
+            n: item,
+            f: false
+          }));
+          edu.value = data.education[0] || "学历不限";
+          major.value = data.major[0] || "专业不限";
+          grade.value = data.grade[0] || "年级不限";
+          ind.value = data.industry[0] || "行业不限";
+          company.value = data.companyType[0] || "企业不限";
+          guimo.value = data.companyScale[0] || "规模不限";
+          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:294", "筛选数据初始化成功", data);
+        } else {
+          common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:296", "获取筛选数据失败:", res);
+          common_vendor.index.showToast({
+            title: "加载数据失败",
+            icon: "error"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:303", "获取筛选数据失败:", error);
+        common_vendor.index.showToast({
+          title: "加载数据失败",
+          icon: "error"
+        });
+      }
+    });
     return (_ctx, _cache) => {
       return {
         a: std.value ? 1 : "",
@@ -101,10 +245,13 @@ const _sfc_main = {
         x: common_assets._imports_0$4,
         y: common_vendor.o(($event) => openPopup("公司规模")),
         z: common_assets._imports_1$5,
-        A: common_vendor.o(closePopup),
-        B: common_vendor.o(queren),
-        C: common_vendor.t(theme.value),
-        D: common_vendor.f(items.value, (item, index, i0) => {
+        A: common_vendor.o(resets),
+        B: common_vendor.o(resets),
+        C: common_vendor.o(confirms),
+        D: common_vendor.o(closePopup),
+        E: common_vendor.o(queren),
+        F: common_vendor.t(theme.value),
+        G: common_vendor.f(items.value, (item, index, i0) => {
           return common_vendor.e({
             a: common_vendor.t(item.n),
             b: item.f == true ? 1 : "",
@@ -112,11 +259,11 @@ const _sfc_main = {
             d: index != items.value.length - 1
           }, index != items.value.length - 1 ? {} : {});
         }),
-        E: common_vendor.sr(popups, "b817f397-0", {
+        H: common_vendor.sr(popups, "b817f397-0", {
           "k": "popups"
         }),
-        F: common_vendor.o(change),
-        G: common_vendor.p({
+        I: common_vendor.o(change),
+        J: common_vendor.p({
           type: "bottom",
           mask: "true"
         })

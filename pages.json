@@ -38,7 +38,8 @@
 			{
 				"path": "search/search",
 				"style": {
-					"navigationStyle": "custom"
+					"navigationStyle": "custom",
+					"enablePullDownRefresh": true
 				}
 			},
 			{

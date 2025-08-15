@@ -172,3 +172,147 @@
   opacity: 1;
   z-index: 1000;
 }
+.coitems.data-v-5fc04cd8 {
+  margin-top: 20px;
+  width: 100vw;
+  height: auto;
+  padding-bottom: 20px;
+}
+.item.data-v-5fc04cd8 {
+  position: relative;
+  width: 90%;
+  margin-left: 5%;
+  height: 112px;
+  opacity: 1;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 8px;
+}
+.kong.data-v-5fc04cd8 {
+  width: 100vw;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 400;
+  color: #8f8d8d;
+}
+.name.data-v-5fc04cd8 {
+  position: absolute;
+  left: 18px;
+  top: 13px;
+  opacity: 1;
+  /** 文本1 */
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0px;
+  line-height: 20.27px;
+  color: #383838;
+  text-align: left;
+  vertical-align: top;
+}
+.tags.data-v-5fc04cd8 {
+  position: absolute;
+  left: 18px;
+  top: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tags > .tag.data-v-5fc04cd8:nth-child(1) {
+  background: #ffe0c2;
+  color: #d46a00;
+}
+.tags > .tag.data-v-5fc04cd8:nth-child(2) {
+  background: #f9ffc2;
+  color: #a6b80b;
+}
+.tags > .tag.data-v-5fc04cd8:nth-child(3) {
+  background: #ffe0fe;
+  color: #b021ab;
+}
+.tag.data-v-5fc04cd8 {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5px 7px;
+  height: 14px;
+  opacity: 1;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  line-height: 15.93px;
+  text-align: center;
+  vertical-align: top;
+}
+.icon.data-v-5fc04cd8 {
+  position: absolute;
+  left: 18px;
+  top: 62px;
+  width: 12px;
+  height: 12px;
+}
+.type.data-v-5fc04cd8 {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  line-height: 15.93px;
+  color: #383838;
+  text-align: left;
+  vertical-align: top;
+  position: absolute;
+  left: 37px;
+  top: 60px;
+}
+.status.data-v-5fc04cd8 {
+  position: absolute;
+  left: 18px;
+  bottom: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  line-height: 15.83px;
+  color: #4d64b3;
+  text-align: left;
+  vertical-align: top;
+}
+.coicon.data-v-5fc04cd8 {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  width: 63px;
+  height: 63px;
+  opacity: 1;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid rgba(166, 166, 166, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.coicon image.data-v-5fc04cd8 {
+  width: 100%;
+  height: 100%;
+}
+.eye.data-v-5fc04cd8 {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 48px;
+  bottom: 13px;
+}
+.look.data-v-5fc04cd8 {
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  line-height: 11.58px;
+  color: rgba(56, 56, 56, 0.86);
+  text-align: left;
+  vertical-align: top;
+  position: absolute;
+  right: 26px;
+  bottom: 15px;
+}

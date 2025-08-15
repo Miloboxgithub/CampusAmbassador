@@ -80,7 +80,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="white" style="height: 301px">
+		<view class="white" style="min-height: 301px">
 			<view class="theme">意向行业<text class="red">*</text></view>
 			<view class="more">（可多选）</view>
 			<view class="kuais">
@@ -130,7 +130,8 @@
 	import {
 		getUserResumeInfo,
 		uploadResumeInfo,
-		uploadResumeAttachment
+		uploadResumeAttachment,
+		getResumeOptions
 	} from "@/api/index.js";
 	import {
 		pageStore
@@ -150,99 +151,17 @@
 		"intendedIndustry": "",
 		"experienceAndStrengths": ""
 	})
-	const orders = ref([{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "建筑|地产|家居",
-			isdian: false,
-		},
-		{
-			name: "IT|通信|电子",
-			isdian: false,
-		},
-		{
-			name: "汽车|机械|制造",
-			isdian: false,
-		},
-		{
-			name: "时尚|奢侈品|美妆",
-			isdian: false,
-		},
-		{
-			name: "能源|化工|环保",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "互联网|游戏|软件",
-			isdian: false,
-		},
-		{
-			name: "住宿|物业服务|餐饮服务",
-			isdian: false,
-		},
-		{
-			name: "政府|非营利性机构|其他",
-			isdian: false,
-		},
+	const orders = ref([
+		// {
+		// 	name: "互联网|游戏|软件",
+		// 	isdian: false,
+		// },
 	]);
-	const resourse = ref([{
-			name: "高校社团",
-			isdian: false,
-		},
-		{
-			name: "就业办资源",
-			isdian: false,
-		},
-		{
-			name: "学生会",
-			isdian: false,
-		},
-		{
-			name: "表白墙",
-			isdian: false,
-		},
-		{
-			name: "社群",
-			isdian: false,
-		},
-		{
-			name: "其他资源",
-			isdian: false,
-		},
+	const resourse = ref([
+		// {
+		// 	name: "高校社团",
+		// 	isdian: false,
+		// },
 	]);
 	const graduationYears = ref(['2023', '2024', '2025']);
 	//const selectedGraduationYear = ref('');
@@ -427,6 +346,37 @@
 			});
 		}
 	};
+	onLoad(()=>{
+		// 页面加载时获取简历选项
+		getResumeOptions().then(res => {
+			console.log(res, '获取简历选项的响应信息');
+			if (res.statusCode === 200 && res.data.code === 1) {
+				res.data.data.industryOptions.forEach(item => {
+					orders.value.push({
+						name: item,
+						isdian: false
+					});
+				});
+				res.data.data.assetOptions.forEach(item => {
+					resourse.value.push({
+						name: item,
+						isdian: false
+					});
+				});
+			} else {
+				uni.showToast({
+					title: res.errMsg,
+					icon: 'none'
+				});
+			}
+		}).catch(error => {
+			console.error('获取简历选项失败:', error);
+			uni.showToast({
+				title: '获取简历选项失败',
+				icon: 'none'
+			});
+		});
+	})
 	onShow(() => {
 		// 页面显示时获取用户简历信息
 		GetUserResumeInfo();
@@ -537,17 +487,17 @@
 	.kuais {
 		position: absolute;
 		top: 43px;
-		width: 92%;
-		left: 4%;
+		// width: 92%;
+		left: 2%;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 6px 2%;
+		gap: 6px 3px;
 	}
 
 	.kuai {
 		min-width: 30%;
-		padding-left: 1%;
-		padding-right: 1%;
+		padding-left: 1px;
+		padding-right: 1px;
 		display: flex;
 		justify-content: center;
 		align-items: center;

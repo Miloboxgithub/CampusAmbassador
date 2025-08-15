@@ -15,6 +15,8 @@ export const pageStore = defineStore('pageInfo', {
             educationalRequire:  '',
             majorRequire: '',
             gradeRequire: '',
+            status: '',
+            isFilter: false, // 是否有筛选条件
         },
         templateInfo:{
             page: 1,
@@ -43,6 +45,8 @@ export const pageStore = defineStore('pageInfo', {
             this.indexInfo.educationalRequire = e.educationalRequire || '';
             this.indexInfo.majorRequire = e.majorRequire || '';
             this.indexInfo.gradeRequire = e.gradeRequire || '';
+            this.indexInfo.status = e.status || '';
+            this.indexInfo.isFilter = true; // 设置筛选条件存在
         },
         initIndexInfo()
         {
@@ -56,6 +60,7 @@ export const pageStore = defineStore('pageInfo', {
                 educationalRequire:  '',
                 majorRequire: '',
                 gradeRequire: '',
+                status: '',
             };
         },
         getTemplatePage(){

@@ -102,9 +102,14 @@
   background-color: #fff;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  min-height: 240px;
   width: 100%;
   padding-top: 56px;
+}
+.items-block.data-v-b817f397 {
+  overflow-y: auto;
+  /* 垂直方向超出时滚动 */
+  min-height: 240px;
+  max-height: 500px;
 }
 .quxiao.data-v-b817f397 {
   position: absolute;
