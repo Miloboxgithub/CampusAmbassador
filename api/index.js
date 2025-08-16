@@ -133,6 +133,29 @@ export const collectCampusDetail = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, '收藏成功');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					  
+				}
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {
@@ -159,6 +182,7 @@ export const offCollectCampusDetail = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, '取消收藏成功');
+
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {
@@ -187,6 +211,29 @@ export const getUserCollects = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				//console.log(result.data.data.records, 'hhhh');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					  
+				}
 				resolve(result.data.data.records); // 返回数据
 			},
 			fail: (error) => {
@@ -213,7 +260,8 @@ export const getTemplateCollects = (e) => {
 			dataType: 'json',
 			responseType: 'text',
 			success: (result) => {
-				console.log(result, 'hhD大调h');
+				console.log(result, 'hhD大调hhjjjjjjjjjj');
+				
 				resolve(result.data.data.records); // 返回数据
 			},
 			fail: (error) => {
@@ -240,6 +288,29 @@ export const postCampusApply = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, '投递成功');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					  
+				}
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {
@@ -433,6 +504,29 @@ export const collectResumeTemplate = (resumeId) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, '收藏简历模板成功');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					  
+				}
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {
@@ -500,6 +594,29 @@ export const getUserResumeInfo = (userId) => {
 			responseType: 'text',
 			success: (result) => {
 				//console.log(result, '获取用户简历信息');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					  
+				}
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {
@@ -552,6 +669,54 @@ export const uploadResumeAttachment = (filePath) => {
 			},
 			fail: (err) => {
 				reject('上传简历附件失败', err); // 处理失败情况
+			},
+			complete: () => { }
+		});
+	});
+}
+
+
+//获取我的投递数据
+export const getSubmitData = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://api.xydsh.cn/wechat/mydelivers',
+			data: e,
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'POST',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取我的投递数据成功');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
+				resolve(result); // 返回数据
+			},
+			fail: (err) => {
+				reject(' ', err); // 处理失败情况
 			},
 			complete: () => { }
 		});

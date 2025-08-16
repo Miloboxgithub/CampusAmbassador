@@ -147,6 +147,7 @@ onLoad(async () => {
       title: "加载数据失败",
       icon: "error",
     });
+    
   }
 });
 
@@ -391,16 +392,7 @@ const mobans = ref([
     sum: 5000,
     isdian: false,
   },
-  {
-    img: "../../static/模板1@2x (2).png",
-    sum: 5000,
-    isdian: false,
-  },
-  {
-    img: "../../static/模板1@2x (3).png",
-    sum: 5000,
-    isdian: false,
-  },
+
 ]);
 const navs = () => {
   uni.navigateTo({

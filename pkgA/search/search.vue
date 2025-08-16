@@ -364,7 +364,7 @@ const navs3 = (id) => {
 }
 
 .guan {
-  position: fixed;
+  
   right: 20px;
   z-index: 100;
   width: 18.5px;

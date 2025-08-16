@@ -163,7 +163,6 @@
   vertical-align: top;
 }
 .guan.data-v-5fc04cd8 {
-  position: fixed;
   right: 20px;
   z-index: 100;
   width: 18.5px;

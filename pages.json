@@ -95,7 +95,9 @@
 				"style": {
 					"navigationBarTitleText": "我的投递",
 					"navigationBarBackgroundColor": "#ffffff",
-					"navigationBarTextStyle": "black"
+					"navigationBarTextStyle": "black",
+					"onReachBottomDistance": 200,
+					"enablePullDownRefresh": true
 				}
 			},
 			{

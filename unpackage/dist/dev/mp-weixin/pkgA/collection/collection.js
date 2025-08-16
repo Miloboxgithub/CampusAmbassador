@@ -60,14 +60,14 @@ const _sfc_main = {
       }
     });
     common_vendor.onShow(async () => {
-      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:155", "页面显示");
+      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:156", "页面显示");
     });
     common_vendor.onReachBottom(async () => {
       pageInfo.getCollectCampusPage();
       try {
         isLoading.value = true;
         const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
-        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:163", "获取用户收藏的校园大使职位数据:", arr);
+        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:164", "获取用户收藏的校园大使职位数据:", arr);
         if (arr.length === 0) {
           common_vendor.index.showToast({
             title: "没有更多数据了",
@@ -91,7 +91,7 @@ const _sfc_main = {
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:187", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:188", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -100,13 +100,13 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:196", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:197", "下拉刷新了");
       pageInfo.initCollectCampusInfo();
       items.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
-        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:203", "获取用户收藏的校园大使职位数据:", arr);
+        common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:204", "获取用户收藏的校园大使职位数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -122,7 +122,7 @@ const _sfc_main = {
         isLoading.value = false;
         common_vendor.index.stopPullDownRefresh();
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:219", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:220", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -140,7 +140,7 @@ const _sfc_main = {
         try {
           isLoading.value = true;
           const arr = await api_index.getUserCollects(pageInfo.collectCampusInfo);
-          common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:238", "获取用户收藏的校园大使职位数据:", arr);
+          common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:239", "获取用户收藏的校园大使职位数据:", arr);
           arr.forEach((e) => {
             items.value.push({
               id: e.id,
@@ -155,7 +155,7 @@ const _sfc_main = {
           });
           isLoading.value = false;
         } catch (error) {
-          common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:253", "获取数据失败:", error);
+          common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:254", "获取数据失败:", error);
           isLoading.value = false;
           common_vendor.index.showToast({
             title: "加载数据失败",
@@ -169,7 +169,7 @@ const _sfc_main = {
         try {
           isLoading.value = true;
           const arr = await api_index.getTemplateCollects(pageInfo.collectCampusInfo);
-          common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:268", "获取用户收藏的校园大使职位数据:", arr);
+          common_vendor.index.__f__("log", "at pkgA/collection/collection.vue:269", "获取用户收藏的校园大使职位数据:", arr);
           arr.forEach((e) => {
             items.value.push({
               id: e.id,
@@ -184,7 +184,7 @@ const _sfc_main = {
           });
           isLoading.value = false;
         } catch (error) {
-          common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:283", "获取数据失败:", error);
+          common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:284", "获取数据失败:", error);
           isLoading.value = false;
           common_vendor.index.showToast({
             title: "加载数据失败",
@@ -215,7 +215,7 @@ const _sfc_main = {
           numbs.value--;
         }
       } else {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:314", `Item at index ${index} is undefined`);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:315", `Item at index ${index} is undefined`);
       }
       if (numbs.value == mobans.value.length) {
         quanxuan.value = true;
@@ -233,7 +233,7 @@ const _sfc_main = {
           numbs.value--;
         }
       } else {
-        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:332", `Item at index ${index} is undefined`);
+        common_vendor.index.__f__("error", "at pkgA/collection/collection.vue:333", `Item at index ${index} is undefined`);
       }
       if (numbs.value == mobans.value.length) {
         quanxuan.value = true;
@@ -295,16 +295,6 @@ const _sfc_main = {
       },
       {
         img: "../../static/模板1@2x (1).png",
-        sum: 5e3,
-        isdian: false
-      },
-      {
-        img: "../../static/模板1@2x (2).png",
-        sum: 5e3,
-        isdian: false
-      },
-      {
-        img: "../../static/模板1@2x (3).png",
         sum: 5e3,
         isdian: false
       }
