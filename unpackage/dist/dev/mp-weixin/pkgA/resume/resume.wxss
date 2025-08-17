@@ -70,6 +70,7 @@
 }
 .row input {
   text-align: right;
+  font-size: 14px;
 }
 .msg {
   font-size: 16px;
@@ -151,12 +152,13 @@
   text-align: center;
   vertical-align: top;
 }
-#exp {
+.exp {
   position: absolute;
   top: 40px;
   width: 92%;
   left: 4%;
   height: 100px;
+  font-size: 14px;
 }
 .upload {
   position: absolute;

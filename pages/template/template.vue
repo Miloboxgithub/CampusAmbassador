@@ -229,7 +229,7 @@ const navs = (id) => {
 
 <style lang="scss" scoped>
 .page-container {
-  background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 50%);
+  background: linear-gradient(to bottom, #dbe8ff, #ffffff 50%);
   backdrop-filter: blur(87px);
   height: 120vh;
   /* 使用视口高度确保填充整个页面 */
@@ -331,12 +331,16 @@ const navs = (id) => {
 }
 
 .ke {
+  
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  padding-left: 4vw;
+  padding-right: 4vw;
   width: 92vw;
   top: 240px;
   padding-bottom: 30px;
+
 }
 
 .type {
@@ -361,10 +365,10 @@ const navs = (id) => {
 }
 
 .mobans {
+
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  background-color: #f5f5f5 ;
 }
 
 .moban {

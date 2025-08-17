@@ -2,7 +2,7 @@
 	<loading :show="isLoading"></loading>
   <scroll-view class="page-container" scroll-y="true">
     <view class="items">
-      <view class="item" v-for="item in items" :key="item.id" @click="navs3">
+      <view class="item" v-for="item in items" :key="item.id" @click="navs3(item.id)">
         <view class="name">{{ item.name }}</view>
         <view class="tags">
           <view class="tag" v-for="tag in item.tags" :key="tag">
@@ -36,16 +36,42 @@ import {
 import { pageStore } from "@/store";
 import Loading from "@/components/Loading.vue";
 const isLoading = ref(false);
+const pageInfo = pageStore();
+
+const items = ref([
+//   {
+//     id: 1,
+//     name: "振石控股集团有限公司",
+//     tags: ["民营", "2000人以上", "校园大使"],
+//     type: "汽车|机械|创造",
+//     status: "招募中",
+//     coicon: "https://picsum.photos/200",
+//     look: "5000",
+//   },
+]);
 onLoad(async () => {
   // 页面加载时获取数据
+  pageInfo.initMySubmitInfo();
+  items.value=[]
   try {
 	isLoading.value = true; // 显示加载状态
-    const response = await getSubmitData({
-      page: 1, 
-      pageSize: 20, 
-      status: "all",
-    });
-    let arr = response.data.data.records;
+	
+    const response = await getSubmitData(pageInfo.mySubmitInfo);
+	
+    if(response.length!=0)
+	{
+		response.forEach((e)=>{
+			items.value.push({
+				id: e.campusId,
+					name: e.campusTitle,
+					tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
+					type: e.enterpriseIndustries,
+					status: e.isRecruit ? "招募中" : "已结束",
+					coicon: e.enterpriseLogo,
+					look: e.pageView,
+			})
+		})
+	}
 	isLoading.value = false
 
   } catch (error) {
@@ -59,22 +85,31 @@ onLoad(async () => {
 });
 	// 监听触底事件
 	onReachBottom(async () => {
-		pageInfo.getNewPage();
-		console.log("触底了", pageInfo.indexInfo);
+		
 		try {
 			isLoading.value = true; // 显示加载状态
-			const arr = await getCampusByPage(pageInfo.indexInfo);
-			console.log("获取到的校园大使数据:", arr);
+			pageInfo.getMySubmitPage();
+			const arr = await getSubmitData(pageInfo.mySubmitInfo);
 			if (arr.length === 0) {
 				uni.showToast({
 					title: "没有更多数据了",
 					icon: "none",
 				});
 				isLoading.value = false; // 隐藏加载状态
-				pageInfo.lowPage();
+				pageInfo.lowMySubmitPage();
 				return;
 			}
-			
+			arr.forEach((e) => {
+				items.value.push({
+					id: e.campusId,
+					name: e.campusTitle,
+					tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
+					type: e.enterpriseIndustries,
+					status: e.isRecruit ? "招募中" : "已结束",
+					coicon: e.enterpriseLogo,
+					look: e.pageView,
+				});
+			});
 			isLoading.value = false; // 隐藏加载状态
 		} catch (error) {
 			console.error("获取数据失败:", error);
@@ -87,25 +122,25 @@ onLoad(async () => {
 	});
 	onPullDownRefresh(async () => {
 		console.log('下拉刷新了')
-		pageInfo.initIndexInfo();
+		pageInfo.initMySubmitInfo();
 		items.value = []; // 清空 items 数组
 		try {
 			isLoading.value = true; // 显示加载状态
-			console.log(pageInfo.indexInfo, "下拉刷新时的页码信息");
-			const arr = await getCampusByPage(pageInfo.indexInfo);
+			
+			const arr = await getSubmitData(pageInfo.mySubmitInfo);
 
-			console.log("获取到的校园大使数据:", arr);
 			arr.forEach((e) => {
 				items.value.push({
-					id: e.id,
-					name: e.name,
-					tags: [e.type, e.scale, "校园大使"],
-					type: e.industries,
+					id: e.campusId,
+					name: e.campusTitle,
+					tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
+					type: e.enterpriseIndustries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.logo,
+					coicon: e.enterpriseLogo,
 					look: e.pageView,
 				});
 			});
+			
 			isLoading.value = false; // 隐藏加载状态
 			uni.stopPullDownRefresh();
 		} catch (error) {
@@ -124,95 +159,11 @@ onShow(() => {
 });
 
 
-const pageInfo = pageStore();
 
-const items = ref([
-  {
-    id: 1,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "招募中",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 2,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 3,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "招募中",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 4,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 5,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "招募中",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 6,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 6,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 6,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-  {
-    id: 6,
-    name: "振石控股集团有限公司",
-    tags: ["民营", "2000人以上", "校园大使"],
-    type: "汽车|机械|创造",
-    status: "已结束",
-    coicon: "https://picsum.photos/200",
-    look: "5000",
-  },
-]);
-const navs3 = () => {
-  uni.navigateTo({
-    url: "/pkgA/detail/detail",
-  });
+const navs3 = (id) => {
+	uni.navigateTo({
+			url: `/pkgA/detail/detail?id=${id}`,
+		});
 };
 </script>
 

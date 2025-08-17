@@ -38,7 +38,6 @@ const _sfc_main = {
         introduce.value = deta.description || "暂无公司介绍";
         isLoading.value = false;
         isCollected.value = deta.isFavorite || false;
-        submited.value = deta.isRecruit || false;
       } else {
         isLoading.value = false;
         common_vendor.index.showToast({
@@ -147,7 +146,6 @@ const _sfc_main = {
           introduce.value = deta.description || "暂无公司介绍";
           isLoading.value = false;
           isCollected.value = deta.isFavorite || false;
-          submited.value = deta.isRecruit || false;
         } else {
           isLoading.value = false;
           common_vendor.index.showToast({
@@ -163,8 +161,15 @@ const _sfc_main = {
       closePopup();
     }
     const submited = common_vendor.ref(false);
-    function submits() {
-      submited.value = !submited.value;
+    async function submits() {
+      if (submited.value)
+        return;
+      if (!loginStatus.value) {
+        openPopup();
+        return;
+      }
+      await api_index.postCampusApply(id.value);
+      submited.value = true;
       if (submited.value)
         common_vendor.index.showToast({
           title: "投递成功",

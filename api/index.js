@@ -273,15 +273,17 @@ export const getTemplateCollects = (e) => {
 }
 //投递校园招聘岗位
 export const postCampusApply = (e) => {
+	console.log(e,'post')
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: 'https://xydsh.cn/api/campus/deliver',
 			data: {
-				campusId: e.campusId,
-				resumeId: e.resumeId,
+				campusId: parseInt(e),
+				resumeId: uni.getStorageSync("resumeId")
 			},
 			header: {
-				'content-type': 'application/json'
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
 			},
 			method: 'POST',
 			dataType: 'json',
@@ -716,7 +718,7 @@ export const getSubmitData = (e) => {
 						complete: () => {}
 					});
 				}
-				resolve(result); // 返回数据
+				resolve(result.data.data.records); // 返回数据
 			},
 			fail: (err) => {
 				reject(' ', err); // 处理失败情况

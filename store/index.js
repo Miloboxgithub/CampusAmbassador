@@ -26,6 +26,10 @@ export const pageStore = defineStore('pageInfo', {
         collectCampusInfo: {
             page: 1,
             pageSize: 20,
+        },
+        mySubmitInfo:{
+            page: 1,
+            pageSize: 20,
         }
 	}),
 	actions: {
@@ -90,6 +94,19 @@ export const pageStore = defineStore('pageInfo', {
         initCollectCampusInfo()
         {
             this.collectCampusInfo = {
+                page: 1,
+                pageSize: 20,
+            };
+        },
+        getMySubmitPage(){
+            this.mySubmitInfo.page ++;
+        },
+        lowMySubmitPage(){
+            this.mySubmitInfo.page --;
+        },
+        initMySubmitInfo()
+        {
+            this.mySubmitInfo = {
                 page: 1,
                 pageSize: 20,
             };

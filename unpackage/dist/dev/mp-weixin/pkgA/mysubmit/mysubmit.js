@@ -11,18 +11,40 @@ const _sfc_main = {
   __name: "mysubmit",
   setup(__props) {
     const isLoading = common_vendor.ref(false);
+    const pageInfo = store_index.pageStore();
+    const items = common_vendor.ref([
+      //   {
+      //     id: 1,
+      //     name: "振石控股集团有限公司",
+      //     tags: ["民营", "2000人以上", "校园大使"],
+      //     type: "汽车|机械|创造",
+      //     status: "招募中",
+      //     coicon: "https://picsum.photos/200",
+      //     look: "5000",
+      //   },
+    ]);
     common_vendor.onLoad(async () => {
+      pageInfo.initMySubmitInfo();
+      items.value = [];
       try {
         isLoading.value = true;
-        const response = await api_index.getSubmitData({
-          page: 1,
-          pageSize: 20,
-          status: "all"
-        });
-        let arr = response.data.data.records;
+        const response = await api_index.getSubmitData(pageInfo.mySubmitInfo);
+        if (response.length != 0) {
+          response.forEach((e) => {
+            items.value.push({
+              id: e.campusId,
+              name: e.campusTitle,
+              tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
+              type: e.enterpriseIndustries,
+              status: e.isRecruit ? "招募中" : "已结束",
+              coicon: e.enterpriseLogo,
+              look: e.pageView
+            });
+          });
+        }
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/mysubmit/mysubmit.vue:52", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/mysubmit/mysubmit.vue:78", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -31,24 +53,33 @@ const _sfc_main = {
       }
     });
     common_vendor.onReachBottom(async () => {
-      pageInfo.getNewPage();
-      common_vendor.index.__f__("log", "at pkgA/mysubmit/mysubmit.vue:63", "触底了", pageInfo.indexInfo);
       try {
         isLoading.value = true;
-        const arr = await getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pkgA/mysubmit/mysubmit.vue:67", "获取到的校园大使数据:", arr);
+        pageInfo.getMySubmitPage();
+        const arr = await api_index.getSubmitData(pageInfo.mySubmitInfo);
         if (arr.length === 0) {
           common_vendor.index.showToast({
             title: "没有更多数据了",
             icon: "none"
           });
           isLoading.value = false;
-          pageInfo.lowPage();
+          pageInfo.lowMySubmitPage();
           return;
         }
+        arr.forEach((e) => {
+          items.value.push({
+            id: e.campusId,
+            name: e.campusTitle,
+            tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
+            type: e.enterpriseIndustries,
+            status: e.isRecruit ? "招募中" : "已结束",
+            coicon: e.enterpriseLogo,
+            look: e.pageView
+          });
+        });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/mysubmit/mysubmit.vue:80", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/mysubmit/mysubmit.vue:115", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -57,29 +88,27 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pkgA/mysubmit/mysubmit.vue:89", "下拉刷新了");
-      pageInfo.initIndexInfo();
+      common_vendor.index.__f__("log", "at pkgA/mysubmit/mysubmit.vue:124", "下拉刷新了");
+      pageInfo.initMySubmitInfo();
       items.value = [];
       try {
         isLoading.value = true;
-        common_vendor.index.__f__("log", "at pkgA/mysubmit/mysubmit.vue:94", pageInfo.indexInfo, "下拉刷新时的页码信息");
-        const arr = await getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pkgA/mysubmit/mysubmit.vue:97", "获取到的校园大使数据:", arr);
+        const arr = await api_index.getSubmitData(pageInfo.mySubmitInfo);
         arr.forEach((e) => {
           items.value.push({
-            id: e.id,
-            name: e.name,
-            tags: [e.type, e.scale, "校园大使"],
-            type: e.industries,
+            id: e.campusId,
+            name: e.campusTitle,
+            tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
+            type: e.enterpriseIndustries,
             status: e.isRecruit ? "招募中" : "已结束",
-            coicon: e.logo,
+            coicon: e.enterpriseLogo,
             look: e.pageView
           });
         });
         isLoading.value = false;
         common_vendor.index.stopPullDownRefresh();
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/mysubmit/mysubmit.vue:112", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/mysubmit/mysubmit.vue:147", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -90,93 +119,9 @@ const _sfc_main = {
     });
     common_vendor.onShow(() => {
     });
-    const pageInfo = store_index.pageStore();
-    const items = common_vendor.ref([
-      {
-        id: 1,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "招募中",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 2,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 3,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "招募中",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 4,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 5,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "招募中",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 6,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 6,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 6,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      },
-      {
-        id: 6,
-        name: "振石控股集团有限公司",
-        tags: ["民营", "2000人以上", "校园大使"],
-        type: "汽车|机械|创造",
-        status: "已结束",
-        coicon: "https://picsum.photos/200",
-        look: "5000"
-      }
-    ]);
-    const navs3 = () => {
+    const navs3 = (id) => {
       common_vendor.index.navigateTo({
-        url: "/pkgA/detail/detail"
+        url: `/pkgA/detail/detail?id=${id}`
       });
     };
     return (_ctx, _cache) => {
@@ -199,7 +144,7 @@ const _sfc_main = {
             f: item.coicon,
             g: common_vendor.t(item.look),
             h: item.id,
-            i: common_vendor.o(navs3, item.id)
+            i: common_vendor.o(($event) => navs3(item.id), item.id)
           };
         }),
         c: common_assets._imports_2$1,

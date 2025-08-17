@@ -2,24 +2,23 @@
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
 const api_index = require("../../api/index.js");
-require("../../store/index.js");
-const _sfc_main = {
+const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "resume",
   setup(__props) {
     const fromData = common_vendor.ref({
-      "name": "",
-      "phone": "",
-      "weChat": "",
-      "email": "",
-      "college": "",
-      "province": "",
-      "city": "",
-      "educational": "",
-      "graduate": "",
-      "major": "",
-      "assets": "",
-      "intendedIndustry": "",
-      "experienceAndStrengths": ""
+      name: "",
+      phone: "",
+      weChat: "",
+      email: "",
+      college: "",
+      province: "",
+      city: "",
+      educational: "",
+      graduate: "",
+      major: "",
+      assets: "",
+      intendedIndustry: "",
+      experienceAndStrengths: ""
     });
     const orders = common_vendor.ref([
       // {
@@ -33,17 +32,39 @@ const _sfc_main = {
       // 	isdian: false,
       // },
     ]);
-    const graduationYears = common_vendor.ref(["2023", "2024", "2025"]);
-    const provinces = common_vendor.ref(["北京", "上海", "广东"]);
-    const cities = common_vendor.ref(["北京", "上海", "广州", "深圳"]);
-    const educationLevels = common_vendor.ref(["本科", "硕士", "博士"]);
+    const graduationYears = common_vendor.ref([]);
+    const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
+    for (let i = 0; i < 4; i++) {
+      graduationYears.value.push((currentYear + i).toString() + "届");
+    }
+    const provinces = common_vendor.computed(
+      () => Object.keys(common_vendor.areaList.province_list).map((code) => common_vendor.areaList.province_list[code])
+    );
+    const cities = common_vendor.ref([]);
+    const educationLevels = common_vendor.ref(["专科", "本科", "硕士", "博士"]);
     common_vendor.ref("");
     const onGraduationYearChange = (e) => {
       fromData.value.graduate = graduationYears.value[e.detail.value];
     };
     const onProvinceChange = (e) => {
-      fromData.value.province = provinces.value[e.detail.value];
+      const provinceName = provinces.value[e.detail.value];
+      common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:256", provinceName);
+      fromData.value.province = provinceName;
+      const provinceCode = Object.keys(common_vendor.areaList.province_list).find(
+        (code) => common_vendor.areaList.province_list[code] === provinceName
+      );
+      cities.value = Object.keys(common_vendor.areaList.city_list).filter((code) => code.slice(0, 2) === provinceCode.slice(0, 2)).map((code) => common_vendor.areaList.city_list[code]);
+      fromData.value.city = "";
     };
+    function checkProvince() {
+      if (!fromData.value.province) {
+        common_vendor.index.showToast({
+          title: "请先选择省份",
+          icon: "none",
+          duration: 1500
+        });
+      }
+    }
     const onCityChange = (e) => {
       fromData.value.city = cities.value[e.detail.value];
     };
@@ -59,10 +80,10 @@ const _sfc_main = {
         success: async (res) => {
           const file = res.tempFiles[0];
           if (file) {
-            common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:201", file, "选择的文件信息");
+            common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:295", file, "选择的文件信息");
             try {
               const uploadRes = await api_index.uploadResumeAttachment(file.path);
-              common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:204", uploadRes, "上传简历附件的响应信息");
+              common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:298", uploadRes, "上传简历附件的响应信息");
               if (uploadRes.statusCode === 200 && uploadRes.errMsg === "uploadFile:ok") {
                 common_vendor.index.showToast({
                   title: "上传成功",
@@ -75,7 +96,7 @@ const _sfc_main = {
                 });
               }
             } catch (error) {
-              common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:218", "上传简历附件失败:", error);
+              common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:314", "上传简历附件失败:", error);
               common_vendor.index.showToast({
                 title: "上传简历附件失败",
                 icon: "none"
@@ -84,7 +105,7 @@ const _sfc_main = {
           }
         },
         fail: (error) => {
-          common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:227", "选择文件失败:", error);
+          common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:323", "选择文件失败:", error);
           common_vendor.index.showToast({
             title: "选择文件失败",
             icon: "none"
@@ -146,9 +167,9 @@ const _sfc_main = {
           intendedIndustry: orders.value.filter((item) => item.isdian).map((item) => item.name).join(","),
           experienceAndStrengths: fromData.value.experienceAndStrengths
         };
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:285", resumeData, "提交的简历信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:395", resumeData, "提交的简历信息");
         const res = await api_index.uploadResumeInfo(resumeData);
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:287", res, "提交简历信息的响应信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:397", res, "提交简历信息的响应信息");
         if (res.statusCode === 200 && res.data.code === 1) {
           common_vendor.index.showToast({
             title: "简历信息提交成功",
@@ -161,7 +182,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:300", "提交简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:410", "提交简历信息失败:", error);
         common_vendor.index.showToast({
           title: "提交简历信息失败",
           icon: "none"
@@ -172,7 +193,7 @@ const _sfc_main = {
       try {
         const res = await api_index.getUserResumeInfo();
         if (res.statusCode === 200 && res.data.code === 1) {
-          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:314", res, "获取到的简历信息");
+          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:424", res, "获取到的简历信息");
           const resumeInfo = res.data.data;
           fromData.value.name = resumeInfo.name || "";
           fromData.value.phone = resumeInfo.phone || "";
@@ -198,7 +219,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:342", "获取简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:455", "获取简历信息失败:", error);
         common_vendor.index.showToast({
           title: "获取简历信息失败",
           icon: "none"
@@ -207,7 +228,7 @@ const _sfc_main = {
     };
     common_vendor.onLoad(() => {
       api_index.getResumeOptions().then((res) => {
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:352", res, "获取简历选项的响应信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:466", res, "获取简历选项的响应信息");
         if (res.statusCode === 200 && res.data.code === 1) {
           res.data.data.industryOptions.forEach((item) => {
             orders.value.push({
@@ -228,7 +249,7 @@ const _sfc_main = {
           });
         }
       }).catch((error) => {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:373", "获取简历选项失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:488", "获取简历选项失败:", error);
         common_vendor.index.showToast({
           title: "获取简历选项失败",
           icon: "none"
@@ -252,44 +273,50 @@ const _sfc_main = {
         j: common_vendor.o(($event) => fromData.value.email = $event.detail.value),
         k: common_vendor.t(fromData.value.graduate || "请选择毕业届别"),
         l: common_assets._imports_0$6,
-        m: graduationYears.value,
-        n: common_vendor.o(onGraduationYearChange),
-        o: common_vendor.t(fromData.value.province || "请选择院校省份"),
-        p: common_assets._imports_0$6,
-        q: provinces.value,
-        r: common_vendor.o(onProvinceChange),
-        s: common_vendor.t(fromData.value.city || "请选择院校城市"),
-        t: common_assets._imports_0$6,
-        v: cities.value,
-        w: common_vendor.o(onCityChange),
-        x: common_vendor.t(fromData.value.educational || "请选择最高学历"),
-        y: common_assets._imports_0$6,
-        z: educationLevels.value,
-        A: common_vendor.o(onEducationLevelChange),
-        B: fromData.value.major,
-        C: common_vendor.o(($event) => fromData.value.major = $event.detail.value),
-        D: common_vendor.f(orders.value, (item, index, i0) => {
+        m: fromData.value.graduate ? "#000" : "",
+        n: graduationYears.value,
+        o: common_vendor.o(onGraduationYearChange),
+        p: common_vendor.t(fromData.value.province || "请选择院校省份"),
+        q: common_assets._imports_0$6,
+        r: fromData.value.province ? "#000" : "#",
+        s: provinces.value,
+        t: common_vendor.o(onProvinceChange),
+        v: common_vendor.t(fromData.value.city || "请选择院校城市"),
+        w: common_assets._imports_0$6,
+        x: common_vendor.o(checkProvince),
+        y: fromData.value.city ? "#000" : "",
+        z: cities.value,
+        A: common_vendor.o(onCityChange),
+        B: !fromData.value.province,
+        C: common_vendor.t(fromData.value.educational || "请选择最高学历"),
+        D: common_assets._imports_0$6,
+        E: fromData.value.educational ? "#000" : "",
+        F: educationLevels.value,
+        G: common_vendor.o(onEducationLevelChange),
+        H: fromData.value.major,
+        I: common_vendor.o(($event) => fromData.value.major = $event.detail.value),
+        J: common_vendor.f(orders.value, (item, index, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: item.isdian ? 1 : "",
             c: common_vendor.o(($event) => item.isdian = !item.isdian)
           };
         }),
-        E: common_vendor.f(resourse.value, (item, index, i0) => {
+        K: common_vendor.f(resourse.value, (item, index, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: item.isdian ? 1 : "",
             c: common_vendor.o(($event) => item.isdian = !item.isdian)
           };
         }),
-        F: fromData.value.experienceAndStrengths,
-        G: common_vendor.o(($event) => fromData.value.experienceAndStrengths = $event.detail.value),
-        H: common_assets._imports_1$6,
-        I: common_vendor.o(uploadFile),
-        J: common_vendor.o(submitResumeInfo)
+        L: fromData.value.experienceAndStrengths,
+        M: common_vendor.o(($event) => fromData.value.experienceAndStrengths = $event.detail.value),
+        N: common_assets._imports_1$6,
+        O: common_vendor.o(uploadFile),
+        P: common_vendor.o(submitResumeInfo)
       };
     };
   }
-};
+});
 wx.createPage(_sfc_main);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pkgA/resume/resume.js.map

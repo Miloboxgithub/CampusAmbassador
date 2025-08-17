@@ -116,7 +116,7 @@
 			introduce.value = deta.description || "暂无公司介绍";
 			isLoading.value = false; // 隐藏加载状态
 			isCollected.value = deta.isFavorite || false; // 设置收藏状态
-			submited.value = deta.isRecruit || false; // 设置投递状态
+
 		} else {
 			isLoading.value = false; // 隐藏加载状态
 			uni.showToast({
@@ -238,7 +238,7 @@
 				introduce.value = deta.description || "暂无公司介绍";
 				isLoading.value = false; // 隐藏加载状态
 				isCollected.value = deta.isFavorite || false; // 设置收藏状态
-				submited.value = deta.isRecruit || false; // 设置投递状态
+
 			} else {
 				isLoading.value = false; // 隐藏加载状态
 				uni.showToast({
@@ -258,8 +258,19 @@
 
 	const submited = ref(false);
 
-	function submits() {
-		submited.value = !submited.value;
+	async function submits() {
+		if(submited.value)return;
+		if (!loginStatus.value) {
+			// uni.showToast({
+			//   title: "请先登录",
+			//   icon: "none",
+			// });
+			openPopup();
+			return;
+		}
+		
+		const res = await postCampusApply(id.value)
+		submited.value = true;
 		if (submited.value)
 			uni.showToast({
 				title: "投递成功",
