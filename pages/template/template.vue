@@ -146,7 +146,7 @@ onReachBottom(async () => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img: e.templateSampleGraph,
+        img: e.templateSampleGraph|| "https://picsum.photos/400", // 如果没有图片则使用默认图片
         sum: e.downloadNumber,
       });
     });
@@ -173,7 +173,7 @@ onPullDownRefresh(async () => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img: "https://picsum.photos/400" || e.templateSampleGraph,
+        img: e.templateSampleGraph||"https://picsum.photos/400",
         sum: e.downloadNumber,
       });
     });
@@ -206,7 +206,7 @@ const changeType = async (i) => {
     arr.forEach((e) => {
       mobans.value.push({
         id: e.id,
-        img: "https://picsum.photos/400" || e.templateSampleGraph,
+        img: e.templateSampleGraph||"https://picsum.photos/400",
         sum: e.downloadNumber,
       });
     });
@@ -364,6 +364,7 @@ const navs = (id) => {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  background-color: #f5f5f5 ;
 }
 
 .moban {

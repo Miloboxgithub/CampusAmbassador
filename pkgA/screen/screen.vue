@@ -54,28 +54,32 @@
   </view>
   <view class="kong"></view>
   <view class="footer">
-    <image src="../img/Combined Shape@2x.png" class="chong" mode="" @click="resets"></image>
+    <image
+      src="../img/Combined Shape@2x.png"
+      class="chong"
+      mode=""
+      @click="resets"
+    ></image>
     <text class="zhi" @click="resets">重置</text>
-    <view class="res" @click ="confirms">确认</view>
+    <view class="res" @click="confirms">确认</view>
   </view>
   <uni-popup ref="popups" type="bottom" mask="true" @change="change">
     <view class="popup-content">
-		
       <view class="quxiao" @click="closePopup">取消</view>
       <view class="queren" @click="queren">确认</view>
       <text class="theme">请选择{{ theme }}</text>
-	  <view class="items-block">
-      <view class="content">
-        <view v-for="(item, index) in items">
-          <view
-            class="op"
-            :class="{ lan: item.f == true }"
-            @click="select(index)"
-            >{{ item.n }}</view
-          >
-          <view class="line" v-if="index != items.length - 1"></view>
+      <view class="items-block">
+        <view class="content">
+          <view v-for="(item, index) in items">
+            <view
+              class="op"
+              :class="{ lan: item.f == true }"
+              @click="select(index)"
+              >{{ item.n }}</view
+            >
+            <view class="line" v-if="index != items.length - 1"></view>
+          </view>
         </view>
-	</view>
       </view>
     </view>
   </uni-popup>
@@ -134,17 +138,16 @@ const openPopup = (e) => {
   theme.value = e;
   if (e == "学历要求") {
     items.value = xueli.value;
-  }
-  else if (e == "专业要求") {
-	items.value = majorOptions.value;
+  } else if (e == "专业要求") {
+    items.value = majorOptions.value;
   } else if (e == "年级要求") {
-	items.value = gradeOptions.value;
+    items.value = gradeOptions.value;
   } else if (e == "行业要求") {
-	items.value = indOptions.value;
+    items.value = indOptions.value;
   } else if (e == "企业要求") {
-	items.value = companyOptions.value;
+    items.value = companyOptions.value;
   } else if (e == "公司规模") {
-	items.value = guimoOptions.value;
+    items.value = guimoOptions.value;
   }
   if (popups.value) {
     popups.value.open();
@@ -166,7 +169,6 @@ const select = (e) => {
     i.f = false;
   });
   items.value[e].f = true;
-
 };
 const queren = () => {
   if (theme.value == "学历要求") {
@@ -175,37 +177,36 @@ const queren = () => {
         edu.value = i.n;
       }
     });
-  }
-  else if (theme.value == "专业要求") {
-	items.value.forEach((i) => {
-	  if (i.f) {
-		major.value = i.n;
-	  }
-	});
+  } else if (theme.value == "专业要求") {
+    items.value.forEach((i) => {
+      if (i.f) {
+        major.value = i.n;
+      }
+    });
   } else if (theme.value == "年级要求") {
-	items.value.forEach((i) => {
-	  if (i.f) {
-		grade.value = i.n;
-	  }
-	});
+    items.value.forEach((i) => {
+      if (i.f) {
+        grade.value = i.n;
+      }
+    });
   } else if (theme.value == "行业要求") {
-	items.value.forEach((i) => {
-	  if (i.f) {
-		ind.value = i.n;
-	  }
-	});
+    items.value.forEach((i) => {
+      if (i.f) {
+        ind.value = i.n;
+      }
+    });
   } else if (theme.value == "企业要求") {
-	items.value.forEach((i) => {
-	  if (i.f) {
-		company.value = i.n;
-	  }
-	});
+    items.value.forEach((i) => {
+      if (i.f) {
+        company.value = i.n;
+      }
+    });
   } else if (theme.value == "公司规模") {
-	items.value.forEach((i) => {
-	  if (i.f) {
-		guimo.value = i.n;
-	  }
-	});
+    items.value.forEach((i) => {
+      if (i.f) {
+        guimo.value = i.n;
+      }
+    });
   }
 
   closePopup();
@@ -213,44 +214,58 @@ const queren = () => {
 const switchs = (e) => {
   std.value = e;
 };
-const resets = ()=>{
-	  xueli.value.forEach((i) => {
-	i.f = false;
+const resets = () => {
+  xueli.value.forEach((i) => {
+    i.f = false;
   });
   majorOptions.value.forEach((i) => {
-	i.f = false;
+    i.f = false;
   });
   gradeOptions.value.forEach((i) => {
-	i.f = false;
+    i.f = false;
   });
   indOptions.value.forEach((i) => {
-	i.f = false;
+    i.f = false;
   });
   companyOptions.value.forEach((i) => {
-	i.f = false;
+    i.f = false;
   });
   guimoOptions.value.forEach((i) => {
-	i.f = false;
+    i.f = false;
   });
-  edu.value = xueli.value[0] || '学历不限';
-  major.value = majorOptions.value[0] || '专业不限';
-  grade.value = gradeOptions.value[0] || '年级不限';
-  ind.value = indOptions.value[0] || '行业不限';
-  company.value = companyOptions.value[0] || '企业不限';
-  guimo.value = guimoOptions.value[0] || '规模不限';
-
-
-}
+  edu.value = xueli.value[0].n || "学历不限";
+  major.value = majorOptions.value[0].n || "专业不限";
+  grade.value = gradeOptions.value[0].n || "年级不限";
+  ind.value = indOptions.value[0].n || "行业不限";
+  company.value = companyOptions.value[0].n || "企业不限";
+  guimo.value = guimoOptions.value[0].n || "规模不限";
+  std.value = true; // 重置状态为招募中
+  // 重置筛选条件
+  pageInfo.filterIndexPage({
+    keyword: "",
+    status: "招募中",
+    educationalRequire: edu.value,
+    majorRequire: major.value,
+    gradeRequire: grade.value,
+    industry: ind.value,
+    type: company.value,
+    scale: guimo.value,
+  });
+  uni.showToast({
+    title: "已重置筛选条件",
+    icon: "success",
+  });
+};
 const confirms = () => {
-	pageInfo.filterIndexPage({
-	keyword: '',
-	status: std.value ? "招募中" : "已结束",
-	educationalRequire: edu.value,
-	majorRequire: major.value ,
-	gradeRequire: grade.value,
-	industry: ind.value ,
-	type: company.value ,
-	scale: guimo.value ,
+  pageInfo.filterIndexPage({
+    keyword: "",
+    status: std.value ? "招募中" : "已结束",
+    educationalRequire: edu.value,
+    majorRequire: major.value,
+    gradeRequire: grade.value,
+    industry: ind.value,
+    type: company.value,
+    scale: guimo.value,
   });
   uni.navigateBack();
 };
@@ -264,34 +279,48 @@ onLoad(async () => {
         n: item,
         f: false,
       }));
-	  majorOptions.value = data.major.map((item) => ({
-		n: item,
-		f: false,
-	  }));
-	  gradeOptions.value = data.grade.map((item) => ({
-		n: item,
-		f: false,
-	  }));
-	  indOptions.value = data.industry.map((item) => ({
-		n: item,
-		f: false,
-	  }));
-	  companyOptions.value = data.companyType.map((item) => ({
-		n: item,
-		f: false,
-	  }));
-	  guimoOptions.value = data.companyScale.map((item) => ({
-		n: item,
-		f: false,
-	  }));
-	  edu.value = data.education[0] || "学历不限";
-	  major.value = data.major[0] || "专业不限";
-	  grade.value = data.grade[0] || "年级不限";
-	  ind.value = data.industry[0] || "行业不限";
-	  company.value = data.companyType[0] || "企业不限";
-	  guimo.value = data.companyScale[0] || "规模不限";
+      majorOptions.value = data.major.map((item) => ({
+        n: item,
+        f: false,
+      }));
+      gradeOptions.value = data.grade.map((item) => ({
+        n: item,
+        f: false,
+      }));
+      indOptions.value = data.industry.map((item) => ({
+        n: item,
+        f: false,
+      }));
+      companyOptions.value = data.companyType.map((item) => ({
+        n: item,
+        f: false,
+      }));
+      guimoOptions.value = data.companyScale.map((item) => ({
+        n: item,
+        f: false,
+      }));
+      let ops = pageInfo.indexInfo;
+      console.log("当前筛选条件:", ops);
+      edu.value = ops.educationalRequire || data.education[0];
+      major.value = ops.majorRequire || data.major[0];
+      grade.value = ops.gradeRequire || data.grade[0];
+      ind.value = ops.industry || data.industry[0];
+      company.value = ops.type || data.companyType[0];
+      guimo.value = ops.scale || data.companyScale[0];
+      std.value = ops.status == "招募中" || ops.status == "" ? true : false;
+      const markActive = (list, value) =>
+        list.forEach((item) => (item.f = item.n === value));
 
-      console.log("筛选数据初始化成功",data);
+      [
+        [xueli.value, edu.value],
+        [majorOptions.value, major.value],
+        [gradeOptions.value, grade.value],
+        [indOptions.value, ind.value],
+        [companyOptions.value, company.value],
+        [guimoOptions.value, guimo.value],
+      ].forEach(([list, val]) => markActive(list, val));
+
+      console.log("筛选数据初始化成功", data);
     } else {
       console.error("获取筛选数据失败:", res);
       uni.showToast({
@@ -396,16 +425,14 @@ onLoad(async () => {
   background-color: #fff;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  
+
   width: 100%;
   padding-top: 56px;
-  
-  
 }
-.items-block{
-	overflow-y: auto;  /* 垂直方向超出时滚动 */
-	min-height: 240px;
-	max-height: 500px;
+.items-block {
+  overflow-y: auto; /* 垂直方向超出时滚动 */
+  min-height: 240px;
+  max-height: 500px;
 }
 .quxiao {
   position: absolute;

@@ -247,7 +247,7 @@ export const getUserCollects = (e) => {
 export const getTemplateCollects = (e) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `https://api.xydsh.cn/api/wechat/favorite/resume/list`,
+			url: `https://api.xydsh.cn/api/wechat/favorite/template/list`,
 			data: {
 				page: e.page || 1,
 				pageSize: e.pageSize || 10,
@@ -333,7 +333,8 @@ export const getResumeTemplate = (e) => {
 				style: e.type || ''
 			},
 			header: {
-				'content-type': 'application/json'
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
 			},
 			method: 'GET',
 			dataType: 'json',
@@ -353,12 +354,13 @@ export const getResumeTemplate = (e) => {
 export const getResumeTemplateDetail = (id) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `https://api.xydsh.cn/wechat/templates/${id}`,
+			url: `https://api.xydsh.cn/wechat/templates/info/${id}?includeShareLinks=true&shareType=both&incrementUsage=true`,
 			data: {},
 			header: {
-				'content-type': 'application/json'
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
 			},
-			method: 'GET',
+			method: 'POST',
 			dataType: 'json',
 			responseType: 'text',
 			success: (result) => {
@@ -427,6 +429,7 @@ export const getResumeViewCount = (resumeid) => {
 			data: {},
 			header: {
 				'content-type': 'application/json'
+
 			},
 			method: 'GET',
 			dataType: 'json',
@@ -469,7 +472,7 @@ export const addResumeTemplateUseCount = (templateid) => {
 export const getResumeTemplateUseCount = (templateid) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `https://api.xydsh.cn/wechat/templates/use/${templateid}`,
+			url: `https://api.xydsh.cn/wechat/templates/usage/${templateid}`,
 			data: {},
 			header: {
 				'content-type': 'application/json'
@@ -492,7 +495,7 @@ export const getResumeTemplateUseCount = (templateid) => {
 export const collectResumeTemplate = (resumeId) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `https://api.xydsh.cn/wechat/favorite/resume/${resumeId}`,
+			url: `https://api.xydsh.cn/wechat/favorite/template/${resumeId}`,
 			data: {
 			},
 			header: {
@@ -540,7 +543,7 @@ export const collectResumeTemplate = (resumeId) => {
 export const offCollectResumeTemplate = (resumeId) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: `https://api.xydsh.cn/wechat/favorite/resume/${resumeId}`,
+			url: `https://api.xydsh.cn/wechat/favorite/template/${resumeId}`,
 			data: {},
 			header: {
 				'content-type': 'application/json',

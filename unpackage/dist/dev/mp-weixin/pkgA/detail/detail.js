@@ -38,6 +38,7 @@ const _sfc_main = {
         introduce.value = deta.description || "暂无公司介绍";
         isLoading.value = false;
         isCollected.value = deta.isFavorite || false;
+        submited.value = deta.isRecruit || false;
       } else {
         isLoading.value = false;
         common_vendor.index.showToast({
@@ -119,9 +120,9 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:209", "Popup state changed");
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:210", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:211", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:212", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };
@@ -131,7 +132,7 @@ const _sfc_main = {
         showLogin.value = false;
         isLoading.value = true;
         const res = await api_index.getCampusDetail(id.value);
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:225", "获取到的详情:", res);
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:226", "获取到的详情:", res);
         if (res.statusCode === 200) {
           let deta = res.data.data;
           tags.value = [deta.type, deta.scale, "校园大使"];
@@ -146,6 +147,7 @@ const _sfc_main = {
           introduce.value = deta.description || "暂无公司介绍";
           isLoading.value = false;
           isCollected.value = deta.isFavorite || false;
+          submited.value = deta.isRecruit || false;
         } else {
           isLoading.value = false;
           common_vendor.index.showToast({

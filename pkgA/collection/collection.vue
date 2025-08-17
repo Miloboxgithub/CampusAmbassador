@@ -49,8 +49,8 @@
     </view>
     <view class="ke" v-if="activeindex">
       <view class="mobans">
-        <view class="moban" v-for="(item, index) in mobans" :key="index">
-          <img class="moban-img" :src="item.img" alt="" />
+        <view class="moban" v-for="(item, index) in mobans" :key="index" >
+          <img class="moban-img" :src="item.img" alt="" @click="navs(item.id)" />
           <view class="lined"></view>
           <view class="abcd" @click="dianji2" data-id="{{index}}"
             ><image src="../img/圆形 1.png" class="blacks" mode="" /><image
@@ -89,7 +89,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { getUserCollects,getTemplateCollects } from "@/api/index.js";
+import { getUserCollects, getTemplateCollects ,offCollectCampusDetail,offCollectResumeTemplate} from "@/api/index.js";
 import {
   onShow,
   onLoad,
@@ -118,6 +118,14 @@ const items = ref([
   //   isdian: false,
   // }
 ]);
+const mobans = ref([
+  // {
+  //   img: "../../static/模板1@2x.png",
+  //   sum: 5000,
+  //   isdian: false,
+  // },
+
+]);
 // 页面加载时执行的逻辑
 onLoad(async () => {
   console.log("页面加载");
@@ -125,7 +133,7 @@ onLoad(async () => {
   try {
     isLoading.value = true; // 显示加载状态
     const arr = await getUserCollects(pageInfo.collectCampusInfo);
-     const res = await getTemplateCollects(pageInfo.collectCampusInfo);
+    // const res = await getTemplateCollects(pageInfo.collectCampusInfo);
     console.log("获取用户收藏的校园大使职位数据:", arr);
     arr.forEach((e) => {
       items.value.push({
@@ -147,7 +155,6 @@ onLoad(async () => {
       title: "加载数据失败",
       icon: "error",
     });
-    
   }
 });
 
@@ -160,29 +167,52 @@ onReachBottom(async () => {
   pageInfo.getCollectCampusPage();
   try {
     isLoading.value = true; // 显示加载状态
-    const arr = await getUserCollects(pageInfo.collectCampusInfo);
-    console.log("获取用户收藏的校园大使职位数据:", arr);
-    if (arr.length === 0) {
-      uni.showToast({
-        title: "没有更多数据了",
-        icon: "none",
+    if (activeindex.value) {
+      const arr = await getTemplateCollects(pageInfo.collectCampusInfo);
+      console.log("获取用户收藏的简历模板数据:", arr);
+      if (arr.length === 0) {
+        uni.showToast({
+          title: "没有更多数据了",
+          icon: "none",
+        });
+        isLoading.value = false; // 隐藏加载状态
+        pageInfo.lowCollectCampusPage();
+        return;
+      }
+      arr.forEach((e) => {
+        mobans.value.push({
+          id: e.id,
+          img: e.templateSampleGraph,
+          sum: e.downloadNumber,
+          isdian: false,
+        });
       });
-      isLoading.value = false; // 隐藏加载状态
-      pageInfo.lowCollectCampusPage();
-      return;
+    } else {
+      const arr = await getUserCollects(pageInfo.collectCampusInfo);
+      console.log("获取用户收藏的校园大使职位数据:", arr);
+      if (arr.length === 0) {
+        uni.showToast({
+          title: "没有更多数据了",
+          icon: "none",
+        });
+        isLoading.value = false; // 隐藏加载状态
+        pageInfo.lowCollectCampusPage();
+        return;
+      }
+      arr.forEach((e) => {
+        items.value.push({
+          id: e.id,
+          name: e.name,
+          tags: [e.type, e.scale, "校园大使"],
+          type: e.industries,
+          status: e.isRecruit ? "招募中" : "已结束",
+          coicon: e.logo,
+          look: e.pageView,
+          isdian: false,
+        });
+      });
     }
-    arr.forEach((e) => {
-      items.value.push({
-        id: e.id,
-        name: e.name,
-        tags: [e.type, e.scale, "校园大使"],
-        type: e.industries,
-        status: e.isRecruit ? "招募中" : "已结束",
-        coicon: e.logo,
-        look: e.pageView,
-        isdian: false,
-      });
-    });
+
     isLoading.value = false; // 隐藏加载状态
   } catch (error) {
     console.error("获取数据失败:", error);
@@ -195,13 +225,15 @@ onReachBottom(async () => {
 });
 onPullDownRefresh(async () => {
   console.log("下拉刷新了");
+  activeindex.value = false; // 重置为校园大使
+  st.value = "校园大使";
   pageInfo.initCollectCampusInfo();
   items.value = []; // 清空 items 数组
   try {
     isLoading.value = true; // 显示加载状态
     const arr = await getUserCollects(pageInfo.collectCampusInfo);
 
-    console.log("获取用户收藏的校园大使职位数据:", arr);
+    console.log("下拉刷新了:", arr);
     arr.forEach((e) => {
       items.value.push({
         id: e.id,
@@ -231,63 +263,59 @@ const changeTab = async (flag) => {
   if (flag) {
     st.value = "简历模板";
     pageInfo.initCollectCampusInfo();
-  items.value = []; // 清空 items 数组
-  try {
-    isLoading.value = true; // 显示加载状态
-    const arr = await getUserCollects(pageInfo.collectCampusInfo);
+    mobans.value = []; // 清空 items 数组
+    try {
+      isLoading.value = true; // 显示加载状态
+      const arr = await getTemplateCollects(pageInfo.collectCampusInfo);
 
-    console.log("获取用户收藏的校园大使职位数据:", arr);
-    arr.forEach((e) => {
-      items.value.push({
-        id: e.id,
-        name: e.name,
-        tags: [e.type, e.scale, "校园大使"],
-        type: e.industries,
-        status: e.isRecruit ? "招募中" : "已结束",
-        coicon: e.logo,
-        look: e.pageView,
-        isdian: false,
+      console.log("获取用户收藏的简历模板数据:", arr);
+      arr.forEach((e) => {
+        mobans.value.push({
+          id: e.id,
+          img: e.templateSampleGraph,
+          sum: e.downloadNumber,
+          isdian: false,
+        });
       });
-    });
-    isLoading.value = false; // 隐藏加载状态
-  } catch (error) {
-    console.error("获取数据失败:", error);
-    isLoading.value = false; // 隐藏加载状态
-    uni.showToast({
-      title: "加载数据失败",
-      icon: "error",
-    });
-  }
+      isLoading.value = false; // 隐藏加载状态
+    } catch (error) {
+      console.error("获取数据失败:", error);
+      isLoading.value = false; // 隐藏加载状态
+      uni.showToast({
+        title: "加载数据失败",
+        icon: "error",
+      });
+    }
   } else {
     st.value = "校园大使";
     pageInfo.initCollectCampusInfo();
-  items.value = []; // 清空 items 数组
-  try {
-    isLoading.value = true; // 显示加载状态
-    const arr = await getTemplateCollects(pageInfo.collectCampusInfo);
+    items.value = []; // 清空 items 数组
+    try {
+      isLoading.value = true; // 显示加载状态
+      const arr = await getUserCollects(pageInfo.collectCampusInfo);
 
-    console.log("获取用户收藏的校园大使职位数据:", arr);
-    arr.forEach((e) => {
-      items.value.push({
-        id: e.id,
-        name: e.name,
-        tags: [e.type, e.scale, "校园大使"],
-        type: e.industries,
-        status: e.isRecruit ? "招募中" : "已结束",
-        coicon: e.logo,
-        look: e.pageView,
-        isdian: false,
+      console.log("获取用户收藏的校园大使职位数据:", arr);
+      arr.forEach((e) => {
+        items.value.push({
+          id: e.id,
+          name: e.name,
+          tags: [e.type, e.scale, "校园大使"],
+          type: e.industries,
+          status: e.isRecruit ? "招募中" : "已结束",
+          coicon: e.logo,
+          look: e.pageView,
+          isdian: false,
+        });
       });
-    });
-    isLoading.value = false; // 隐藏加载状态
-  } catch (error) {
-    console.error("获取数据失败:", error);
-    isLoading.value = false; // 隐藏加载状态
-    uni.showToast({
-      title: "加载数据失败",
-      icon: "error",
-    });
-  }
+      isLoading.value = false; // 隐藏加载状态
+    } catch (error) {
+      console.error("获取数据失败:", error);
+      isLoading.value = false; // 隐藏加载状态
+      uni.showToast({
+        title: "加载数据失败",
+        icon: "error",
+      });
+    }
   }
   items.value.forEach((item) => {
     item.isdian = false;
@@ -314,7 +342,7 @@ const dianji = (e) => {
   } else {
     console.error(`Item at index ${index} is undefined`);
   }
-  if (numbs.value == mobans.value.length) {
+  if (numbs.value == items.value.length) {
     quanxuan.value = true;
   } else {
     quanxuan.value = false;
@@ -362,7 +390,23 @@ function quanxuans() {
     numbs.value = 0;
   }
 }
-function deletes() {
+async function deletes() {
+  isLoading.value = true; // 显示加载状态
+  if (st.value == "校园大使") {
+    for (let i = 0; i < items.value.length; i++) {
+      if (items.value[i].isdian) {
+        await offCollectCampusDetail(items.value[i].id);
+      }
+    }
+    items.value = items.value.filter((item) => !item.isdian);
+  } else {
+    for (let i = 0; i < mobans.value.length; i++) {
+      if (mobans.value[i].isdian) {
+        await offCollectResumeTemplate(mobans.value[i].id);
+      }
+    }
+    mobans.value = mobans.value.filter((item) => !item.isdian);
+  }
   items.value.forEach((item) => {
     item.isdian = false;
   });
@@ -380,23 +424,12 @@ function deletes() {
     fail: () => {},
     complete: () => {},
   });
+  isLoading.value = false; // 隐藏加载状态
 }
-const mobans = ref([
-  {
-    img: "../../static/模板1@2x.png",
-    sum: 5000,
-    isdian: false,
-  },
-  {
-    img: "../../static/模板1@2x (1).png",
-    sum: 5000,
-    isdian: false,
-  },
 
-]);
-const navs = () => {
+const navs = (id) => {
   uni.navigateTo({
-    url: "/pkgA/preview/preview",
+    url: `/pkgA/preview/preview?id=${id}`,
   });
 };
 </script>
@@ -482,6 +515,7 @@ const navs = () => {
   width: 100vw;
   height: auto;
   padding-bottom: 20px;
+  background: rgb(245, 245, 245);
 }
 
 .item {

@@ -40,6 +40,7 @@
   width: 100vw;
   height: auto;
   padding-bottom: 20px;
+  background: whitesmoke;
 }
 .item.data-v-f33b20de {
   position: relative;

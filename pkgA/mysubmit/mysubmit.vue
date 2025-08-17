@@ -235,6 +235,7 @@ const navs3 = () => {
   width: 100vw;
   height: auto;
   padding-bottom: 20px;
+  background: rgb(245, 245, 245);
 }
 
 .item {

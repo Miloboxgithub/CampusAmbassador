@@ -151,6 +151,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  background-color: #f5f5f5;
 }
 .moban.data-v-754db3c2 {
   width: 48%;

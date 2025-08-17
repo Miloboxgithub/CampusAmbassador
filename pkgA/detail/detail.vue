@@ -116,6 +116,7 @@
 			introduce.value = deta.description || "暂无公司介绍";
 			isLoading.value = false; // 隐藏加载状态
 			isCollected.value = deta.isFavorite || false; // 设置收藏状态
+			submited.value = deta.isRecruit || false; // 设置投递状态
 		} else {
 			isLoading.value = false; // 隐藏加载状态
 			uni.showToast({
@@ -237,6 +238,7 @@
 				introduce.value = deta.description || "暂无公司介绍";
 				isLoading.value = false; // 隐藏加载状态
 				isCollected.value = deta.isFavorite || false; // 设置收藏状态
+				submited.value = deta.isRecruit || false; // 设置投递状态
 			} else {
 				isLoading.value = false; // 隐藏加载状态
 				uni.showToast({

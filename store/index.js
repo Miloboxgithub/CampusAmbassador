@@ -33,7 +33,7 @@ export const pageStore = defineStore('pageInfo', {
             this.indexInfo.page ++;
         },
         lowPage(){
-                this.indexInfo.page --;
+            this.indexInfo.page --;
         },
         filterIndexPage(e){
             this.indexInfo.page = 1;

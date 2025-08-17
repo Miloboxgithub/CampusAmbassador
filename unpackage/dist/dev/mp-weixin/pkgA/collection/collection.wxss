@@ -102,6 +102,7 @@
   width: 100vw;
   height: auto;
   padding-bottom: 20px;
+  background: whitesmoke;
 }
 .item.data-v-414d0f43 {
   position: relative;

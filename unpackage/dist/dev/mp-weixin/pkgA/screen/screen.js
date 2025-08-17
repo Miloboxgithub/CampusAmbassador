@@ -77,7 +77,7 @@ const _sfc_main = {
       }
     };
     const change = () => {
-      common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:162", "Popup state changed");
+      common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:165", "Popup state changed");
     };
     const select = (e) => {
       items.value.forEach((i) => {
@@ -147,12 +147,27 @@ const _sfc_main = {
       guimoOptions.value.forEach((i) => {
         i.f = false;
       });
-      edu.value = xueli.value[0] || "学历不限";
-      major.value = majorOptions.value[0] || "专业不限";
-      grade.value = gradeOptions.value[0] || "年级不限";
-      ind.value = indOptions.value[0] || "行业不限";
-      company.value = companyOptions.value[0] || "企业不限";
-      guimo.value = guimoOptions.value[0] || "规模不限";
+      edu.value = xueli.value[0].n || "学历不限";
+      major.value = majorOptions.value[0].n || "专业不限";
+      grade.value = gradeOptions.value[0].n || "年级不限";
+      ind.value = indOptions.value[0].n || "行业不限";
+      company.value = companyOptions.value[0].n || "企业不限";
+      guimo.value = guimoOptions.value[0].n || "规模不限";
+      std.value = true;
+      pageInfo.filterIndexPage({
+        keyword: "",
+        status: "招募中",
+        educationalRequire: edu.value,
+        majorRequire: major.value,
+        gradeRequire: grade.value,
+        industry: ind.value,
+        type: company.value,
+        scale: guimo.value
+      });
+      common_vendor.index.showToast({
+        title: "已重置筛选条件",
+        icon: "success"
+      });
     };
     const confirms = () => {
       pageInfo.filterIndexPage({
@@ -196,22 +211,34 @@ const _sfc_main = {
             n: item,
             f: false
           }));
-          edu.value = data.education[0] || "学历不限";
-          major.value = data.major[0] || "专业不限";
-          grade.value = data.grade[0] || "年级不限";
-          ind.value = data.industry[0] || "行业不限";
-          company.value = data.companyType[0] || "企业不限";
-          guimo.value = data.companyScale[0] || "规模不限";
-          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:294", "筛选数据初始化成功", data);
+          let ops = pageInfo.indexInfo;
+          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:303", "当前筛选条件:", ops);
+          edu.value = ops.educationalRequire || data.education[0];
+          major.value = ops.majorRequire || data.major[0];
+          grade.value = ops.gradeRequire || data.grade[0];
+          ind.value = ops.industry || data.industry[0];
+          company.value = ops.type || data.companyType[0];
+          guimo.value = ops.scale || data.companyScale[0];
+          std.value = ops.status == "招募中" || ops.status == "" ? true : false;
+          const markActive = (list, value) => list.forEach((item) => item.f = item.n === value);
+          [
+            [xueli.value, edu.value],
+            [majorOptions.value, major.value],
+            [gradeOptions.value, grade.value],
+            [indOptions.value, ind.value],
+            [companyOptions.value, company.value],
+            [guimoOptions.value, guimo.value]
+          ].forEach(([list, val]) => markActive(list, val));
+          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:323", "筛选数据初始化成功", data);
         } else {
-          common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:296", "获取筛选数据失败:", res);
+          common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:325", "获取筛选数据失败:", res);
           common_vendor.index.showToast({
             title: "加载数据失败",
             icon: "error"
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:303", "获取筛选数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:332", "获取筛选数据失败:", error);
         common_vendor.index.showToast({
           title: "加载数据失败",
           icon: "error"

@@ -3,7 +3,7 @@
 		<view class="moban">
 			<img class="moban-img" :src="TemplateImg" alt="" />
 			<view class="line"></view>
-			<text class="data">150人浏览过 | {{downloadNumber}}人使用过</text>
+			<text class="data"> {{viewCount}} 人浏览过 | {{downloadNumber}} 人使用过</text>
 		</view>
 	</view>
 	<view class="bottom">
@@ -46,6 +46,7 @@ import Template from "../../pages/template/template.vue";
 	const isCollected = ref(false); // 是否已收藏
 	const downloadUrl = ref(""); // 下载链接
 	const shareData = ref()
+	const viewCount = ref(0); // 浏览次数
 	onLoad(async (option) => {
 		wx.showShareMenu({
 			withShareTicket: true,
@@ -62,9 +63,11 @@ import Template from "../../pages/template/template.vue";
 			// 处理获取到的模板详情数据
 			let info = res.data.data;
 			TemplateImg.value = info.templateSampleGraph; // 设置模板图片路径
-			downloadNumber.value = info.downloadNumber; // 设置下载次数
+			downloadNumber.value = info.usageCount; // 设置下载次数
 			isCollected.value = info.isFavorite; // 设置收藏状态
-			downloadUrl.value = info.path; // 设置下载链接
+			downloadUrl.value = info.shareLinks.web.shareLink; // 设置下载链接
+			shareData.value = info.shareLinks.miniapp; // 设置分享数据
+			viewCount.value = info.viewCount; // 设置浏览次数
 		} else {
 			isLoading.value = false; // 隐藏加载状态
 			uni.showToast({
@@ -74,21 +77,6 @@ import Template from "../../pages/template/template.vue";
 		}
 		// 增加浏览次数
 		await addResumeViewCount(id.value);
-		// 获取下载次数
-		const countRes = await getResumeTemplateUseCount(id.value);
-		 // 获取浏览次数
-		 const viewCountRes = await getResumeViewCount(id.value);
-		 console.log("浏览次数:", viewCountRes,countRes);
-		const ress = await getResumeTemplateLink(id.value);
-		if (ress.statusCode !== 200 || ress.data.code !== 1) {
-			uni.showToast({
-				title: "获取分享链接失败",
-				icon: "error"
-			});
-			return;
-		}
-		const shareLink = ress.data.data.shareLink; // 获取分享链接
-		shareData.value = ress.data.data.shareData; // 设置分享链接
 	});
 	
 	const collectsClick = async () => {
@@ -147,9 +135,9 @@ import Template from "../../pages/template/template.vue";
 	onShareAppMessage(async() => {
 		
 		return {
-			title: shareData.value.title, // 分享标题
+			title: shareData.value.templateName, // 分享标题
 			path: `/pkgA/preview/preview?id=${id.value}`, // 分享路径
-			imageUrl: shareData.value.imageUrl, // 分享图片
+			imageUrl: shareData.value.templateSampleGraph, // 分享图片
 		}
 	})
 </script>

@@ -13,6 +13,7 @@ const _sfc_main = {
     const isCollected = common_vendor.ref(false);
     const downloadUrl = common_vendor.ref("");
     const shareData = common_vendor.ref();
+    const viewCount = common_vendor.ref(0);
     common_vendor.onLoad(async (option) => {
       common_vendor.wx$1.showShareMenu({
         withShareTicket: true,
@@ -21,16 +22,18 @@ const _sfc_main = {
       });
       isLoading.value = true;
       id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:57", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:58", "接收到的 id:", id.value);
       const res = await api_index.getResumeTemplateDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:59", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:60", "获取到的详情:", res);
       if (res.statusCode === 200 && res.data.code == 1) {
         isLoading.value = false;
         let info = res.data.data;
         TemplateImg.value = info.templateSampleGraph;
-        downloadNumber.value = info.downloadNumber;
+        downloadNumber.value = info.usageCount;
         isCollected.value = info.isFavorite;
-        downloadUrl.value = info.path;
+        downloadUrl.value = info.shareLinks.web.shareLink;
+        shareData.value = info.shareLinks.miniapp;
+        viewCount.value = info.viewCount;
       } else {
         isLoading.value = false;
         common_vendor.index.showToast({
@@ -39,19 +42,6 @@ const _sfc_main = {
         });
       }
       await api_index.addResumeViewCount(id.value);
-      const countRes = await api_index.getResumeTemplateUseCount(id.value);
-      const viewCountRes = await api_index.getResumeViewCount(id.value);
-      common_vendor.index.__f__("log", "at pkgA/preview/preview.vue:81", "浏览次数:", viewCountRes, countRes);
-      const ress = await api_index.getResumeTemplateLink(id.value);
-      if (ress.statusCode !== 200 || ress.data.code !== 1) {
-        common_vendor.index.showToast({
-          title: "获取分享链接失败",
-          icon: "error"
-        });
-        return;
-      }
-      ress.data.data.shareLink;
-      shareData.value = ress.data.data.shareData;
     });
     const collectsClick = async () => {
       if (!isCollected.value) {
@@ -102,22 +92,23 @@ const _sfc_main = {
     };
     common_vendor.onShareAppMessage(async () => {
       return {
-        title: shareData.value.title,
+        title: shareData.value.templateName,
         // 分享标题
         path: `/pkgA/preview/preview?id=${id.value}`,
         // 分享路径
-        imageUrl: shareData.value.imageUrl
+        imageUrl: shareData.value.templateSampleGraph
         // 分享图片
       };
     });
     return (_ctx, _cache) => {
       return {
         a: TemplateImg.value,
-        b: common_vendor.t(downloadNumber.value),
-        c: common_assets._imports_1$3,
-        d: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
-        e: common_vendor.o((...args) => collectsClick && collectsClick(...args)),
-        f: common_vendor.o(downloadWord)
+        b: common_vendor.t(viewCount.value),
+        c: common_vendor.t(downloadNumber.value),
+        d: common_assets._imports_1$3,
+        e: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
+        f: common_vendor.o((...args) => collectsClick && collectsClick(...args)),
+        g: common_vendor.o(downloadWord)
       };
     };
   }
