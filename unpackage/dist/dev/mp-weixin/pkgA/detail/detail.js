@@ -38,6 +38,7 @@ const _sfc_main = {
         introduce.value = deta.description || "暂无公司介绍";
         isLoading.value = false;
         isCollected.value = deta.isFavorite || false;
+        submited.value = deta.isDelivered || false;
       } else {
         isLoading.value = false;
         common_vendor.index.showToast({
@@ -146,6 +147,7 @@ const _sfc_main = {
           introduce.value = deta.description || "暂无公司介绍";
           isLoading.value = false;
           isCollected.value = deta.isFavorite || false;
+          submited.value = deta.isDelivered || false;
         } else {
           isLoading.value = false;
           common_vendor.index.showToast({

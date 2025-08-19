@@ -114,17 +114,15 @@
   vertical-align: top;
 }
 .kuais {
-  position: absolute;
-  top: 43px;
-  left: 2%;
+  margin-left: 3%;
   display: flex;
   flex-wrap: wrap;
   gap: 6px 3px;
 }
 .kuai {
   min-width: 30%;
-  padding-left: 1px;
-  padding-right: 1px;
+  padding-left: 3px;
+  padding-right: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -202,4 +200,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.file-name {
+  font-size: 13px;
+  color: #7e7e7e;
+  position: absolute;
+  bottom: 5px;
+  left: 16px;
+  opacity: 0;
+  /* 初始隐藏 */
+  transform: translateY(10px);
+  animation: slideUp 0.3s ease forwards;
+}
+@keyframes slideUp {
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
 }

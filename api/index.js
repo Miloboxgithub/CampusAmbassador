@@ -290,7 +290,7 @@ export const postCampusApply = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, '投递成功');
-				if(result.data.msg=="NOT_LOGIN"){
+				if(result.data.msg=="NOT_LOGIN"||result.data.msg=="用户未登录或token无效"){
 					console.log('登录过期，请重新登录');
 					uni.setStorageSync("loginStatus", false);
 					uni.showModal({
@@ -311,7 +311,7 @@ export const postCampusApply = (e) => {
 						fail: () => {},
 						complete: () => {}
 					});
-					  
+					  return;
 				}
 				resolve(result); // 返回数据
 			},
@@ -636,7 +636,7 @@ export const getUserResumeInfo = (userId) => {
 export const uploadResumeInfo = (resumeData) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: 'https://api.xydsh.cn/wechat/resume',
+			url: 'https://api.xydsh.cn/wechat/resume/upload-info',
 			data: resumeData,
 			header: {
 				'content-type': 'application/json',

@@ -60,7 +60,10 @@
             :range="graduationYears"
             @change="onGraduationYearChange"
           >
-            <view class="picker custom-placeholder" :style="{ color: fromData.graduate ? '#000' : '' }">
+            <view
+              class="picker custom-placeholder"
+              :style="{ color: fromData.graduate ? '#000' : '' }"
+            >
               {{ fromData.graduate || "请选择毕业届别" }}
               <image
                 class="arrow"
@@ -74,7 +77,10 @@
         <view class="row">
           <view class="msg">院校省份<text class="red">*</text></view>
           <picker mode="selector" :range="provinces" @change="onProvinceChange">
-            <view class="picker custom-placeholder" :style="{ color: fromData.province ? '#000' : '#' }">
+            <view
+              class="picker custom-placeholder"
+              :style="{ color: fromData.province ? '#000' : '#' }"
+            >
               {{ fromData.province || "请选择院校省份" }}
               <image
                 class="arrow"
@@ -87,15 +93,23 @@
         <view class="line"></view>
         <view class="row">
           <view class="msg">院校城市<text class="red">*</text></view>
-		  
-          <picker mode="selector" :range="cities" @change="onCityChange" :disabled="!fromData.province">
-            <view class="picker custom-placeholder" @click="checkProvince" :style="{ color: fromData.city ? '#000' : '' }">
+
+          <picker
+            mode="selector"
+            :range="cities"
+            @change="onCityChange"
+            :disabled="!fromData.province"
+          >
+            <view
+              class="picker custom-placeholder"
+              @click="checkProvince"
+              :style="{ color: fromData.city ? '#000' : '' }"
+            >
               {{ fromData.city || "请选择院校城市" }}
               <image
                 class="arrow"
                 src="../img/you.png"
                 mode="aspectFit|aspectFill|widthFix"
-				
               />
             </view>
           </picker>
@@ -108,7 +122,10 @@
             :range="educationLevels"
             @change="onEducationLevelChange"
           >
-            <view class="picker custom-placeholder"  :style="{ color: fromData.educational ? '#000' : '' }">
+            <view
+              class="picker custom-placeholder"
+              :style="{ color: fromData.educational ? '#000' : '' }"
+            >
               {{ fromData.educational || "请选择最高学历" }}
               <image
                 class="arrow"
@@ -131,7 +148,7 @@
         </view>
       </view>
     </view>
-    <view class="white" style="min-height: 301px">
+    <view class="white" style="min-height: 301px; padding-top: 43px">
       <view class="theme">意向行业<text class="red">*</text></view>
       <view class="more">（可多选）</view>
       <view class="kuais">
@@ -145,7 +162,7 @@
         </view>
       </view>
     </view>
-    <view class="white" style="height: 134px">
+    <view class="white" style="min-height: 134px; padding-top: 43px">
       <view class="theme">拥有资源<text class="red">*</text></view>
       <view class="more">（可多选）</view>
       <view class="kuais">
@@ -170,13 +187,17 @@
         v-model="fromData.experienceAndStrengths"
       ></textarea>
     </view>
-    <view class="white">
+    <view class="white" style="min-height: 130px">
       <view class="theme">简历附件<text class="red">*</text></view>
       <view class="upload" @click="uploadFile">
         <image
           src="../img/upload.png"
           mode="aspectFit|aspectFill|widthFix"
         ></image>
+      </view>
+      <!-- 上传成功后显示文件名 -->
+      <view v-if="resumeFileName" class="file-name slide-up">
+        {{ resumeFileName }}
       </view>
     </view>
     <view class="footer">
@@ -186,7 +207,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,computed } from "vue";
+import { ref, computed,nextTick } from "vue";
 import {
   onShow,
   onLoad,
@@ -237,8 +258,10 @@ for (let i = 0; i < 4; i++) {
 
 /* 省列表：直接把名称取出来 */
 const provinces = computed(() =>
-  Object.keys(areaList.province_list).map(code => areaList.province_list[code])
-)
+  Object.keys(areaList.province_list).map(
+    (code) => areaList.province_list[code]
+  )
+);
 /* 城市列表（随省动态变化） */
 const cities = ref([]);
 
@@ -251,72 +274,80 @@ const onGraduationYearChange = (e) => {
 
 /* 省变化时联动城市 */
 const onProvinceChange = (e) => {
-
-  const provinceName = provinces.value[e.detail.value]
-  console.log(provinceName)
-  fromData.value.province = provinceName
+  const provinceName = provinces.value[e.detail.value];
+  console.log(provinceName);
+  fromData.value.province = provinceName;
 
   /* 找出所有属于该省的城市名称 */
   // 1. 先找到当前省的 code
   const provinceCode = Object.keys(areaList.province_list).find(
-    code => areaList.province_list[code] === provinceName
-  )
+    (code) => areaList.province_list[code] === provinceName
+  );
   // 2. 再过滤出城市名称
   cities.value = Object.keys(areaList.city_list)
-    .filter(code => code.slice(0, 2) === provinceCode!.slice(0, 2))
-    .map(code => areaList.city_list[code])
+    .filter((code) => code.slice(0, 2) === provinceCode!.slice(0, 2))
+    .map((code) => areaList.city_list[code]);
 
-  fromData.value.city = ''
-}
+  fromData.value.city = "";
+};
 function checkProvince() {
   if (!fromData.value.province) {
     uni.showToast({
-      title: '请先选择省份',
-      icon: 'none',
-      duration: 1500
+      title: "请先选择省份",
+      icon: "none",
+      duration: 1500,
     });
   }
 }
 const onCityChange = (e) => {
-	fromData.value.city = cities.value[e.detail.value]
+  fromData.value.city = cities.value[e.detail.value];
 };
 
 const onEducationLevelChange = (e) => {
   fromData.value.educational = educationLevels.value[e.detail.value];
 };
+const resumeFileName = ref(""); // 上传成功后保存文件名
+const filePath = ref(""); // 上传成功后保存文件路径
+const isUploadFile = ref(false); // 是否上传文件
 //上传简历附件文件（支持PDF、DOCX、PNG、JPG格式）
 const uploadFile = () => {
-  uni.chooseMessageFile({
+  wx.chooseMessageFile({
     count: 1, // 默认选择一个文件
     type: "file", // 选择文件类型
     success: async (res) => {
       const file = res.tempFiles[0];
       if (file) {
         console.log(file, "选择的文件信息");
-        try {
-          const uploadRes = await uploadResumeAttachment(file.path);
-          console.log(uploadRes, "上传简历附件的响应信息");
-          if (
-            uploadRes.statusCode === 200 &&
-            uploadRes.errMsg === "uploadFile:ok"
-          ) {
-            uni.showToast({
-              title: "上传成功",
-              icon: "success",
-            });
-          } else {
-            uni.showToast({
-              title: uploadRes.errMsg || "上传失败",
-              icon: "none",
-            });
-          }
-        } catch (error) {
-          console.error("上传简历附件失败:", error);
-          uni.showToast({
-            title: "上传简历附件失败",
-            icon: "none",
-          });
-        }
+        resumeFileName.value = ""; // 先清空 → 触发离开
+        await nextTick(); // 等 DOM 更新
+        resumeFileName.value = file.name; //||uploadRes.data?.fileName; // 取后端文件名或前端原名
+        filePath.value = file.path; // 保存文件路径
+        isUploadFile.value = true; // 标记已上传文件
+        // try {
+        //   const uploadRes = await uploadResumeAttachment(file.path);
+        //   console.log(uploadRes, "上传简历附件的响应信息");
+        //   if (
+        //     uploadRes.statusCode === 200 &&
+        //     uploadRes.errMsg === "uploadFile:ok"
+        //   ) {
+
+        //     uni.showToast({
+        //       title: "上传成功",
+        //       icon: "success",
+        //     });
+        //   } else {
+        //     uni.showToast({
+        //       title: uploadRes.errMsg || "上传失败",
+        //       icon: "none",
+        //     });
+        //   }
+        // } catch (error) {
+        //   console.error("上传简历附件失败:", error);
+        //   uni.showToast({
+        //     title: "上传简历附件失败",
+        //     icon: "none",
+        //   });
+        // }
       }
     },
     fail: (error) => {
@@ -354,7 +385,7 @@ const submitResumeInfo = async () => {
       return;
     }
   }
-  // 检查意向行业和拥有资源是否至少选择一个
+  //检查意向行业和拥有资源是否至少选择一个
   if (!orders.value.some((item) => item.isdian)) {
     uni.showToast({
       title: "请至少选择一个意向行业",
@@ -385,19 +416,37 @@ const submitResumeInfo = async () => {
       assets: resourse.value
         .filter((item) => item.isdian)
         .map((item) => item.name)
-        .join(","),
+        .join("&"),
       intendedIndustry: orders.value
         .filter((item) => item.isdian)
         .map((item) => item.name)
-        .join(","),
+        .join("&"),
       experienceAndStrengths: fromData.value.experienceAndStrengths,
     };
     console.log(resumeData, "提交的简历信息");
+    // 如果有上传文件，则添加文件路径
+    if (isUploadFile.value && filePath.value) {
+      const uploadRes = await uploadResumeAttachment(filePath.value);
+      console.log(uploadRes, "上传简历附件的响应信息");
+      if (
+        uploadRes.statusCode === 200 &&
+        uploadRes.errMsg === "uploadFile:ok"
+      ) {
+      } else {
+        uni.showToast({
+          title: "修改简历失败",
+          icon: "none",
+        });
+        return;
+      }
+    }
+
     const res = await uploadResumeInfo(resumeData);
+
     console.log(res, "提交简历信息的响应信息");
     if (res.statusCode === 200 && res.data.code === 1) {
       uni.showToast({
-        title: "简历信息提交成功",
+        title: "简历修改成功",
         icon: "success",
       });
     } else {
@@ -409,7 +458,7 @@ const submitResumeInfo = async () => {
   } catch (error) {
     console.error("提交简历信息失败:", error);
     uni.showToast({
-      title: "提交简历信息失败",
+      title: "修改简历失败",
       icon: "none",
     });
   }
@@ -429,22 +478,53 @@ const GetUserResumeInfo = async () => {
       fromData.value.email = resumeInfo.email || "";
       fromData.value.college = resumeInfo.college || "";
       fromData.value.province = resumeInfo.province || "";
+      let provinceName = resumeInfo.province || "";
+      /* 找出所有属于该省的城市名称 */
+      // 1. 先找到当前省的 code
+      const provinceCode = Object.keys(areaList.province_list).find(
+        (code) => areaList.province_list[code] === provinceName
+      );
+      // 2. 再过滤出城市名称
+      cities.value = Object.keys(areaList.city_list)
+        .filter((code) => code.slice(0, 2) === provinceCode!.slice(0, 2))
+        .map((code) => areaList.city_list[code]);
+
       fromData.value.city = resumeInfo.city || "";
       fromData.value.educational = resumeInfo.educational || "";
       fromData.value.graduate = resumeInfo.graduate || "";
       fromData.value.major = resumeInfo.major || "";
       fromData.value.experienceAndStrengths =
         resumeInfo.experienceAndStrengths || "";
-      // 处理意向行业和拥有资源
+      // 处理意向行业
+      const industryArr = resumeInfo.intendedIndustry
+        ? resumeInfo.intendedIndustry.split("&")
+        : [];
       orders.value.forEach((item) => {
-        item.isdian =
-          resumeInfo.intendedIndustry &&
-          resumeInfo.intendedIndustry.includes(item.name);
+        item.isdian = industryArr.includes(item.name);
       });
+
+      // 处理拥有资源
+      const assetArr = resumeInfo.assets ? resumeInfo.assets.split("&") : [];
       resourse.value.forEach((item) => {
-        item.isdian =
-          resumeInfo.assets && resumeInfo.assets.includes(item.name);
+        item.isdian = assetArr.includes(item.name);
       });
+
+      //处理简历附件
+      if (resumeInfo.resumeLink) {
+        // 通用：取最后一个 / 后面的部分
+        resumeFileName.value = resumeInfo.resumeLink.split("/").pop() || "";
+
+        // 如果后面可能带 ? 参数
+        //const fileName = fullUrl.split('/').pop().split('?')[0];
+
+        // 用正则（更稳妥）
+        //const fileName = /\/([^\/]+?)(?:\?.*)?$/.exec(fullUrl)?.[1] || '';
+        isUploadFile.value = true; // 标记已上传文件
+      } else {
+        resumeFileName.value = ""; // 清空文件名
+
+        isUploadFile.value = false; // 标记未上传文件
+      }
     } else {
       uni.showToast({
         title: res.errMsg,
@@ -463,7 +543,7 @@ onLoad(() => {
   // 页面加载时获取简历选项
   getResumeOptions()
     .then((res) => {
-      console.log(res, "获取简历选项的响应信息");
+      //console.log(res, "获取简历选项的响应信息");
       if (res.statusCode === 200 && res.data.code === 1) {
         res.data.data.industryOptions.forEach((item) => {
           orders.value.push({
@@ -477,6 +557,8 @@ onLoad(() => {
             isdian: false,
           });
         });
+        // 获取用户简历信息
+        GetUserResumeInfo();
       } else {
         uni.showToast({
           title: res.errMsg,
@@ -492,10 +574,7 @@ onLoad(() => {
       });
     });
 });
-onShow(() => {
-  // 页面显示时获取用户简历信息
-  GetUserResumeInfo();
-});
+onShow(() => {});
 </script>
 
 <style lang="scss">
@@ -601,10 +680,10 @@ onShow(() => {
 }
 
 .kuais {
-  position: absolute;
-  top: 43px;
-  // width: 92%;
-  left: 2%;
+  // position: absolute;
+  // top: 43px;
+  //width: 94%;
+  margin-left: 3%;
   display: flex;
   flex-wrap: wrap;
   gap: 6px 3px;
@@ -612,8 +691,8 @@ onShow(() => {
 
 .kuai {
   min-width: 30%;
-  padding-left: 1px;
-  padding-right: 1px;
+  padding-left: 3px;
+  padding-right: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -697,5 +776,21 @@ onShow(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.file-name {
+  font-size: 13px;
+  color: #7e7e7e;
+  position: absolute;
+  bottom: 5px;
+  left: 16px;
+  opacity: 0; /* 初始隐藏 */
+  transform: translateY(10px);
+  animation: slideUp 0.3s ease forwards;
+}
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

@@ -43,40 +43,31 @@ const _sfc_main = {
       }
     ]);
     const mobans = common_vendor.ref([
-      {
-        img: "../../static/模板1@2x.png",
-        sum: 5e3
-      },
-      {
-        img: "../../static/模板1@2x (1).png",
-        sum: 5e3
-      },
-      {
-        img: "../../static/模板1@2x (2).png",
-        sum: 5e3
-      },
-      {
-        img: "../../static/模板1@2x (3).png",
-        sum: 5e3
-      }
+      // {
+      //   img: "../../static/模板1@2x.png",
+      //   sum: 5000,
+      //   isCollected: false,
+      // },
     ]);
     common_vendor.onLoad(async () => {
-      common_vendor.index.__f__("log", "at pages/template/template.vue:101", "页面加载");
+      common_vendor.index.__f__("log", "at pages/template/template.vue:90", "页面加载");
       mobans.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
-        common_vendor.index.__f__("log", "at pages/template/template.vue:107", "获取到的简历模板数据:", arr);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:96", "获取到的简历模板数据:", arr);
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
             img: e.templateSampleGraph,
-            sum: e.downloadNumber
+            sum: e.downloadNumber,
+            isCollected: e.isFavorite
+            // 添加收藏状态
           });
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/template/template.vue:117", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/template/template.vue:107", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -85,15 +76,15 @@ const _sfc_main = {
       }
     });
     common_vendor.onShow(() => {
-      common_vendor.index.__f__("log", "at pages/template/template.vue:127", "页面显示");
+      common_vendor.index.__f__("log", "at pages/template/template.vue:117", "页面显示");
     });
     common_vendor.onReachBottom(async () => {
       pageInfo.getTemplatePage();
-      common_vendor.index.__f__("log", "at pages/template/template.vue:132", "触底了", pageInfo.templateInfo);
+      common_vendor.index.__f__("log", "at pages/template/template.vue:122", "触底了", pageInfo.templateInfo);
       try {
         isLoading.value = true;
         const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
-        common_vendor.index.__f__("log", "at pages/template/template.vue:136", "获取到的更多简历模板数据:", arr);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:126", "获取到的更多简历模板数据:", arr);
         if (arr.length === 0) {
           common_vendor.index.showToast({
             title: "没有更多数据了",
@@ -108,12 +99,14 @@ const _sfc_main = {
             id: e.id,
             img: e.templateSampleGraph || "https://picsum.photos/400",
             // 如果没有图片则使用默认图片
-            sum: e.downloadNumber
+            sum: e.downloadNumber,
+            isCollected: e.isFavorite
+            // 添加收藏状态
           });
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/template/template.vue:155", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/template/template.vue:146", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -122,24 +115,26 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pages/template/template.vue:165", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pages/template/template.vue:156", "下拉刷新了");
       pageInfo.initTemplateInfo();
       mobans.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
-        common_vendor.index.__f__("log", "at pages/template/template.vue:172", "获取到的简历模板数据:", arr);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:163", "获取到的简历模板数据:", arr);
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
             img: e.templateSampleGraph || "https://picsum.photos/400",
-            sum: e.downloadNumber
+            sum: e.downloadNumber,
+            isCollected: e.isFavorite
+            // 添加收藏状态
           });
         });
         isLoading.value = false;
         common_vendor.index.stopPullDownRefresh();
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/template/template.vue:183", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/template/template.vue:175", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -160,17 +155,19 @@ const _sfc_main = {
       try {
         isLoading.value = true;
         const arr = await api_index.getResumeTemplate(pageInfo.templateInfo);
-        common_vendor.index.__f__("log", "at pages/template/template.vue:205", "获取到的新简历模板数据:", arr);
+        common_vendor.index.__f__("log", "at pages/template/template.vue:197", "获取到的新简历模板数据:", arr);
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
             img: e.templateSampleGraph || "https://picsum.photos/400",
-            sum: e.downloadNumber
+            sum: e.downloadNumber,
+            isCollected: e.isFavorite
+            // 添加收藏状态
           });
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/template/template.vue:215", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/template/template.vue:208", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -203,12 +200,12 @@ const _sfc_main = {
           return {
             a: item.img,
             b: common_vendor.t(item.sum),
-            c: index,
-            d: common_vendor.o(($event) => navs(item.id), index)
+            c: item.isCollected ? "../../static/collected.png" : "../../static/collect.png",
+            d: index,
+            e: common_vendor.o(($event) => navs(item.id), index)
           };
         }),
-        g: common_assets._imports_6,
-        h: common_assets._imports_3$2
+        g: common_assets._imports_6
       };
     };
   }

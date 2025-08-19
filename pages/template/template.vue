@@ -28,7 +28,7 @@
           <view class="line"></view>
           <img src="../../static/下载@2x.png" alt="" class="download" />
           <text class="sum">{{ item.sum }}</text>
-          <img src="../../static/collect.png" alt="" class="collect" />
+          <img :src="item.isCollected ? '../../static/collected.png' : '../../static/collect.png'" alt="" class="collect" />
         </view>
       </view>
     </view>
@@ -79,22 +79,11 @@ const types = ref([
   },
 ]);
 const mobans = ref([
-  {
-    img: "../../static/模板1@2x.png",
-    sum: 5000,
-  },
-  {
-    img: "../../static/模板1@2x (1).png",
-    sum: 5000,
-  },
-  {
-    img: "../../static/模板1@2x (2).png",
-    sum: 5000,
-  },
-  {
-    img: "../../static/模板1@2x (3).png",
-    sum: 5000,
-  },
+  // {
+  //   img: "../../static/模板1@2x.png",
+  //   sum: 5000,
+  //   isCollected: false,
+  // },
 ]);
 // 页面加载时执行的逻辑
 onLoad(async () => {
@@ -110,6 +99,7 @@ onLoad(async () => {
         id: e.id,
         img: e.templateSampleGraph,
         sum: e.downloadNumber,
+        isCollected: e.isFavorite, // 添加收藏状态
       });
     });
     isLoading.value = false; // 隐藏加载状态
@@ -148,6 +138,7 @@ onReachBottom(async () => {
         id: e.id,
         img: e.templateSampleGraph|| "https://picsum.photos/400", // 如果没有图片则使用默认图片
         sum: e.downloadNumber,
+        isCollected: e.isFavorite, // 添加收藏状态
       });
     });
     isLoading.value = false; // 隐藏加载状态
@@ -175,6 +166,7 @@ onPullDownRefresh(async () => {
         id: e.id,
         img: e.templateSampleGraph||"https://picsum.photos/400",
         sum: e.downloadNumber,
+        isCollected: e.isFavorite, // 添加收藏状态
       });
     });
     isLoading.value = false; // 隐藏加载状态
@@ -208,6 +200,7 @@ const changeType = async (i) => {
         id: e.id,
         img: e.templateSampleGraph||"https://picsum.photos/400",
         sum: e.downloadNumber,
+        isCollected: e.isFavorite, // 添加收藏状态
       });
     });
     isLoading.value = false; // 隐藏加载状态
