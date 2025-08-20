@@ -646,7 +646,28 @@ export const uploadResumeInfo = (resumeData) => {
 			dataType: 'json',
 			responseType: 'text',
 			success: (result) => {
-				console.log(result, '上传简历信息成功');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {
@@ -669,7 +690,28 @@ export const uploadResumeAttachment = (filePath) => {
 				Authorization: uni.getStorageSync('jwt') || ''
 			},
 			success: (result) => {
-				//console.log(result, '上传简历附件成功');
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+				}
 				resolve(result); // 返回数据
 			},
 			fail: (err) => {

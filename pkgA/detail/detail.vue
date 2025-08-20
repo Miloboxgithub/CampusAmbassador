@@ -107,7 +107,7 @@
 			tags.value = [deta.type, deta.scale, "校园大使"];
 			type.value = deta.industries || "未知类型";
 			status.value = deta.isRecruit ? "招募中" : "已结束";
-			coicon.value = deta.logo || "https://picsum.photos/200"; // 默认图片
+			coicon.value = "https://api.xydsh.cn/enterpriseLogo/"+deta.logo || "https://picsum.photos/200"; // 默认图片
 			name.value = deta.name || "未知名称";
 			task.value = deta.task || "暂无任务信息";
 			harvest.value = deta.harvest || "暂无收获信息";
@@ -229,7 +229,7 @@
 				tags.value = [deta.type, deta.scale, "校园大使"];
 				type.value = deta.industries || "未知类型";
 				status.value = deta.isRecruit ? "招募中" : "已结束";
-				coicon.value = deta.logo || "https://picsum.photos/200"; // 默认图片
+				coicon.value = "https://api.xydsh.cn/enterpriseLogo/"+deta.logo || "https://picsum.photos/200"; // 默认图片
 				name.value = deta.name || "未知名称";
 				task.value = deta.task || "暂无任务信息";
 				harvest.value = deta.harvest || "暂无收获信息";

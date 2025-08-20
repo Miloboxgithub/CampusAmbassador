@@ -67,7 +67,7 @@ onLoad(async () => {
 					tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
 					type: e.enterpriseIndustries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.enterpriseLogo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.enterpriseLogo,
 					look: e.pageView,
 			})
 		})
@@ -106,7 +106,7 @@ onLoad(async () => {
 					tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
 					type: e.enterpriseIndustries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.enterpriseLogo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.enterpriseLogo,
 					look: e.pageView,
 				});
 			});
@@ -136,7 +136,7 @@ onLoad(async () => {
 					tags: [e.enterpriseType, e.enterpriseScale, "校园大使"],
 					type: e.enterpriseIndustries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.enterpriseLogo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.enterpriseLogo,
 					look: e.pageView,
 				});
 			});

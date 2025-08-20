@@ -59,7 +59,7 @@ const _sfc_main = {
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
-            img: e.templateSampleGraph,
+            img: "https://api.xydsh.cn/img/" + e.templateSampleGraph,
             sum: e.downloadNumber,
             isCollected: e.isFavorite
             // 添加收藏状态
@@ -97,7 +97,7 @@ const _sfc_main = {
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
-            img: e.templateSampleGraph || "https://picsum.photos/400",
+            img: "https://api.xydsh.cn/img/" + e.templateSampleGraph || "https://picsum.photos/400",
             // 如果没有图片则使用默认图片
             sum: e.downloadNumber,
             isCollected: e.isFavorite
@@ -125,7 +125,7 @@ const _sfc_main = {
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
-            img: e.templateSampleGraph || "https://picsum.photos/400",
+            img: "https://api.xydsh.cn/img/" + e.templateSampleGraph,
             sum: e.downloadNumber,
             isCollected: e.isFavorite
             // 添加收藏状态
@@ -159,7 +159,7 @@ const _sfc_main = {
         arr.forEach((e) => {
           mobans.value.push({
             id: e.id,
-            img: e.templateSampleGraph || "https://picsum.photos/400",
+            img: "https://api.xydsh.cn/img/" + e.templateSampleGraph || "https://picsum.photos/400",
             sum: e.downloadNumber,
             isCollected: e.isFavorite
             // 添加收藏状态

@@ -155,7 +155,7 @@ const inputed = async (e) => {
       tags: [e.type, e.scale, "校园大使"],
       type: e.industries,
       status: e.isRecruit ? "招募中" : "已结束",
-      coicon: e.logo,
+      coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
       look: e.pageView,
     });
   });

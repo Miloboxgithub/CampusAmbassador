@@ -400,6 +400,13 @@ const submitResumeInfo = async () => {
     });
     return;
   }
+  if(!isUploadFile.value){
+    uni.showToast({
+      title: "请上传简历附件",
+      icon: "none",
+    });
+    return;
+  }
   try {
     const resumeData = {
       // 这里填入需要提交的简历信息
@@ -765,7 +772,7 @@ onShow(() => {});
   height: 36px;
   opacity: 1;
   border-radius: 18px;
-  background: rgba(88, 127, 255, 0.4);
+  background: rgba(88, 127, 255, 1);
   font-size: 17px;
   font-weight: 500;
   letter-spacing: 0px;

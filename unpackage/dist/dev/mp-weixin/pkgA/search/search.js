@@ -64,7 +64,7 @@ const _sfc_main = {
           tags: [e2.type, e2.scale, "校园大使"],
           type: e2.industries,
           status: e2.isRecruit ? "招募中" : "已结束",
-          coicon: e2.logo,
+          coicon: "https://api.xydsh.cn/enterpriseLogo/" + e2.logo,
           look: e2.pageView
         });
       });

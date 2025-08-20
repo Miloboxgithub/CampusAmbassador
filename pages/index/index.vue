@@ -72,15 +72,7 @@
 	import Loading from "../../components/Loading.vue";
 	const isLoading = ref(false);
 	const pageInfo = pageStore();
-	const items = ref([{
-		id: 1,
-		name: "振石控股集团有限公司",
-		tags: ["民营", "2000人以上", "校园大使"],
-		type: "汽车|机械|创造",
-		status: "招募中",
-		coicon: "https://picsum.photos/200",
-		look: "5000",
-	}, ]);
+	const items = ref([ ]);
 	// 页面加载时执行的逻辑
 	onLoad(async () => {
 		console.log("页面加载");
@@ -97,7 +89,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.logo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
 					look: e.pageView,
 				});
 			});
@@ -137,7 +129,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.logo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
 					look: e.pageView,
 				});
 			});
@@ -182,7 +174,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.logo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
 					look: e.pageView,
 				});
 			});
@@ -213,7 +205,7 @@
 					tags: [e.type, e.scale, "校园大使"],
 					type: e.industries,
 					status: e.isRecruit ? "招募中" : "已结束",
-					coicon: e.logo,
+					coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
 					look: e.pageView,
 				});
 			});

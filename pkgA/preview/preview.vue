@@ -62,7 +62,7 @@ import Template from "../../pages/template/template.vue";
 			isLoading.value = false; // 隐藏加载状态
 			// 处理获取到的模板详情数据
 			let info = res.data.data;
-			TemplateImg.value = info.templateSampleGraph; // 设置模板图片路径
+			TemplateImg.value = "https://api.xydsh.cn/img/"+info.templateSampleGraph; // 设置模板图片路径
 			downloadNumber.value = info.usageCount; // 设置下载次数
 			isCollected.value = info.isFavorite; // 设置收藏状态
 			downloadUrl.value = info.shareLinks.web.shareLink; // 设置下载链接

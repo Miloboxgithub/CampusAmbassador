@@ -189,7 +189,7 @@
   height: 36px;
   opacity: 1;
   border-radius: 18px;
-  background: rgba(88, 127, 255, 0.4);
+  background: #587fff;
   font-size: 17px;
   font-weight: 500;
   letter-spacing: 0px;

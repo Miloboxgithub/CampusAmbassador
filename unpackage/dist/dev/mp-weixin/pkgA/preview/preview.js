@@ -28,7 +28,7 @@ const _sfc_main = {
       if (res.statusCode === 200 && res.data.code == 1) {
         isLoading.value = false;
         let info = res.data.data;
-        TemplateImg.value = info.templateSampleGraph;
+        TemplateImg.value = "https://api.xydsh.cn/img/" + info.templateSampleGraph;
         downloadNumber.value = info.usageCount;
         isCollected.value = info.isFavorite;
         downloadUrl.value = info.shareLinks.web.shareLink;

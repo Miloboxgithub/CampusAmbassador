@@ -142,7 +142,7 @@ onLoad(async () => {
         tags: [e.type, e.scale, "校园大使"],
         type: e.industries,
         status: e.isRecruit ? "招募中" : "已结束",
-        coicon: e.logo,
+        coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
         look: e.pageView,
         isdian: false,
       });
@@ -182,7 +182,7 @@ onReachBottom(async () => {
       arr.forEach((e) => {
         mobans.value.push({
           id: e.id,
-          img: e.templateSampleGraph,
+          img: "https://api.xydsh.cn/img/"+e.templateSampleGraph,
           sum: e.downloadNumber,
           isdian: false,
         });
@@ -206,7 +206,7 @@ onReachBottom(async () => {
           tags: [e.type, e.scale, "校园大使"],
           type: e.industries,
           status: e.isRecruit ? "招募中" : "已结束",
-          coicon: e.logo,
+          coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
           look: e.pageView,
           isdian: false,
         });
@@ -241,7 +241,7 @@ onPullDownRefresh(async () => {
         tags: [e.type, e.scale, "校园大使"],
         type: e.industries,
         status: e.isRecruit ? "招募中" : "已结束",
-        coicon: e.logo,
+        coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
         look: e.pageView,
         isdian: false,
       });
@@ -272,7 +272,7 @@ const changeTab = async (flag) => {
       arr.forEach((e) => {
         mobans.value.push({
           id: e.id,
-          img: e.templateSampleGraph,
+          img: "https://api.xydsh.cn/img/"+e.templateSampleGraph,
           sum: e.downloadNumber,
           isdian: false,
         });
@@ -302,7 +302,7 @@ const changeTab = async (flag) => {
           tags: [e.type, e.scale, "校园大使"],
           type: e.industries,
           status: e.isRecruit ? "招募中" : "已结束",
-          coicon: e.logo,
+          coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
           look: e.pageView,
           isdian: false,
         });

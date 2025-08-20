@@ -46,7 +46,11 @@
 		"setting": {
 			"urlCheck": false
 		},
-		"usingComponents": true
+		"usingComponents": true,
+		"minify": {
+			"type": "esbuild",
+			"drop_console": true
+		}
 	},
 	"mp-alipay": {
 		"usingComponents": true

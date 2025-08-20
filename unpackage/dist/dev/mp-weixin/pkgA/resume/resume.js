@@ -139,6 +139,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         });
         return;
       }
+      if (!isUploadFile.value) {
+        common_vendor.index.showToast({
+          title: "请上传简历附件",
+          icon: "none"
+        });
+        return;
+      }
       try {
         const resumeData = {
           // 这里填入需要提交的简历信息
@@ -156,10 +163,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           intendedIndustry: orders.value.filter((item) => item.isdian).map((item) => item.name).join("&"),
           experienceAndStrengths: fromData.value.experienceAndStrengths
         };
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:426", resumeData, "提交的简历信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:433", resumeData, "提交的简历信息");
         if (isUploadFile.value && filePath.value) {
           const uploadRes = await api_index.uploadResumeAttachment(filePath.value);
-          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:430", uploadRes, "上传简历附件的响应信息");
+          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:437", uploadRes, "上传简历附件的响应信息");
           if (uploadRes.statusCode === 200 && uploadRes.errMsg === "uploadFile:ok") {
           } else {
             common_vendor.index.showToast({
@@ -170,7 +177,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           }
         }
         const res = await api_index.uploadResumeInfo(resumeData);
-        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:446", res, "提交简历信息的响应信息");
+        common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:453", res, "提交简历信息的响应信息");
         if (res.statusCode === 200 && res.data.code === 1) {
           common_vendor.index.showToast({
             title: "简历修改成功",
@@ -183,7 +190,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:459", "提交简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:466", "提交简历信息失败:", error);
         common_vendor.index.showToast({
           title: "修改简历失败",
           icon: "none"
@@ -194,7 +201,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       try {
         const res = await api_index.getUserResumeInfo();
         if (res.statusCode === 200 && res.data.code === 1) {
-          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:473", res, "获取到的简历信息");
+          common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:480", res, "获取到的简历信息");
           const resumeInfo = res.data.data;
           fromData.value.name = resumeInfo.name || "";
           fromData.value.phone = resumeInfo.phone || "";
@@ -234,7 +241,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:535", "获取简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:542", "获取简历信息失败:", error);
         common_vendor.index.showToast({
           title: "获取简历信息失败",
           icon: "none"
@@ -264,7 +271,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           });
         }
       }).catch((error) => {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:570", "获取简历选项失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:577", "获取简历选项失败:", error);
         common_vendor.index.showToast({
           title: "获取简历选项失败",
           icon: "none"
