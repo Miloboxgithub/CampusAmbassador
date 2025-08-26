@@ -180,3 +180,6 @@
   right: 26px;
   bottom: 15px;
 }
+.ended.data-v-f33b20de {
+  color: #999797 !important;
+}

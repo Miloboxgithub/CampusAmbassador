@@ -1,55 +1,60 @@
 <template>
-  <scroll-view class="page-container" scroll-y="true">
+  <scroll-view scroll-anchoring="true" class="page-container" scroll-y="true">
     <view class="white" style="height: 522px">
       <view class="theme">基本信息</view>
       <view style="position: absolute; top: 33px; width: 100%">
         <view class="row">
           <view class="msg">姓名<text class="red">*</text></view>
           <input
-            type="text"
+            type="textarea"
             placeholder="请输入姓名"
             placeholder-class="custom-placeholder"
             v-model="fromData.name"
+            adjust-position="false"
           />
         </view>
         <view class="line"></view>
         <view class="row">
           <view class="msg">院校名称<text class="red">*</text></view>
           <input
-            type="text"
+            type="textarea"
             placeholder="请输入院校名称"
             placeholder-class="custom-placeholder"
             v-model="fromData.college"
+            adjust-position="false"
           />
         </view>
         <view class="line"></view>
         <view class="row">
           <view class="msg">手机号码<text class="red">*</text></view>
           <input
-            type="text"
+            type="textarea"
             placeholder="请输入手机号码"
             placeholder-class="custom-placeholder"
             v-model="fromData.phone"
+            adjust-position="false"
           />
         </view>
         <view class="line"></view>
         <view class="row">
           <view class="msg">微信号<text class="red">*</text></view>
           <input
-            type="text"
+            type="textarea"
             placeholder="请输入微信号"
             placeholder-class="custom-placeholder"
             v-model="fromData.weChat"
+            adjust-position="false"
           />
         </view>
         <view class="line"></view>
         <view class="row">
           <view class="msg">电子邮箱<text class="red">*</text></view>
           <input
-            type="text"
+            type="textarea"
             placeholder="请输入电子邮箱"
             placeholder-class="custom-placeholder"
             v-model="fromData.email"
+            adjust-position="false"
           />
         </view>
         <view class="line"></view>
@@ -139,7 +144,7 @@
         <view class="row">
           <view class="msg">专业名称<text class="red">*</text></view>
           <input
-            type="text"
+            type="textarea"
             placeholder="请输入专业名称"
             placeholder-class="custom-placeholder"
             adjust-position="false"
@@ -148,7 +153,7 @@
         </view>
       </view>
     </view>
-    <view class="white" style="min-height: 301px; padding-top: 43px">
+    <view class="white" style="padding-bottom: 15px; padding-top: 43px">
       <view class="theme">意向行业<text class="red">*</text></view>
       <view class="more">（可多选）</view>
       <view class="kuais">
@@ -197,7 +202,12 @@
       </view>
       <!-- 上传成功后显示文件名 -->
       <view v-if="resumeFileName" class="file-name slide-up">
-        {{ resumeFileName }}
+        <view>
+          {{ resumeFileName }}
+        </view>
+          
+        <image class="success-img" src="../../static/EpSuccessFilled.svg" mode="aspectFit" lazy-load="false" binderror="" bindload="" />
+          
       </view>
     </view>
     <view class="footer">
@@ -207,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed,nextTick } from "vue";
+import { ref, computed, nextTick } from "vue";
 import {
   onShow,
   onLoad,
@@ -219,6 +229,9 @@ import {
   uploadResumeInfo,
   uploadResumeAttachment,
   getResumeOptions,
+  getProvinceData,
+  getCityData,
+  getGradeData
 } from "@/api/index.js";
 import { pageStore } from "@/store";
 import { areaList } from "@vant/area-data"; // 省市区三级数据
@@ -250,18 +263,14 @@ const resourse = ref([
   // },
 ]);
 const graduationYears = ref([]);
-const currentYear = new Date().getFullYear();
-for (let i = 0; i < 4; i++) {
-  graduationYears.value.push((currentYear + i).toString() + "届");
-}
-//const selectedGraduationYear = ref('');
+// const currentYear = new Date().getFullYear();
+// for (let i = 0; i < 4; i++) {
+//   graduationYears.value.push((currentYear + i).toString() + "届");
+// }
+// //const selectedGraduationYear = ref('');
 
 /* 省列表：直接把名称取出来 */
-const provinces = computed(() =>
-  Object.keys(areaList.province_list).map(
-    (code) => areaList.province_list[code]
-  )
-);
+const provinces = ref([]);
 /* 城市列表（随省动态变化） */
 const cities = ref([]);
 
@@ -273,20 +282,11 @@ const onGraduationYearChange = (e) => {
 };
 
 /* 省变化时联动城市 */
-const onProvinceChange = (e) => {
-  const provinceName = provinces.value[e.detail.value];
-  console.log(provinceName);
-  fromData.value.province = provinceName;
-
-  /* 找出所有属于该省的城市名称 */
-  // 1. 先找到当前省的 code
-  const provinceCode = Object.keys(areaList.province_list).find(
-    (code) => areaList.province_list[code] === provinceName
-  );
-  // 2. 再过滤出城市名称
-  cities.value = Object.keys(areaList.city_list)
-    .filter((code) => code.slice(0, 2) === provinceCode!.slice(0, 2))
-    .map((code) => areaList.city_list[code]);
+const onProvinceChange = async (e) => {
+  console.log(e)
+  const res = await getCityData(provinces.value[e.detail.value]);
+  cities.value = res;
+  fromData.value.province = provinces.value[e.detail.value];
 
   fromData.value.city = "";
 };
@@ -376,10 +376,26 @@ const submitResumeInfo = async () => {
     "major",
     "experienceAndStrengths",
   ];
+  // 1. 先定义映射表
+  const fieldNameMap = {
+    name: "姓名",
+    college: "院校名称",
+    phone: "手机号码",
+    weChat: "微信号",
+    email: "电子邮箱",
+    province: "院校省份",
+    city: "院校城市",
+    educational: "最高学历",
+    graduate: "毕业届别",
+    major: "专业名称",
+    experienceAndStrengths: "经历和优势",
+  };
+
+  // 2. 在 submitResumeInfo 里替换原来的 for 循环
   for (const field of requiredFields) {
     if (!fromData.value[field]) {
       uni.showToast({
-        title: `${field}不能为空`,
+        title: `${fieldNameMap[field] || field}不能为空`, // 取不到就用原值兜底
         icon: "none",
       });
       return;
@@ -400,7 +416,7 @@ const submitResumeInfo = async () => {
     });
     return;
   }
-  if(!isUploadFile.value){
+  if (!isUploadFile.value) {
     uni.showToast({
       title: "请上传简历附件",
       icon: "none",
@@ -533,10 +549,10 @@ const GetUserResumeInfo = async () => {
         isUploadFile.value = false; // 标记未上传文件
       }
     } else {
-      uni.showToast({
-        title: res.errMsg,
-        icon: "none",
-      });
+      // uni.showToast({
+      //   title: res.errMsg,
+      //   icon: "none",
+      // });
     }
   } catch (error) {
     console.error("获取简历信息失败:", error);
@@ -546,29 +562,32 @@ const GetUserResumeInfo = async () => {
     });
   }
 };
-onLoad(() => {
+onLoad(async() => {
   // 页面加载时获取简历选项
+  let res = await getProvinceData();
+  provinces.value = res;
+  res = await getGradeData();
+  graduationYears.value = res;
   getResumeOptions()
     .then((res) => {
       //console.log(res, "获取简历选项的响应信息");
       if (res.statusCode === 200 && res.data.code === 1) {
-        res.data.data.industryOptions.forEach((item) => {
-          orders.value.push({
-            name: item,
-            isdian: false,
-          });
-        });
-        res.data.data.assetOptions.forEach((item) => {
-          resourse.value.push({
-            name: item,
-            isdian: false,
-          });
-        });
+        // 处理意向行业：按字符串长度升序
+        const industries = res.data.data.industryOptions || [];
+        industries
+          .sort((a, b) => a.length - b.length)
+          .forEach((name) => orders.value.push({ name, isdian: false }));
+
+        // 处理拥有资源：同逻辑
+        const assets = res.data.data.assetOptions || [];
+        assets
+          .sort((a, b) => a.length - b.length)
+          .forEach((name) => resourse.value.push({ name, isdian: false }));
         // 获取用户简历信息
         GetUserResumeInfo();
       } else {
         uni.showToast({
-          title: res.errMsg,
+          title: "获取简历选项失败",
           icon: "none",
         });
       }
@@ -595,6 +614,7 @@ onShow(() => {});
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: scroll;
 }
 
 .white {
@@ -638,7 +658,22 @@ onShow(() => {});
 .row input {
   text-align: right;
   font-size: 14px;
+  position: relative;
+
+  /* 防止文字浮动 */
+  vertical-align: middle;
+  /* 禁用移动端默认行为 */
+  -webkit-user-select: text;
+  user-select: text;
 }
+
+/* 防止页面滚动时输入框内容偏移 */
+scroll-view {
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
 
 .msg {
   font-size: 16px;
@@ -793,11 +828,20 @@ onShow(() => {});
   opacity: 0; /* 初始隐藏 */
   transform: translateY(10px);
   animation: slideUp 0.3s ease forwards;
+  display: flex;
+  align-items: center;
+
 }
 @keyframes slideUp {
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+.success-img{
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+  margin-top: 2px;
 }
 </style>

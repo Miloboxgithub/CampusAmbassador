@@ -342,4 +342,7 @@ const navs3 = (id) => {
   right: 26px;
   bottom: 15px;
 }
+.ended {
+  color: rgba(153, 151, 151, 1) !important;
+}
 </style>

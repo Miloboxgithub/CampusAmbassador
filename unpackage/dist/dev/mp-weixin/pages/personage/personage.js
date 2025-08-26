@@ -14,14 +14,14 @@ const _sfc_main = {
   __name: "personage",
   setup(__props) {
     common_vendor.onShow(async () => {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:90", "页面显示");
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:91", "页面显示");
       loginStatus.value = common_vendor.index.getStorageSync("loginStatus") || false;
       if (loginStatus.value) {
         account.value = formatPhoneNumber(common_vendor.index.getStorageSync("account"));
       }
     });
     function navigate(e) {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:98", e.currentTarget.dataset);
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:99", e.currentTarget.dataset);
       let url = e.currentTarget.dataset.url;
       if (!loginStatus.value && (url == "/pkgA/mysubmit/mysubmit" || url == "/pkgA/resume/resume" || url == "/pkgA/collection/collection")) {
         openPopup();
@@ -54,9 +54,9 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pages/personage/personage.vue:137", "Popup state changed");
+      common_vendor.index.__f__("log", "at pages/personage/personage.vue:138", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pages/personage/personage.vue:139", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pages/personage/personage.vue:140", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };
@@ -77,6 +77,12 @@ const _sfc_main = {
         return "";
       return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
     }
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "找校园大使，就上校园大使汇！",
+        path: "/pages/personage/personage"
+      };
+    });
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: loginStatus.value ? "../../static/headshot2.png" : "../../static/headshot1.png",

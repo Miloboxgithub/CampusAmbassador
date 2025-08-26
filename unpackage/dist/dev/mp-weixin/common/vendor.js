@@ -7127,9 +7127,9 @@ function isConsoleWritable() {
   return isWritable;
 }
 function initRuntimeSocketService() {
-  const hosts = "10.161.108.57,127.0.0.1";
+  const hosts = "192.168.3.22,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_vDerdw";
+  const id = "mp-weixin_jFKFq2";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -8679,6 +8679,11 @@ const onShow = /* @__PURE__ */ createLifeCycleHook(
 );
 const onLoad = /* @__PURE__ */ createLifeCycleHook(
   ON_LOAD,
+  2
+  /* HookFlags.PAGE */
+);
+const onPageScroll = /* @__PURE__ */ createLifeCycleHook(
+  ON_PAGE_SCROLL,
   2
   /* HookFlags.PAGE */
 );
@@ -12587,7 +12592,6 @@ var areaList = {
 };
 exports._export_sfc = _export_sfc;
 exports.areaList = areaList;
-exports.computed = computed;
 exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
 exports.defineComponent = defineComponent;
@@ -12599,6 +12603,8 @@ exports.n = n;
 exports.nextTick$1 = nextTick$1;
 exports.o = o;
 exports.onLoad = onLoad;
+exports.onMounted = onMounted;
+exports.onPageScroll = onPageScroll;
 exports.onPullDownRefresh = onPullDownRefresh;
 exports.onReachBottom = onReachBottom;
 exports.onShareAppMessage = onShareAppMessage;

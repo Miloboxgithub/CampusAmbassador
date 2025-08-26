@@ -1,45 +1,64 @@
 <template>
   <loading :show="isLoading"></loading>
-  <scroll-view class="page-container" scroll-y="true">
+  <scroll-view
+    class="page-container"
+    :scroll-y="!isShou"
+    :style="{ height: winH + 'px' }"
+  >
     <!-- 搜索栏 -->
-    <view class="theme">搜索</view>
-    <view style="display: flex; justify-content: center; margin-top: 105px">
-      <view class="navv">
-        <view class="search">
-          <image @click="inputed" src="../img/搜索.png" mode="" />
+    <view
+      class="topTab"
+      :style="{
+        height: isShou ? '220px' : '170px',
+        background: isShou
+          ? ''
+          : 'linear-gradient(to bottom, #dbe8ff, #f5f5f5 159%)',
+      }"
+    >
+      <view class="theme">搜索</view>
+      <view style="display: flex; justify-content: center; margin-top: 105px">
+        <view class="navv">
+          <view class="search">
+            <image @click="inputed" src="../img/搜索.png" mode="" />
+          </view>
+          <view class="fancy-bg"></view>
+          <input
+            type="text"
+            @confirm="inputed"
+            class="input"
+            :placeholder="contents"
+            auto-focus="true"
+            v-model="msg"
+            id="search"
+          />
+          <image
+            class="guan"
+            src="../img/cha1.png"
+            @click="clear"
+            hover-stop-propagation="true"
+            mode=""
+          />
         </view>
-        <view class="fancy-bg"></view>
-        <input
-          type="text"
-          @confirm="inputed"
-          class="input"
-          :placeholder="contents"
-          auto-focus="true"
-          v-model="msg"
-          id="search"
-        />
+      </view>
+      <view class="syl" v-if="flag && isShou"
+        >搜索历史
         <image
-          class="guan"
-          src="../img/cha1.png"
-          @click="clear"
-          hover-stop-propagation="true"
+          @click="shanchu"
+          class="shanchu"
+          src="../img/shachu.png"
           mode=""
         />
       </view>
-    </view>
-    <view class="syl" v-if="flag"
-      >搜索历史
-      <image @click="shanchu" class="shanchu" src="../img/shachu.png" mode="" />
-    </view>
-    <view class="kuai" v-if="flag">
-      <view
-        class="items"
-        v-for="(item, index) in items"
-        :key="index"
-        @click="shang"
-        data-s="{{item}}"
-      >
-        <text>{{ item }}</text>
+      <view class="kuai" v-if="flag && isShou">
+        <view
+          class="items"
+          v-for="(item, index) in items"
+          :key="index"
+          @click="shang"
+          data-s="{{item}}"
+        >
+          <text>{{ item }}</text>
+        </view>
       </view>
     </view>
     <!-- <view class="screen" @click="navs2">
@@ -98,6 +117,7 @@ import Loading from "../../components/Loading.vue";
 const isLoading = ref(false);
 const pageInfo = pageStore();
 const flag = ref(true);
+const isShou = ref(true);
 const contents = ref("请输入搜索内容");
 const items = ref([]);
 const coitems = ref([
@@ -112,6 +132,11 @@ const coitems = ref([
   //   },
 ]);
 const msg = ref("");
+const winH = ref(0);
+onMounted(() => {
+  const sys = uni.getSystemInfoSync();
+  winH.value = sys.windowHeight; // 直接拿到可用高度
+});
 const inputed = async (e) => {
   console.log(msg.value);
   if (msg.value === "") {
@@ -120,6 +145,8 @@ const inputed = async (e) => {
       icon: "error",
     });
     flag.value = true;
+    isShou.value = true;
+    coitems.value = [];
     return;
   }
   // 1. 先删除已存在的
@@ -145,6 +172,7 @@ const inputed = async (e) => {
     return;
   }
   flag.value = true;
+  isShou.value = false;
   // 清空之前的结果
   coitems.value = [];
   // 遍历结果并添加到 coitems
@@ -155,7 +183,7 @@ const inputed = async (e) => {
       tags: [e.type, e.scale, "校园大使"],
       type: e.industries,
       status: e.isRecruit ? "招募中" : "已结束",
-      coicon: "https://api.xydsh.cn/enterpriseLogo/"+e.logo,
+      coicon: "https://api.xydsh.cn/enterpriseLogo/" + e.logo,
       look: e.pageView,
     });
   });
@@ -164,6 +192,8 @@ const inputed = async (e) => {
 const clear = () => {
   msg.value = "";
   flag.value = true;
+  isShou.value = true;
+  coitems.value = [];
 };
 const shang = (e) => {
   console.log(e.currentTarget.dataset.s.a);
@@ -199,20 +229,28 @@ onShow(() => {
 onPullDownRefresh(async () => {
   console.log("下拉刷新了");
   flag.value = true;
+  isShou.value = true;
+  msg.value = "";
   uni.stopPullDownRefresh();
 });
 const navs3 = (id) => {
-		uni.navigateTo({
-			url: `/pkgA/detail/detail?id=${id}`,
-		});
-	};
+  uni.navigateTo({
+    url: `/pkgA/detail/detail?id=${id}`,
+  });
+};
+onShareAppMessage(() => {
+  return {
+    title: "找校园大使，就上校园大使汇！",
+    path: "/pages/index/index",
+  };
+});
 </script>
 
 <style lang="scss" scoped>
 .page-container {
-  background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 50%);
-  backdrop-filter: blur(87px);
-  height: 100vh;
+  background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 30%);
+  // backdrop-filter: blur(87px);
+
   /* 使用视口高度确保填充整个页面 */
   width: 100vw;
   /* 使用视口宽度确保填充整个页面 */
@@ -221,7 +259,14 @@ const navs3 = (id) => {
   align-items: center;
   justify-content: center;
 }
-
+.topTab {
+  background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 99%);
+  position: fixed;
+  top: 0;
+  height: 220px;
+  width: 100vw;
+  z-index: 9999;
+}
 .theme {
   position: absolute;
   left: 50%;
@@ -262,6 +307,7 @@ const navs3 = (id) => {
 }
 
 .input {
+  position: relative;
   width: 70%;
   margin-left: 25px;
   margin-right: 50px;
@@ -364,17 +410,16 @@ const navs3 = (id) => {
 }
 
 .guan {
-  
   right: 20px;
   z-index: 100;
-  width: 18.5px;
+  width: 24.5px;
   height: 18.5px;
   padding: 10px;
   opacity: 1;
   z-index: 1000;
 }
 .coitems {
-  margin-top: 20px;
+  margin-top: 170px;
   width: 100vw;
   height: auto;
   padding-bottom: 20px;

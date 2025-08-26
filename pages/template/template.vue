@@ -6,8 +6,9 @@
     <img class="tu2" src="../../static/_recruitment@2x.png" alt="" />
     <img class="tu3" src="../../static/简历制作神器@2x.png" alt="" />
     <text class="tu4">— — 丰富模版 · 文档编辑 · 实时预览 · 免费下载 — — </text>
-    <view class="ke">
-      <view style="width: 100%; display: flex; justify-content: space-between">
+    <view class="Rolled-Class" v-if="isRolled">
+        <view class="theme">简历模板</view>
+      <view style="width: 92%;margin-left: 4%; display: flex; justify-content: space-between; position: absolute;top: 100px;">
         <view
           class="type"
           :class="{ activeType: item.flag }"
@@ -17,6 +18,19 @@
           >{{ item.name }}</view
         >
       </view>
+    </view>
+    <view class="ke">
+      <view style="width: 100%; display: flex; justify-content: space-between;">
+        <view
+          class="type"
+          :class="{ activeType: item.flag }"
+          v-for="(item, index) in types"
+          :key="index"
+          @click="changeType(item)"
+          >{{ item.name }}</view
+        >
+      </view>
+
       <view class="mobans">
         <view
           class="moban"
@@ -42,6 +56,8 @@ import {
   onLoad,
   onReachBottom,
   onPullDownRefresh,
+  onPageScroll,
+  onShareAppMessage
 } from "@dcloudio/uni-app";
 import { getResumeTemplate } from "@/api/index.js";
 import { pageStore } from "@/store";
@@ -85,6 +101,7 @@ const mobans = ref([
   //   isCollected: false,
   // },
 ]);
+const isRolled = ref(false);
 // 页面加载时执行的逻辑
 onLoad(async () => {
   console.log("页面加载");
@@ -181,6 +198,19 @@ onPullDownRefresh(async () => {
     uni.stopPullDownRefresh();
   }
 });
+onPageScroll((e) => {
+  console.log(e.scrollTop);
+  if (e.scrollTop > 220) {
+    isRolled.value = true;
+  } else {
+    isRolled.value = false;
+  }
+});
+const navs1 = () => {
+  uni.navigateTo({
+    url: "/pkgA/search/search",
+  });
+};
 const changeType = async (i) => {
   types.value.forEach((item) => {
     item.flag = false;
@@ -218,12 +248,18 @@ const navs = (id) => {
     url: `/pkgA/preview/preview?id=${id}`,
   });
 };
+onShareAppMessage(() => {
+  return {
+    title: "发现一个简历模板免费下载的神器！",
+    path: "/pages/template/template",
+  };
+});
 </script>
 
 <style lang="scss" scoped>
 .page-container {
   background: linear-gradient(to bottom, #dbe8ff, #ffffff 50%);
-  backdrop-filter: blur(87px);
+  // backdrop-filter: blur(87px);
   height: 120vh;
   /* 使用视口高度确保填充整个页面 */
   width: 100vw;
@@ -236,6 +272,7 @@ const navs = (id) => {
 
 .theme {
   position: absolute;
+  z-index: 9999;
   left: 50%;
   transform: translateX(-50%);
   top: 53.79px;
@@ -424,5 +461,33 @@ const navs = (id) => {
   height: 11px;
   right: 13px;
   bottom: 5.5px;
+}
+.Rolled-Class {
+  background: linear-gradient(to bottom, #dbe8ff, #f5f5f5 150%);
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  height: 135px;
+  width: 100vw;
+  /* 你原来已有的样式 … */
+  transition: opacity 0.3s, transform 0.3s; /* 兜底：如果浏览器不支持 animation */
+  animation: fadeIn 0.3s ease-out forwards; /* 淡入动画 */
+}
+/* 1. 关键帧：淡入 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* 3. 出现时才让 opacity 变 1 */
+.Rolled-Class[style*="display: block"],
+.Rolled-Class[style*="display: flex"] {
+  opacity: 1;
+  pointer-events: auto;
 }
 </style>

@@ -76,7 +76,7 @@ import Template from "../../pages/template/template.vue";
 			});
 		}
 		// 增加浏览次数
-		await addResumeViewCount(id.value);
+		//await addResumeViewCount(id.value);
 	});
 	
 	const collectsClick = async () => {
@@ -135,9 +135,9 @@ import Template from "../../pages/template/template.vue";
 	onShareAppMessage(async() => {
 		
 		return {
-			title: shareData.value.templateName, // 分享标题
+			title: "分享一个简历模板给你！", // 分享标题
 			path: `/pkgA/preview/preview?id=${id.value}`, // 分享路径
-			imageUrl: shareData.value.templateSampleGraph, // 分享图片
+			// imageUrl: shareData.value.templateSampleGraph, // 分享图片
 		}
 	})
 </script>

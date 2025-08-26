@@ -41,7 +41,6 @@ const _sfc_main = {
           icon: "error"
         });
       }
-      await api_index.addResumeViewCount(id.value);
     });
     const collectsClick = async () => {
       if (!isCollected.value) {
@@ -92,12 +91,11 @@ const _sfc_main = {
     };
     common_vendor.onShareAppMessage(async () => {
       return {
-        title: shareData.value.templateName,
+        title: "分享一个简历模板给你！",
         // 分享标题
-        path: `/pkgA/preview/preview?id=${id.value}`,
+        path: `/pkgA/preview/preview?id=${id.value}`
         // 分享路径
-        imageUrl: shareData.value.templateSampleGraph
-        // 分享图片
+        // imageUrl: shareData.value.templateSampleGraph, // 分享图片
       };
     });
     return (_ctx, _cache) => {

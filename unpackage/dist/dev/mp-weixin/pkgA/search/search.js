@@ -13,6 +13,7 @@ const _sfc_main = {
     const isLoading = common_vendor.ref(false);
     store_index.pageStore();
     const flag = common_vendor.ref(true);
+    const isShou = common_vendor.ref(true);
     const contents = common_vendor.ref("请输入搜索内容");
     const items = common_vendor.ref([]);
     const coitems = common_vendor.ref([
@@ -27,14 +28,21 @@ const _sfc_main = {
       //   },
     ]);
     const msg = common_vendor.ref("");
+    const winH = common_vendor.ref(0);
+    common_vendor.onMounted(() => {
+      const sys = common_vendor.index.getSystemInfoSync();
+      winH.value = sys.windowHeight;
+    });
     const inputed = async (e) => {
-      common_vendor.index.__f__("log", "at pkgA/search/search.vue:116", msg.value);
+      common_vendor.index.__f__("log", "at pkgA/search/search.vue:141", msg.value);
       if (msg.value === "") {
         common_vendor.index.showToast({
           title: "请输入搜索内容",
           icon: "error"
         });
         flag.value = true;
+        isShou.value = true;
+        coitems.value = [];
         return;
       }
       const idx = items.value.indexOf(msg.value);
@@ -56,6 +64,7 @@ const _sfc_main = {
         return;
       }
       flag.value = true;
+      isShou.value = false;
       coitems.value = [];
       res.forEach((e2) => {
         coitems.value.push({
@@ -73,9 +82,11 @@ const _sfc_main = {
     const clear = () => {
       msg.value = "";
       flag.value = true;
+      isShou.value = true;
+      coitems.value = [];
     };
     const shang = (e) => {
-      common_vendor.index.__f__("log", "at pkgA/search/search.vue:169", e.currentTarget.dataset.s.a);
+      common_vendor.index.__f__("log", "at pkgA/search/search.vue:199", e.currentTarget.dataset.s.a);
       msg.value = e.currentTarget.dataset.s.a;
       inputed();
     };
@@ -108,8 +119,10 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pkgA/search/search.vue:200", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pkgA/search/search.vue:230", "下拉刷新了");
       flag.value = true;
+      isShou.value = true;
+      msg.value = "";
       common_vendor.index.stopPullDownRefresh();
     });
     const navs3 = (id) => {
@@ -117,6 +130,12 @@ const _sfc_main = {
         url: `/pkgA/detail/detail?id=${id}`
       });
     };
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "找校园大使，就上校园大使汇！",
+        path: "/pages/index/index"
+      };
+    });
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: common_vendor.p({
@@ -130,13 +149,13 @@ const _sfc_main = {
         g: common_vendor.o(($event) => msg.value = $event.detail.value),
         h: common_assets._imports_1$4,
         i: common_vendor.o(clear),
-        j: flag.value
-      }, flag.value ? {
+        j: flag.value && isShou.value
+      }, flag.value && isShou.value ? {
         k: common_vendor.o(shanchu),
         l: common_assets._imports_2$4
       } : {}, {
-        m: flag.value
-      }, flag.value ? {
+        m: flag.value && isShou.value
+      }, flag.value && isShou.value ? {
         n: common_vendor.f(items.value, (item, index, i0) => {
           return {
             a: common_vendor.t(item),
@@ -145,7 +164,9 @@ const _sfc_main = {
           };
         })
       } : {}, {
-        o: common_vendor.f(coitems.value, (item, k0, i0) => {
+        o: isShou.value ? "220px" : "170px",
+        p: isShou.value ? "" : "linear-gradient(to bottom, #dbe8ff, #f5f5f5 159%)",
+        q: common_vendor.f(coitems.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: common_vendor.f(item.tags, (tag, k1, i1) => {
@@ -163,11 +184,13 @@ const _sfc_main = {
             i: common_vendor.o(($event) => navs3(item.id), item.id)
           };
         }),
-        p: common_assets._imports_2$1,
-        q: common_assets._imports_3$1,
-        r: !flag.value
+        r: common_assets._imports_2$1,
+        s: common_assets._imports_3$1,
+        t: !isShou.value,
+        v: winH.value + "px",
+        w: !flag.value
       }, !flag.value ? {
-        s: common_assets._imports_5$1
+        x: common_assets._imports_5$1
       } : {});
     };
   }

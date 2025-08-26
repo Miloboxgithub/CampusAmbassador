@@ -31,15 +31,15 @@
       <img src="../img/xia.png" alt="" class="icon" />
     </view>
   </view>
-  <view class="choice" @click="openPopup('行业要求')">
-    <text class="title">行业要求</text>
+  <view class="choice" @click="openPopup('行业类型')">
+    <text class="title">行业类型</text>
     <view class="option">
       <text class="nnn">{{ ind }}</text>
       <img src="../img/xia.png" alt="" class="icon" />
     </view>
   </view>
-  <view class="choice" @click="openPopup('企业要求')">
-    <text class="title">企业要求</text>
+  <view class="choice" @click="openPopup('企业类型')">
+    <text class="title">企业类型</text>
     <view class="option">
       <text class="nnn">{{ company }}</text>
       <img src="../img/xia.png" alt="" class="icon" />
@@ -142,9 +142,9 @@ const openPopup = (e) => {
     items.value = majorOptions.value;
   } else if (e == "年级要求") {
     items.value = gradeOptions.value;
-  } else if (e == "行业要求") {
+  } else if (e == "行业类型") {
     items.value = indOptions.value;
-  } else if (e == "企业要求") {
+  } else if (e == "企业类型") {
     items.value = companyOptions.value;
   } else if (e == "公司规模") {
     items.value = guimoOptions.value;
@@ -189,13 +189,13 @@ const queren = () => {
         grade.value = i.n;
       }
     });
-  } else if (theme.value == "行业要求") {
+  } else if (theme.value == "行业类型") {
     items.value.forEach((i) => {
       if (i.f) {
         ind.value = i.n;
       }
     });
-  } else if (theme.value == "企业要求") {
+  } else if (theme.value == "企业类型") {
     items.value.forEach((i) => {
       if (i.f) {
         company.value = i.n;

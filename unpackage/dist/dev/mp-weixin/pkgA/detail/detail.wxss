@@ -271,3 +271,6 @@
   min-height: 254px;
   width: 100%;
 }
+.ended.data-v-35bfcc75 {
+  color: #999797 !important;
+}

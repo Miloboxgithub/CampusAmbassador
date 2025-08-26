@@ -33,6 +33,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: scroll;
 }
 .white {
   margin-top: 20px;
@@ -71,6 +72,17 @@
 .row input {
   text-align: right;
   font-size: 14px;
+  position: relative;
+  /* 防止文字浮动 */
+  vertical-align: middle;
+  /* 禁用移动端默认行为 */
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* 防止页面滚动时输入框内容偏移 */
+scroll-view {
+  -webkit-overflow-scrolling: touch;
 }
 .msg {
   font-size: 16px;
@@ -211,10 +223,18 @@
   /* 初始隐藏 */
   transform: translateY(10px);
   animation: slideUp 0.3s ease forwards;
+  display: flex;
+  align-items: center;
 }
 @keyframes slideUp {
 to {
     opacity: 1;
     transform: translateY(0);
 }
+}
+.success-img {
+  width: 16px;
+  height: 16px;
+  margin-left: 5px;
+  margin-top: 2px;
 }

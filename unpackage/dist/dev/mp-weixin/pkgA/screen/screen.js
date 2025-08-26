@@ -60,9 +60,9 @@ const _sfc_main = {
         items.value = majorOptions.value;
       } else if (e == "年级要求") {
         items.value = gradeOptions.value;
-      } else if (e == "行业要求") {
+      } else if (e == "行业类型") {
         items.value = indOptions.value;
-      } else if (e == "企业要求") {
+      } else if (e == "企业类型") {
         items.value = companyOptions.value;
       } else if (e == "公司规模") {
         items.value = guimoOptions.value;
@@ -104,13 +104,13 @@ const _sfc_main = {
             grade.value = i.n;
           }
         });
-      } else if (theme.value == "行业要求") {
+      } else if (theme.value == "行业类型") {
         items.value.forEach((i) => {
           if (i.f) {
             ind.value = i.n;
           }
         });
-      } else if (theme.value == "企业要求") {
+      } else if (theme.value == "企业类型") {
         items.value.forEach((i) => {
           if (i.f) {
             company.value = i.n;
@@ -264,10 +264,10 @@ const _sfc_main = {
         o: common_vendor.o(($event) => openPopup("年级要求")),
         p: common_vendor.t(ind.value),
         q: common_assets._imports_0$4,
-        r: common_vendor.o(($event) => openPopup("行业要求")),
+        r: common_vendor.o(($event) => openPopup("行业类型")),
         s: common_vendor.t(company.value),
         t: common_assets._imports_0$4,
-        v: common_vendor.o(($event) => openPopup("企业要求")),
+        v: common_vendor.o(($event) => openPopup("企业类型")),
         w: common_vendor.t(guimo.value),
         x: common_assets._imports_0$4,
         y: common_vendor.o(($event) => openPopup("公司规模")),

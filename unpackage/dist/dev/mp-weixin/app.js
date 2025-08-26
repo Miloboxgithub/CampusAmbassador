@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const common_vendor = require("./common/vendor.js");
+const plugins_index = require("./plugins/index.js");
 if (!Math) {
   "./pages/index/index.js";
   "./pages/template/template.js";
@@ -33,6 +34,7 @@ const _sfc_main = {
 function createApp() {
   const app = common_vendor.createSSRApp(_sfc_main);
   const pinia = common_vendor.createPinia();
+  app.mixin(plugins_index.sharePlugin);
   app.use(pinia);
   return {
     app

@@ -769,3 +769,85 @@ export const getSubmitData = (e) => {
 		});
 	});
 }
+
+//获取省份
+export const getProvinceData = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://api.xydsh.cn/provinces/all',
+			data: e,
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取省份数据成功');
+
+				resolve(result.data.data); // 返回数据
+			},
+			fail: (err) => {
+				reject(' ', err); // 处理失败情况
+			},
+			complete: () => { }
+		});
+	});
+}
+
+//获取城市
+export const getCityData = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://api.xydsh.cn/provinces/cities',
+			data: {
+				name: e
+			},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取城市数据成功');
+
+				resolve(result.data.data); // 返回数据
+			},
+			fail: (err) => {
+				reject(' ', err); // 处理失败情况
+			},
+			complete: () => { }
+		});
+	});
+}
+
+//获取年级
+export const getGradeData = (e) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			url: 'https://api.xydsh.cn/grade',
+			data: {
+				name: e
+			},
+			header: {
+				'content-type': 'application/json',
+				Authorization: uni.getStorageSync('jwt') || ''
+			},
+			method: 'GET',
+			dataType: 'json',
+			responseType: 'text',
+			success: (result) => {
+				console.log(result, '获取年纪数据成功');
+
+				resolve(result.data.data); // 返回数据
+			},
+			fail: (err) => {
+				reject(' ', err); // 处理失败情况
+			},
+			complete: () => { }
+		});
+	});
+}

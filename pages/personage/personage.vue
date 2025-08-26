@@ -83,7 +83,8 @@
 	import {
 		onShow,
 		onLoad,
-		onReachBottom
+		onReachBottom,
+		onShareAppMessage
 	} from "@dcloudio/uni-app";
 	onShow(async () => {
 		// 页面显示时执行的逻辑
@@ -166,15 +167,12 @@
 		return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
 	}
 
-	function onShareAppMessage(res) {
-		if (res.from === 'button') { // 来自页面内分享按钮
-			console.log(res.target)
-		}
-		return {
-			title: '自定义分享标题',
-			path: '/pages/index/index', // 分享的路径
-		}
-	}
+	onShareAppMessage(() => {
+  return {
+    title: "找校园大使，就上校园大使汇！",
+    path: "/pages/personage/personage",
+  };
+});
 </script>
 
 <style lang="scss" scoped>

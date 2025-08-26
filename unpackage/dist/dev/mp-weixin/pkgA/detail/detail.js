@@ -9,21 +9,24 @@ if (!Array) {
 }
 const _easycom_uni_popup = () => "../../uni_modules/uni-popup/components/uni-popup/uni-popup.js";
 if (!Math) {
-  (Loading + Login + _easycom_uni_popup)();
+  (Loading + resumeModal + Login + _easycom_uni_popup)();
 }
 const Loading = () => "../../components/Loading.js";
 const Login = () => "../../components/Login.js";
+const resumeModal = () => "../../components/resumeModal.js";
 const _sfc_main = {
   __name: "detail",
   setup(__props) {
     const isLoading = common_vendor.ref(false);
+    const isModal = common_vendor.ref(false);
     const id = common_vendor.ref(null);
+    const hasResume = common_vendor.ref(false);
     common_vendor.onLoad(async (option) => {
       isLoading.value = true;
       id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:102", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:116", "接收到的 id:", id.value);
       const res = await api_index.getCampusDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:104", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:118", "获取到的详情:", res);
       if (res.statusCode === 200) {
         let deta = res.data.data;
         tags.value = [deta.type, deta.scale, "校园大使"];
@@ -39,6 +42,7 @@ const _sfc_main = {
         isLoading.value = false;
         isCollected.value = deta.isFavorite || false;
         submited.value = deta.isDelivered || false;
+        hasResume.value = deta.hasResume || false;
       } else {
         isLoading.value = false;
         common_vendor.index.showToast({
@@ -120,9 +124,9 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:210", "Popup state changed");
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:227", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:212", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:229", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };
@@ -132,7 +136,7 @@ const _sfc_main = {
         showLogin.value = false;
         isLoading.value = true;
         const res = await api_index.getCampusDetail(id.value);
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:226", "获取到的详情:", res);
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:243", "获取到的详情:", res);
         if (res.statusCode === 200) {
           let deta = res.data.data;
           tags.value = [deta.type, deta.scale, "校园大使"];
@@ -148,6 +152,7 @@ const _sfc_main = {
           isLoading.value = false;
           isCollected.value = deta.isFavorite || false;
           submited.value = deta.isDelivered || false;
+          hasResume.value = deta.hasResume || false;
         } else {
           isLoading.value = false;
           common_vendor.index.showToast({
@@ -170,6 +175,10 @@ const _sfc_main = {
         openPopup();
         return;
       }
+      if (!hasResume.value) {
+        isModal.value = true;
+        return;
+      }
       await api_index.postCampusApply(id.value);
       submited.value = true;
       if (submited.value)
@@ -178,43 +187,61 @@ const _sfc_main = {
           icon: "success"
         });
     }
+    common_vendor.onShareAppMessage(() => {
+      return {
+        title: "快来投递校园大使职位吧！",
+        path: `/pkgA/detail/detail?id=${id.value}`
+        // 分享路径，带上参数
+      };
+    });
+    const navigateToResumePage = () => {
+      common_vendor.index.navigateTo({
+        url: "/pkgA/resume/resume"
+        // 跳转到简历编辑页面
+      });
+    };
     return (_ctx, _cache) => {
       return {
         a: common_vendor.p({
           show: isLoading.value
         }),
-        b: common_vendor.t(name.value),
-        c: common_vendor.f(tags.value, (tag, k0, i0) => {
+        b: common_vendor.o((v) => isModal.value = v),
+        c: common_vendor.o(navigateToResumePage),
+        d: common_vendor.p({
+          show: isModal.value
+        }),
+        e: common_vendor.t(name.value),
+        f: common_vendor.f(tags.value, (tag, k0, i0) => {
           return {
             a: common_vendor.t(tag),
             b: tag
           };
         }),
-        d: common_assets._imports_2$1,
-        e: common_vendor.t(type.value),
-        f: common_vendor.t(status.value),
-        g: status.value === "已结束" ? 1 : "",
-        h: coicon.value,
-        i: common_vendor.t(task.value),
-        j: common_vendor.t(harvest.value),
-        k: common_vendor.t(expect.value),
-        l: common_vendor.t(target.value),
-        m: common_vendor.t(introduce.value),
-        n: common_assets._imports_1$3,
-        o: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
-        p: common_vendor.o(collectsClick),
-        q: common_vendor.t(submited.value ? "已投递" : "立即投递"),
-        r: common_vendor.o(submits),
-        s: common_vendor.o(handleLoginSuccess),
-        t: common_vendor.o(handleClose),
-        v: common_vendor.p({
+        g: common_assets._imports_2$1,
+        h: common_vendor.t(type.value),
+        i: common_vendor.t(status.value),
+        j: status.value === "已结束" ? 1 : "",
+        k: coicon.value,
+        l: common_vendor.t(task.value),
+        m: common_vendor.t(harvest.value),
+        n: common_vendor.t(expect.value),
+        o: common_vendor.t(target.value),
+        p: common_vendor.t(introduce.value),
+        q: common_assets._imports_1$3,
+        r: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
+        s: common_vendor.o(collectsClick),
+        t: common_vendor.t(submited.value ? "已投递" : "立即投递"),
+        v: common_vendor.o(submits),
+        w: common_vendor.o(handleLoginSuccess),
+        x: common_vendor.o(handleClose),
+        y: common_vendor.p({
           show: showLogin.value
         }),
-        w: common_vendor.sr(popups, "35bfcc75-1", {
+        z: common_vendor.sr(popups, "35bfcc75-2", {
           "k": "popups"
         }),
-        x: common_vendor.o(change),
-        y: common_vendor.p({
+        A: common_vendor.o(change),
+        B: common_vendor.p({
           type: "bottom",
           mask: "true"
         })
@@ -223,5 +250,6 @@ const _sfc_main = {
   }
 };
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-35bfcc75"]]);
+_sfc_main.__runtimeHooks = 2;
 wx.createPage(MiniProgramPage);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pkgA/detail/detail.js.map
