@@ -171,6 +171,8 @@ const _sfc_main = {
     async function submits() {
       if (submited.value)
         return;
+      if (status.value === "已结束")
+        return;
       if (!loginStatus.value) {
         openPopup();
         return;
@@ -230,18 +232,19 @@ const _sfc_main = {
         q: common_assets._imports_1$3,
         r: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
         s: common_vendor.o(collectsClick),
-        t: common_vendor.t(submited.value ? "已投递" : "立即投递"),
+        t: common_vendor.t(status.value === "已结束" ? "已结束" : submited.value ? "已投递" : "投递简历"),
         v: common_vendor.o(submits),
-        w: common_vendor.o(handleLoginSuccess),
-        x: common_vendor.o(handleClose),
-        y: common_vendor.p({
+        w: common_vendor.n(status.value === "已结束" ? "endBtn" : "btn"),
+        x: common_vendor.o(handleLoginSuccess),
+        y: common_vendor.o(handleClose),
+        z: common_vendor.p({
           show: showLogin.value
         }),
-        z: common_vendor.sr(popups, "35bfcc75-2", {
+        A: common_vendor.sr(popups, "35bfcc75-2", {
           "k": "popups"
         }),
-        A: common_vendor.o(change),
-        B: common_vendor.p({
+        B: common_vendor.o(change),
+        C: common_vendor.p({
           type: "bottom",
           mask: "true"
         })

@@ -859,4 +859,8 @@ const navs = (id) => {
   right: 13px;
   bottom: 5.5px;
 }
+.ended {
+  color: rgba(153, 151, 151, 1) !important;
+}
+
 </style>

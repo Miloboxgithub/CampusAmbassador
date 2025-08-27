@@ -72,8 +72,8 @@
       class="collects"
     />
     <text class="cc">收藏</text>
-    <view class="btn" @click="submits">
-      {{ submited ? "已投递" : "立即投递" }}
+    <view @click="submits" :class="status === '已结束' ? 'endBtn' : 'btn'">
+      {{ status === "已结束" ? "已结束" : submited ? "已投递" : "投递简历" }}
     </view>
   </view>
   <uni-popup ref="popups" type="bottom" mask="true" @change="change">
@@ -280,6 +280,7 @@ const submited = ref(false);
 
 async function submits() {
   if (submited.value) return;
+  if( status.value === "已结束") return;
   if (!loginStatus.value) {
     // uni.showToast({
     //   title: "请先登录",
@@ -303,12 +304,12 @@ async function submits() {
 onShareAppMessage(() => {
   return {
     title: "快来投递校园大使职位吧！",
-    path: `/pkgA/detail/detail?id=${id.value}` , // 分享路径，带上参数
+    path: `/pkgA/detail/detail?id=${id.value}`, // 分享路径，带上参数
   };
 });
 const navigateToResumePage = () => {
   uni.navigateTo({
-	url: "/pkgA/resume/resume", // 跳转到简历编辑页面
+    url: "/pkgA/resume/resume", // 跳转到简历编辑页面
   });
 };
 </script>
@@ -587,7 +588,26 @@ const navigateToResumePage = () => {
   align-items: center;
   justify-content: center;
 }
-
+.endBtn {
+  position: absolute;
+  bottom: 22px;
+  right: 19px;
+  width: 40%;
+  height: 38px;
+  opacity: 1;
+  border-radius: 19px;
+  background: rgba(245, 245, 245, 1);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0px;
+  line-height: 20.27px;
+  color: rgba(166, 166, 166, 1);
+  text-align: center;
+  vertical-align: top;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .popup-content {
   background-color: #fff;
   border-top-left-radius: 10px;

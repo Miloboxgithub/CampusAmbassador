@@ -419,3 +419,6 @@
   right: 13px;
   bottom: 5.5px;
 }
+.ended.data-v-414d0f43 {
+  color: #999797 !important;
+}
