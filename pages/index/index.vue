@@ -1,67 +1,98 @@
 <template>
+  <!-- 加载组件 -->
   <loading :show="isLoading"></loading>
+  
+  <!-- 滚动时显示的顶部导航栏 -->
   <view class="Rolled-Class" v-if="isRolled">
       <view class="theme">校园大使汇</view>
       <view class="search" @click="navs1">
-        <img src="../../static/搜索@2x.png" alt="" />
+        <img src="../../static/搜索@2x.png" alt="搜索图标" />
         <view class="shu"></view>
         <input type="text" placeholder="请输入搜索内容" />
       </view>
       <view class="screen" @click="navs2" style="top: 142px">
         <view> 筛选 </view>
-        <img src="../../static/筛选@2x.png" alt="" />
+        <img src="../../static/筛选@2x.png" alt="筛选图标" />
       </view>
     </view>
+    
+  <!-- 主页面容器 -->
   <view class="page-container">
+    <!-- 页面标题 -->
     <view class="theme">校园大使汇</view>
+    
+    <!-- 搜索框 -->
     <view class="search" @click="navs1">
-      <img src="../../static/搜索@2x.png" alt="" />
+      <img src="../../static/搜索@2x.png" alt="搜索图标" />
       <view class="shu"></view>
       <input type="text" placeholder="请输入搜索内容" />
     </view>
-    <img class="kouhao" src="../../static/口号图片.png@2x.png" alt="" />
+    
+    <!-- 口号图片 -->
+    <img class="kouhao" src="../../static/口号图片.png@2x.png" alt="校园大使汇口号" />
+    
+    <!-- 功能跳转区域 -->
     <view class="jump">
+      <!-- 实习大全功能块 -->
       <view class="dashi">
         <view class="zizi">实习大全</view>
         <view class="zizizi">更多机会，更优选择</view>
         <image src="../../static/dashi.svg" mode="" class="imim" />
       </view>
+      
+      <!-- 内推码Pro功能块 -->
       <view class="neitui">
         <view class="zizi">内推码Pro</view>
         <view class="zizizi">内推码，求职快人一步</view>
         <image src="../../static/neitui .svg" mode="" class="imim" />
       </view>
     </view>
+    
+    <!-- 筛选按钮 -->
     <view class="screen" @click="navs2">
       <view> 筛选 </view>
-      <img src="../../static/筛选@2x.png" alt="" />
+      <img src="../../static/筛选@2x.png" alt="筛选图标" />
     </view>
 
-
+    <!-- 职位列表区域 -->
     <view class="items">
+      <!-- 职位列表项 -->
       <view
         class="item"
         v-for="item in items"
         :key="item.id"
         @click="navs3(item.id)"
       >
+        <!-- 企业名称 -->
         <view class="name">{{ item.name }}</view>
+        
+        <!-- 标签区域 -->
         <view class="tags">
           <view class="tag" v-for="tag in item.tags" :key="tag">
             {{ tag }}
           </view>
         </view>
-        <img class="icon" src="../../static/行业@2x.png" alt="" />
+        
+        <!-- 行业信息 -->
+        <img class="icon" src="../../static/行业@2x.png" alt="行业图标" />
         <text class="type">{{ item.type }}</text>
+        
+        <!-- 招募状态 -->
         <text class="status" :class="{ ended: item.status === '已结束' }">{{
           item.status
         }}</text>
+        
+        <!-- 企业logo -->
         <view class="coicon">
-          <img :src="item.coicon" alt="aspectFit" />
+          <img :src="item.coicon" alt="企业logo" />
         </view>
-        <img src="../../static/浏览@2x.png" alt="" class="eye" />
+        
+        <!-- 浏览量 -->
+        <img src="../../static/浏览@2x.png" alt="浏览图标" class="eye" />
         <text class="look">{{ item.look }}</text>
       </view>
+      
+      <!-- 列表底部提示 -->
       <view class="kong">
         <text>~已经到底啦~</text>
       </view>
@@ -83,11 +114,19 @@ import {
 import { getCampusByPage, getCampusDetail } from "@/api/index.js";
 import { pageStore } from "@/store";
 import Loading from "../../components/Loading.vue";
+
+// 页面加载状态
 const isLoading = ref(false);
+// 页面状态管理
 const pageInfo = pageStore();
+// 校园大使职位列表数据
 const items = ref([]);
-const isRolled = ref(false); //是否滑动到一定位置
-// 页面加载时执行的逻辑
+// 是否滚动到一定位置（控制顶部导航栏显示）
+const isRolled = ref(false);
+/**
+ * 页面加载生命周期钩子
+ * 初始化页面数据，获取校园大使职位列表
+ */
 onLoad(async () => {
   console.log("页面加载");
   items.value = []; // 清空 items 数组
@@ -96,15 +135,16 @@ onLoad(async () => {
     const arr = await getCampusByPage(pageInfo.indexInfo);
 
     console.log("获取到的校园大使数据:", arr);
+    // 处理API返回数据，构建前端展示数据结构
     arr.forEach((e) => {
       items.value.push({
-        id: e.id,
-        name: e.name,
-        tags: [e.type, e.scale, "校园大使"],
-        type: e.industries,
-        status: e.isRecruit ? "招募中" : "已结束",
-        coicon: "https://api.xydsh.cn/enterpriseLogo/" + e.logo,
-        look: e.pageView,
+        id: e.id, // 职位ID
+        name: e.name, // 企业名称
+        tags: [e.type, e.scale, "校园大使"], // 标签数组：类型、规模、固定标签
+        type: e.industries, // 行业类型
+        status: e.isRecruit ? "招募中" : "已结束", // 招募状态
+        coicon: "https://api.xydsh.cn/enterpriseLogo/" + e.logo, // 企业logo URL
+        look: e.pageView, // 浏览量
       });
     });
     isLoading.value = false; // 隐藏加载状态
@@ -118,6 +158,10 @@ onLoad(async () => {
   }
 });
 
+/**
+ * 页面显示生命周期钩子
+ * 处理页面显示时的数据加载逻辑，特别是筛选后的数据刷新
+ */
 onShow(async () => {
   // 页面显示时执行的逻辑
   if (pageInfo.indexInfo.isFilter) {
@@ -128,6 +172,7 @@ onShow(async () => {
       const arr = await getCampusByPage(pageInfo.indexInfo);
 
       console.log("获取到的筛选校园大使数据:", arr);
+      // 处理筛选后的数据
       arr.forEach((e) => {
         items.value.push({
           id: e.id,
@@ -156,9 +201,12 @@ onShow(async () => {
   }
   console.log("页面显示");
 });
-// 监听触底事件
+/**
+ * 页面触底事件监听
+ * 处理上拉加载更多数据
+ */
 onReachBottom(async () => {
-  pageInfo.getNewPage();
+  pageInfo.getNewPage(); // 增加页码
   console.log("触底了", pageInfo.indexInfo);
   try {
     isLoading.value = true; // 显示加载状态
@@ -170,9 +218,10 @@ onReachBottom(async () => {
         icon: "none",
       });
       isLoading.value = false; // 隐藏加载状态
-      pageInfo.lowPage();
+      pageInfo.lowPage(); // 回退页码
       return;
     }
+    // 追加新数据到列表
     arr.forEach((e) => {
       items.value.push({
         id: e.id,
@@ -194,9 +243,13 @@ onReachBottom(async () => {
     });
   }
 });
+/**
+ * 下拉刷新事件监听
+ * 处理下拉刷新操作，重置数据并重新加载
+ */
 onPullDownRefresh(async () => {
   console.log("下拉刷新了");
-  pageInfo.initIndexInfo();
+  pageInfo.initIndexInfo(); // 重置页码信息
   items.value = []; // 清空 items 数组
   try {
     isLoading.value = true; // 显示加载状态
@@ -204,6 +257,7 @@ onPullDownRefresh(async () => {
     const arr = await getCampusByPage(pageInfo.indexInfo);
 
     console.log("获取到的校园大使数据:", arr);
+    // 重新加载数据
     arr.forEach((e) => {
       items.value.push({
         id: e.id,
@@ -216,7 +270,7 @@ onPullDownRefresh(async () => {
       });
     });
     isLoading.value = false; // 隐藏加载状态
-    uni.stopPullDownRefresh();
+    uni.stopPullDownRefresh(); // 停止下拉刷新动画
   } catch (error) {
     console.error("获取数据失败:", error);
     isLoading.value = false; // 隐藏加载状态
@@ -224,15 +278,19 @@ onPullDownRefresh(async () => {
       title: "加载数据失败",
       icon: "error",
     });
-    uni.stopPullDownRefresh();
+    uni.stopPullDownRefresh(); // 停止下拉刷新动画
   }
 });
+/**
+ * 页面滚动事件监听
+ * 监听页面滚动位置，控制顶部导航栏显示/隐藏
+ */
 onPageScroll((e) => {
   console.log(e.scrollTop);
   if (e.scrollTop > 300) {
-    isRolled.value = true;
+    isRolled.value = true; // 滚动超过300px时显示顶部导航栏
   } else {
-    isRolled.value = false;
+    isRolled.value = false; // 滚动位置小于300px时隐藏顶部导航栏
   }
 });
 const navs1 = () => {

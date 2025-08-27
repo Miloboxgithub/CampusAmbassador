@@ -196,7 +196,7 @@ npm run build:mp-baidu
 ## 📧 联系我们
 
 如有问题或建议，请通过以下方式联系：
-- 邮箱: [填写项目邮箱]
+- 邮箱: 1012436741@qq.com
 - GitHub: [提交Issue](https://github.com/Miloboxgithub/CampusAmbassador/issues)
 
 

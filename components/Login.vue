@@ -1,31 +1,43 @@
 <template>
+	<!-- 登录模态框 -->
 	<view class="loginMode">
+		<!-- 欢迎标题 -->
 		<view class="temt">欢迎来到校园大使汇</view>
-		<view class="ser">找校园大使，就上校园大使汇！</view>
-		<!-- <view class="meng" v-if="!gous" @tap="meng"></view>
-		<view class="mengs" v-if="!gous" @tap="meng"></view> -->
+		<!-- 副标题 -->
+		<view class="ser">找校园大使，就上校园大使汇!</view>
+		
+		<!-- 手机号快捷登录按钮 -->
 		<view class="phonelogin" v-if="gous&&!tapStatus">
-			<image src="../static/shouji.png"></image>
+			<image src="../static/shouji.png" alt="手机图标"></image>
 			手机号快捷登录
+			<!-- 隐藏的微信登录按钮 -->
 			<button class="btnLogin" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" :disabled="tapStatus"></button>
 		</view>
+		<!-- 未勾选协议时的提示按钮 -->
 		<view class="phonelogin" v-else @click="meng">
-			<image src="../static/shouji.png"></image>
+			<image src="../static/shouji.png" alt="手机图标"></image>
 			手机号快捷登录
 		</view>
+		
+		<!-- 短信验证码登录按钮 -->
 		<view class="msglogin" @tap="navigate" data-url="/pkgA/msg/msg">
-			<image src="../static/duanxin.png"></image>
+			<image src="../static/duanxin.png" alt="短信图标"></image>
 			短信验证码登录
 		</view>
+		
+		<!-- 协议同意区域 -->
 		<view class="ist">
+			<!-- 协议勾选框 -->
 			<view class="gous" @tap="toggleGous" :style="{ background: gous ? 'rgba(88, 127, 255, 1)' : '' }">
-				<image v-if="gous" src="../static/gou.png" mode=""></image>
+				<image v-if="gous" src="../static/gou.png" mode="" alt="勾选图标"></image>
 			</view>
 			我已阅读并同意<text style="color: rgba(88, 127, 255, 1)" @tap="navigate"
 				data-url="/pkgA/service/service">《用户服务协议》</text>和
 			<text @tap="navigate" data-url="/pkgA/privacy/privacy" style="color: rgba(88, 127, 255, 1)">《隐私政策》</text>
 		</view>
-		<image class="chas" @tap="hideview" src="../static/guanbi.png" mode=""></image>
+		
+		<!-- 关闭按钮 -->
+		<image class="chas" @tap="hideview" src="../static/guanbi.png" mode="" alt="关闭图标"></image>
 	</view>
 </template>
 

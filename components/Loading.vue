@@ -1,20 +1,30 @@
 <template>
+	<!-- 加载遮罩层 -->
 	<view class="loading-mask" v-if="show">
+	  <!-- 加载内容容器 -->
 	  <view class="loading-content">
+		<!-- 旋转加载动画 -->
 		<view class="spinner"></view>
+		<!-- 加载提示文本 -->
 		<text class="loading-text">{{ title }}</text>
 	  </view>
 	</view>
   </template>
 
 <script>
+/**
+ * 加载组件
+ * 用于显示加载状态的遮罩层和动画
+ */
 export default {
   name: "Loading",
   props: {
+    // 是否显示加载状态
     show: {
       type: Boolean,
       default: false
     },
+    // 加载提示文本
     title: {
       type: String,
       default: '加载中...'

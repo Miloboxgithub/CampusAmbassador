@@ -21,14 +21,23 @@ if (!Math) {
   "./pkgA/contact/contact.js";
 }
 const _sfc_main = {
+  /**
+   * 应用启动时触发
+   */
   onLaunch: function() {
-    common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
+    common_vendor.index.__f__("log", "at App.vue:7", "App Launch - 应用启动");
   },
+  /**
+   * 应用显示时触发（从后台进入前台）
+   */
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:17", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:25", "App Show - 应用显示");
   },
+  /**
+   * 应用隐藏时触发（从前台进入后台）
+   */
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:20", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:32", "App Hide - 应用隐藏");
   }
 };
 function createApp() {

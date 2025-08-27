@@ -1,5 +1,18 @@
-
-//校园招聘岗位分页查询
+/**
+ * 校园招聘岗位分页查询
+ * @param {Object} e - 查询参数对象
+ * @param {number} e.page - 当前页码
+ * @param {number} e.pageSize - 每页显示数量
+ * @param {string} [e.keyword] - 搜索关键词
+ * @param {string} [e.industry] - 行业筛选条件
+ * @param {string} [e.scale] - 公司规模筛选条件
+ * @param {string} [e.type] - 职位类型筛选条件
+ * @param {string} [e.educationalRequire] - 学历要求筛选条件
+ * @param {string} [e.majorRequire] - 专业要求筛选条件
+ * @param {string} [e.gradeRequire] - 年级要求筛选条件
+ * @param {string} [e.status] - 状态筛选条件
+ * @returns {Promise} 返回Promise对象，包含查询结果
+ */
 export const getCampusByPage = (e) => {
 	console.log(e, '获取校园招聘岗位分页查询参数');
 	return new Promise((resolve, reject) => {
@@ -16,16 +29,6 @@ export const getCampusByPage = (e) => {
 				majorRequire: e.majorRequire || '',
 				gradeRequire: e.gradeRequire || '',
 				status: e.status || '',
-				// page: 1,
-				// pageSize: 20,
-				// keyword: 'hhhhhhhhhhhhhhhhhh',
-				// industry: '',
-				// scale: '',
-				// type: '',
-				// educationalRequire:  '',
-				// majorRequire: '',
-				// gradeRequire: '',
-				// status:  '',
 			},
 			header: {
 				'content-type': 'application/json'
@@ -34,7 +37,7 @@ export const getCampusByPage = (e) => {
 			dataType: 'json',
 			responseType: 'text',
 			success: (result) => {
-				console.log(result, 'hhhh');
+				console.log(result, '校园招聘岗位查询结果');
 				resolve(result.data.data.records); // 返回数据
 			},
 			fail: (error) => {
