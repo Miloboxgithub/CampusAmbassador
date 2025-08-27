@@ -121,6 +121,7 @@ onLoad(async () => {
 onShow(async () => {
   // 页面显示时执行的逻辑
   if (pageInfo.indexInfo.isFilter) {
+	console.log(pageInfo.indexInfo,'ooo')
     items.value = []; // 清空 items 数组
     try {
       isLoading.value = true; // 显示加载状态

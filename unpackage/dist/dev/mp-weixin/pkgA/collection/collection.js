@@ -274,13 +274,14 @@ const _sfc_main = {
           items.value.forEach((item) => {
             item.isdian = true;
           });
+          numbs.value = items.value.length;
         }
         if (st.value == "简历模板") {
           mobans.value.forEach((item) => {
             item.isdian = true;
           });
+          numbs.value = mobans.value.length;
         }
-        numbs.value = items.value.length;
       } else {
         items.value.forEach((item) => {
           item.isdian = false;

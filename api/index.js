@@ -261,7 +261,29 @@ export const getTemplateCollects = (e) => {
 			responseType: 'text',
 			success: (result) => {
 				console.log(result, 'hhD大调hhjjjjjjjjjj');
-				
+				if(result.data.msg=="NOT_LOGIN"){
+					console.log('登录过期，请重新登录');
+					uni.setStorageSync("loginStatus", false);
+					uni.showModal({
+						title: '登录过期，请重新登录',
+						content: '',
+						showCancel: false,
+						cancelText: '取消',
+						cancelColor: '#000000',
+						confirmText: '确定',
+						confirmColor: '#4F78FF',
+						success: (result) => {
+							if (result.confirm) {
+								uni.switchTab({
+									url: "/pages/personage/personage",
+								  });
+							}
+						},
+						fail: () => {},
+						complete: () => {}
+					});
+					  
+				}
 				resolve(result.data.data.records); // 返回数据
 			},
 			fail: (error) => {
@@ -828,7 +850,7 @@ export const getCityData = (e) => {
 export const getGradeData = (e) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: 'https://api.xydsh.cn/grade',
+			url: 'https://api.xydsh.cn/grade/sub',
 			data: {
 				name: e
 			},

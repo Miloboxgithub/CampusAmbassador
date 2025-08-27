@@ -180,6 +180,7 @@ const _sfc_main = {
         type: company.value,
         scale: guimo.value
       });
+      pageInfo.indexInfo.isFilter = true;
       common_vendor.index.navigateBack();
     };
     common_vendor.onLoad(async () => {
@@ -212,7 +213,7 @@ const _sfc_main = {
             f: false
           }));
           let ops = pageInfo.indexInfo;
-          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:303", "当前筛选条件:", ops);
+          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:304", "当前筛选条件:", ops);
           edu.value = ops.educationalRequire || data.education[0];
           major.value = ops.majorRequire || data.major[0];
           grade.value = ops.gradeRequire || data.grade[0];
@@ -229,16 +230,16 @@ const _sfc_main = {
             [companyOptions.value, company.value],
             [guimoOptions.value, guimo.value]
           ].forEach(([list, val]) => markActive(list, val));
-          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:323", "筛选数据初始化成功", data);
+          common_vendor.index.__f__("log", "at pkgA/screen/screen.vue:324", "筛选数据初始化成功", data);
         } else {
-          common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:325", "获取筛选数据失败:", res);
+          common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:326", "获取筛选数据失败:", res);
           common_vendor.index.showToast({
             title: "加载数据失败",
             icon: "error"
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:332", "获取筛选数据失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/screen/screen.vue:333", "获取筛选数据失败:", error);
         common_vendor.index.showToast({
           title: "加载数据失败",
           icon: "error"

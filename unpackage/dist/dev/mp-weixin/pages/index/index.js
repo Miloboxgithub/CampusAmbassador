@@ -44,11 +44,12 @@ const _sfc_main = {
     });
     common_vendor.onShow(async () => {
       if (pageInfo.indexInfo.isFilter) {
+        common_vendor.index.__f__("log", "at pages/index/index.vue:124", pageInfo.indexInfo, "ooo");
         items.value = [];
         try {
           isLoading.value = true;
           const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-          common_vendor.index.__f__("log", "at pages/index/index.vue:129", "获取到的筛选校园大使数据:", arr);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:130", "获取到的筛选校园大使数据:", arr);
           arr.forEach((e) => {
             items.value.push({
               id: e.id,
@@ -62,7 +63,7 @@ const _sfc_main = {
           });
           isLoading.value = false;
         } catch (error) {
-          common_vendor.index.__f__("error", "at pages/index/index.vue:143", "获取数据失败:", error);
+          common_vendor.index.__f__("error", "at pages/index/index.vue:144", "获取数据失败:", error);
           isLoading.value = false;
           common_vendor.index.showToast({
             title: "加载数据失败",
@@ -71,17 +72,17 @@ const _sfc_main = {
         }
         pageInfo.indexInfo.isFilter = false;
       } else {
-        common_vendor.index.__f__("log", "at pages/index/index.vue:152", "没有筛选条件，保持当前数据");
+        common_vendor.index.__f__("log", "at pages/index/index.vue:153", "没有筛选条件，保持当前数据");
       }
-      common_vendor.index.__f__("log", "at pages/index/index.vue:156", "页面显示");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:157", "页面显示");
     });
     common_vendor.onReachBottom(async () => {
       pageInfo.getNewPage();
-      common_vendor.index.__f__("log", "at pages/index/index.vue:161", "触底了", pageInfo.indexInfo);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:162", "触底了", pageInfo.indexInfo);
       try {
         isLoading.value = true;
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:165", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:166", "获取到的校园大使数据:", arr);
         if (arr.length === 0) {
           common_vendor.index.showToast({
             title: "没有更多数据了",
@@ -104,7 +105,7 @@ const _sfc_main = {
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:188", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:189", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -113,14 +114,14 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:197", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:198", "下拉刷新了");
       pageInfo.initIndexInfo();
       items.value = [];
       try {
         isLoading.value = true;
-        common_vendor.index.__f__("log", "at pages/index/index.vue:202", pageInfo.indexInfo, "下拉刷新时的页码信息");
+        common_vendor.index.__f__("log", "at pages/index/index.vue:203", pageInfo.indexInfo, "下拉刷新时的页码信息");
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:205", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:206", "获取到的校园大使数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -135,7 +136,7 @@ const _sfc_main = {
         isLoading.value = false;
         common_vendor.index.stopPullDownRefresh();
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:220", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:221", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -145,7 +146,7 @@ const _sfc_main = {
       }
     });
     common_vendor.onPageScroll((e) => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:230", e.scrollTop);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:231", e.scrollTop);
       if (e.scrollTop > 300) {
         isRolled.value = true;
       } else {

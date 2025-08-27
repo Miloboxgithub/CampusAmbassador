@@ -267,6 +267,7 @@ const confirms = () => {
     type: company.value,
     scale: guimo.value,
   });
+  pageInfo.indexInfo.isFilter = true; 
   uni.navigateBack();
 };
 // 页面加载时执行的逻辑
