@@ -321,3 +321,11 @@
   right: 26px;
   bottom: 15px;
 }
+.backs.data-v-5fc04cd8 {
+  position: absolute;
+  left: 12px;
+  top: 55px;
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+}

@@ -205,6 +205,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         const res = await api_index.getUserResumeInfo();
         if (res.statusCode === 200 && res.data.code === 1) {
           common_vendor.index.__f__("log", "at pkgA/resume/resume.vue:496", res, "获取到的简历信息");
+          if (res.data.data.dataStatus.isEmpty) {
+            common_vendor.index.showToast({
+              title: "简历待创建",
+              icon: "error"
+            });
+          }
           const resumeInfo = res.data.data;
           fromData.value.name = resumeInfo.name || "";
           fromData.value.phone = resumeInfo.phone || "";
@@ -240,7 +246,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         } else {
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:558", "获取简历信息失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:564", "获取简历信息失败:", error);
         common_vendor.index.showToast({
           title: "获取简历信息失败",
           icon: "none"
@@ -266,7 +272,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           });
         }
       }).catch((error) => {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:596", "获取简历选项失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:602", "获取简历选项失败:", error);
         common_vendor.index.showToast({
           title: "获取简历选项失败",
           icon: "none"

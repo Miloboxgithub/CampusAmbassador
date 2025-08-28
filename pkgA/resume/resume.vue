@@ -494,6 +494,12 @@ const GetUserResumeInfo = async () => {
     if (res.statusCode === 200 && res.data.code === 1) {
       // 处理获取到的简历信息
       console.log(res, "获取到的简历信息");
+      if(res.data.data.dataStatus.isEmpty){
+        uni.showToast({
+          title: '简历待创建',
+          icon: 'error'
+        });
+      }
       const resumeInfo = res.data.data;
       fromData.value.name = resumeInfo.name || "";
       fromData.value.phone = resumeInfo.phone || "";

@@ -34,7 +34,7 @@ const _sfc_main = {
       winH.value = sys.windowHeight;
     });
     const inputed = async (e) => {
-      common_vendor.index.__f__("log", "at pkgA/search/search.vue:141", msg.value);
+      common_vendor.index.__f__("log", "at pkgA/search/search.vue:143", msg.value);
       if (msg.value === "") {
         common_vendor.index.showToast({
           title: "请输入搜索内容",
@@ -86,7 +86,7 @@ const _sfc_main = {
       coitems.value = [];
     };
     const shang = (e) => {
-      common_vendor.index.__f__("log", "at pkgA/search/search.vue:199", e.currentTarget.dataset.s.a);
+      common_vendor.index.__f__("log", "at pkgA/search/search.vue:201", e.currentTarget.dataset.s.a);
       msg.value = e.currentTarget.dataset.s.a;
       inputed();
     };
@@ -119,7 +119,7 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pkgA/search/search.vue:230", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pkgA/search/search.vue:232", "下拉刷新了");
       flag.value = true;
       isShou.value = true;
       msg.value = "";
@@ -136,27 +136,40 @@ const _sfc_main = {
         path: "/pages/index/index"
       };
     });
+    const goToback = () => {
+      common_vendor.index.switchTab({
+        url: "/pages/index/index",
+        success: (result) => {
+        },
+        fail: () => {
+        },
+        complete: () => {
+        }
+      });
+    };
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: common_vendor.p({
           show: isLoading.value
         }),
-        b: common_vendor.o(inputed),
+        b: common_vendor.o(goToback),
         c: common_assets._imports_0$3,
         d: common_vendor.o(inputed),
-        e: contents.value,
-        f: msg.value,
-        g: common_vendor.o(($event) => msg.value = $event.detail.value),
-        h: common_assets._imports_1$4,
-        i: common_vendor.o(clear),
-        j: flag.value && isShou.value
+        e: common_assets._imports_1$4,
+        f: common_vendor.o(inputed),
+        g: contents.value,
+        h: msg.value,
+        i: common_vendor.o(($event) => msg.value = $event.detail.value),
+        j: common_assets._imports_2$4,
+        k: common_vendor.o(clear),
+        l: flag.value && isShou.value
       }, flag.value && isShou.value ? {
-        k: common_vendor.o(shanchu),
-        l: common_assets._imports_2$4
+        m: common_vendor.o(shanchu),
+        n: common_assets._imports_3$3
       } : {}, {
-        m: flag.value && isShou.value
+        o: flag.value && isShou.value
       }, flag.value && isShou.value ? {
-        n: common_vendor.f(items.value, (item, index, i0) => {
+        p: common_vendor.f(items.value, (item, index, i0) => {
           return {
             a: common_vendor.t(item),
             b: index,
@@ -164,9 +177,9 @@ const _sfc_main = {
           };
         })
       } : {}, {
-        o: isShou.value ? "220px" : "170px",
-        p: isShou.value ? "" : "linear-gradient(to bottom, #dbe8ff, #f5f5f5 159%)",
-        q: common_vendor.f(coitems.value, (item, k0, i0) => {
+        q: isShou.value ? "220px" : "170px",
+        r: isShou.value ? "" : "linear-gradient(to bottom, #dbe8ff, #f5f5f5 159%)",
+        s: common_vendor.f(coitems.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: common_vendor.f(item.tags, (tag, k1, i1) => {
@@ -184,13 +197,13 @@ const _sfc_main = {
             i: common_vendor.o(($event) => navs3(item.id), item.id)
           };
         }),
-        r: common_assets._imports_2$1,
-        s: common_assets._imports_3$1,
-        t: !isShou.value,
-        v: winH.value + "px",
-        w: !flag.value
+        t: common_assets._imports_2$1,
+        v: common_assets._imports_3$1,
+        w: !isShou.value,
+        x: winH.value + "px",
+        y: !flag.value
       }, !flag.value ? {
-        x: common_assets._imports_5$1
+        z: common_assets._imports_6$2
       } : {});
     };
   }

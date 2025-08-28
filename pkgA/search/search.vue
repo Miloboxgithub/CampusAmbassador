@@ -15,6 +15,8 @@
           : 'linear-gradient(to bottom, #dbe8ff, #f5f5f5 159%)',
       }"
     >
+    <image class="backs" @click="goToback" src="../img/返回.svg" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="" />
+      
       <view class="theme">搜索</view>
       <view style="display: flex; justify-content: center; margin-top: 105px">
         <view class="navv">
@@ -244,6 +246,17 @@ onShareAppMessage(() => {
     path: "/pages/index/index",
   };
 });
+const goToback=()=>{
+  uni.switchTab({
+    url: '/pages/index/index',
+    success: (result) => {
+      
+    },
+    fail: () => {},
+    complete: () => {}
+  });
+    
+}
 </script>
 
 <style lang="scss" scoped>
@@ -577,5 +590,13 @@ onShareAppMessage(() => {
   position: absolute;
   right: 26px;
   bottom: 15px;
+}
+.backs{
+  position: absolute;
+  left: 12px;
+  top: 55px;
+  width: 24px;
+  height: 24px;
+  opacity: 1;
 }
 </style>
