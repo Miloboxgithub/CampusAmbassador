@@ -213,10 +213,10 @@ onReachBottom(async () => {
     const arr = await getCampusByPage(pageInfo.indexInfo);
     console.log("获取到的校园大使数据:", arr);
     if (arr.length === 0) {
-      uni.showToast({
-        title: "没有更多数据了",
-        icon: "none",
-      });
+      // uni.showToast({
+      //   title: "没有更多数据了",
+      //   icon: "none",
+      // });
       isLoading.value = false; // 隐藏加载状态
       pageInfo.lowPage(); // 回退页码
       return;

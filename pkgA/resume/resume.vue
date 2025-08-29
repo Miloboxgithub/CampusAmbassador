@@ -234,7 +234,7 @@ import {
   getGradeData
 } from "@/api/index.js";
 import { pageStore } from "@/store";
-import { areaList } from "@vant/area-data"; // 省市区三级数据
+//import { areaList } from "@vant/area-data"; // 省市区三级数据
 const fromData = ref({
   name: "",
   phone: "",
@@ -510,14 +510,15 @@ const GetUserResumeInfo = async () => {
       let provinceName = resumeInfo.province || "";
       /* 找出所有属于该省的城市名称 */
       // 1. 先找到当前省的 code
-      const provinceCode = Object.keys(areaList.province_list).find(
-        (code) => areaList.province_list[code] === provinceName
-      );
-      // 2. 再过滤出城市名称
-      cities.value = Object.keys(areaList.city_list)
-        .filter((code) => code.slice(0, 2) === provinceCode!.slice(0, 2))
-        .map((code) => areaList.city_list[code]);
+      // const provinceCode = Object.keys(areaList.province_list).find(
+      //   (code) => areaList.province_list[code] === provinceName
+      // );
+      // // 2. 再过滤出城市名称
+      // cities.value = Object.keys(areaList.city_list)
+      //   .filter((code) => code.slice(0, 2) === provinceCode!.slice(0, 2))
+      //   .map((code) => areaList.city_list[code]); 
 
+      cities.value = await getCityData(provinceName);
       fromData.value.city = resumeInfo.city || "";
       fromData.value.educational = resumeInfo.educational || "";
       fromData.value.graduate = resumeInfo.graduate || "";
@@ -562,10 +563,10 @@ const GetUserResumeInfo = async () => {
     }
   } catch (error) {
     console.error("获取简历信息失败:", error);
-    uni.showToast({
-      title: "获取简历信息失败",
-      icon: "none",
-    });
+    // uni.showToast({
+    //   title: "获取简历信息失败",
+    //   icon: "none",
+    // });
   }
 };
 onLoad(async() => {

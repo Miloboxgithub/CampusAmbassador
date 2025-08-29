@@ -91,10 +91,6 @@ const _sfc_main = {
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
         common_vendor.index.__f__("log", "at pages/index/index.vue:214", "获取到的校园大使数据:", arr);
         if (arr.length === 0) {
-          common_vendor.index.showToast({
-            title: "没有更多数据了",
-            icon: "none"
-          });
           isLoading.value = false;
           pageInfo.lowPage();
           return;

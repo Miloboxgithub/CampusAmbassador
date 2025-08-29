@@ -39,7 +39,8 @@ export const pageStore = defineStore('pageInfo', {
         mySubmitInfo:{
             page: 1,                    // 当前页码
             pageSize: 20,               // 每页显示数量
-        }
+        },
+        isNavResume:false, // 是否跳转简历页回来
 	}),
 	actions: {
 		/**
@@ -177,5 +178,8 @@ export const pageStore = defineStore('pageInfo', {
                 pageSize: 20,
             };
         },
+        changeNavResume(status){
+            this.isNavResume = status;
+        }
 	},
 });

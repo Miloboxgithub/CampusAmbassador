@@ -219,10 +219,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           fromData.value.college = resumeInfo.college || "";
           fromData.value.province = resumeInfo.province || "";
           let provinceName = resumeInfo.province || "";
-          const provinceCode = Object.keys(common_vendor.areaList.province_list).find(
-            (code) => common_vendor.areaList.province_list[code] === provinceName
-          );
-          cities.value = Object.keys(common_vendor.areaList.city_list).filter((code) => code.slice(0, 2) === provinceCode.slice(0, 2)).map((code) => common_vendor.areaList.city_list[code]);
+          cities.value = await api_index.getCityData(provinceName);
           fromData.value.city = resumeInfo.city || "";
           fromData.value.educational = resumeInfo.educational || "";
           fromData.value.graduate = resumeInfo.graduate || "";
@@ -246,11 +243,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         } else {
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:564", "获取简历信息失败:", error);
-        common_vendor.index.showToast({
-          title: "获取简历信息失败",
-          icon: "none"
-        });
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:565", "获取简历信息失败:", error);
       }
     };
     common_vendor.onLoad(async () => {
@@ -272,7 +265,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           });
         }
       }).catch((error) => {
-        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:602", "获取简历选项失败:", error);
+        common_vendor.index.__f__("error", "at pkgA/resume/resume.vue:603", "获取简历选项失败:", error);
         common_vendor.index.showToast({
           title: "获取简历选项失败",
           icon: "none"

@@ -70,7 +70,7 @@ function goTo() {
 }
 
 .loading-content {
-  width: 64vw;
+  width: 75vw;
   height: 150px;
   border-radius: 11.58px;
   background: #fff;

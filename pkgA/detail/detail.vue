@@ -110,7 +110,42 @@ const isLoading = ref(false);
 const isModal = ref(false);
 const id = ref(null);
 const hasResume = ref(false); // 是否有简历
+const pageState = pageStore();
 onLoad(async (option) => {
+  isLoading.value = true; // 显示加载状态
+  id.value = option.id; // 获取传递的 id
+  console.log("接收到的 id:", id.value);
+  const res = await getCampusDetail(id.value);
+  console.log("获取到的详情:", res);
+  if (res.statusCode === 200) {
+    let deta = res.data.data;
+    tags.value = [deta.type, deta.scale, "校园大使"];
+    type.value = deta.industries || "未知类型";
+    status.value = deta.isRecruit ? "招募中" : "已结束";
+    coicon.value =
+      "https://api.xydsh.cn/enterpriseLogo/" + deta.logo ||
+      "https://picsum.photos/200"; // 默认图片
+    name.value = deta.name || "未知名称";
+    task.value = deta.task || "暂无任务信息";
+    harvest.value = deta.harvest || "暂无收获信息";
+    expect.value = deta.expected || "暂无期望信息";
+    target.value = deta.targetCollege || "暂无目标院校信息";
+    introduce.value = deta.description || "暂无公司介绍";
+    isLoading.value = false; // 隐藏加载状态
+    isCollected.value = deta.isFavorite || false; // 设置收藏状态
+    submited.value = deta.isDelivered || false; // 设置投递状态
+    hasResume.value = deta.hasResume || false; // 设置是否有简历
+    if (pageState.isNavResume) pageState.changeNavResume(false);
+  } else {
+    isLoading.value = false; // 隐藏加载状态
+    uni.showToast({
+      title: "获取详情失败",
+      icon: "error",
+    });
+  }
+});
+onShow(async (option) => {
+  if (!pageState.isNavResume) return;
   isLoading.value = true; // 显示加载状态
   id.value = option.id; // 获取传递的 id
   console.log("接收到的 id:", id.value);
@@ -142,26 +177,17 @@ onLoad(async (option) => {
     });
   }
 });
-const name = ref("振石控股集团校园大使计划");
-const tags = ref(["民营", "2000人以上", "校园大使"]);
-const type = ref("汽车|机械|创造");
-const status = ref("招募中");
-const coicon = ref("https://picsum.photos/200");
-const task = ref(`你将作为校园生态的核心建设者，承担以下复合型角色:
-1. 品牌宣传官策划并执行品牌校园推广方案，通过微信、小红书/等社交媒体传播品牌活动资讯，提升品牌在Z世代群体中的认知度。
-2. 社群运营官搭建并运营本校品牌用户社群。
+const name = ref("");
+const tags = ref([""]);
+const type = ref("");
+const status = ref("");
+const coicon = ref("");
+const task = ref(`
 `);
-const harvest = ref(`1. 接触各行业前辈，第一时间了解行业资讯和求职动态；
-2. 掌握新媒体运营、用户运营、团队管理等关键软技能，提升个人综合素质。
-`);
-const expect = ref(`1.国内外高校在读学生（年级/专业不限）；
-2.认可校园大使汇的品牌及理念；`);
-const target = ref(
-  `本计划面试全球高校开放申请，无论你是就读于国内高校（含港澳台地区）或海外院校，均欢迎加入！`
-);
-const introduce = ref(
-  `振石控股集团，作为浙江省首批股份制改造试点企业，形成了包括玻纤制造、风电基材、特种钢材、复合新材、自控技术等产业。已在国内及印尼、埃及、土耳其、美国、西班牙等国家设立了五十余家控(参) 股子公司。`
-);
+const harvest = ref(``);
+const expect = ref(``);
+const target = ref(``);
+const introduce = ref(``);
 const isCollected = ref(false); // 是否已收藏
 const loginStatus = ref(uni.getStorageSync("loginStatus") || false); // 登录状态
 async function collectsClick() {
@@ -280,7 +306,7 @@ const submited = ref(false);
 
 async function submits() {
   if (submited.value) return;
-  if( status.value === "已结束") return;
+  if (status.value === "已结束") return;
   if (!loginStatus.value) {
     // uni.showToast({
     //   title: "请先登录",
@@ -308,6 +334,8 @@ onShareAppMessage(() => {
   };
 });
 const navigateToResumePage = () => {
+  isModal.value = false;
+  pageState.changeNavResume(true);
   uni.navigateTo({
     url: "/pkgA/resume/resume", // 跳转到简历编辑页面
   });
@@ -333,11 +361,16 @@ const navigateToResumePage = () => {
   position: absolute;
   font-size: 18px;
   font-weight: 700;
+  max-width: calc(90vw - 63px);
+  text-overflow: ellipsis;
   letter-spacing: 0px;
   line-height: 26.06px;
   color: rgba(25, 25, 25, 1);
   text-align: left;
   vertical-align: top;
+  /* 补上两行 ↓ */
+  white-space: nowrap; /* 强制一行 */
+  overflow: hidden; /* 隐藏超出部分 */
 }
 
 .tags {
