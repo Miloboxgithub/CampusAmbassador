@@ -155,12 +155,12 @@ const _sfc_main = {
         b: common_vendor.o(goToback),
         c: common_assets._imports_0$3,
         d: common_vendor.o(inputed),
-        e: common_assets._imports_1$4,
+        e: common_assets._imports_1$3,
         f: common_vendor.o(inputed),
         g: contents.value,
         h: msg.value,
         i: common_vendor.o(($event) => msg.value = $event.detail.value),
-        j: common_assets._imports_2$4,
+        j: common_assets._imports_2$5,
         k: common_vendor.o(clear),
         l: flag.value && isShou.value
       }, flag.value && isShou.value ? {

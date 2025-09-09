@@ -56,6 +56,13 @@
           {{ introduce }}
         </view>
       </view>
+      <view class="infoview">
+        *信息来自企业官方，由人工整理发布，如有问题请联系我们。
+      </view>
+      <view class="infoview" style="margin-top: 3px;">
+        <img class="infoimg" src="../img/SiShieldTipFill.svg" alt="" />安全提示：如您发现用人单位或招聘人员存在违规行为，包括但不限于扣押求职者证件、收取求职者财务、强迫求职者集资或入股、诱导求职者异地入职、其他损害求职者权益行为，请立即向平台举报。
+      </view>
+      
     </view>
   </view>
 
@@ -144,11 +151,11 @@ onLoad(async (option) => {
     });
   }
 });
-onShow(async (option) => {
+onShow(async () => {
   if (!pageState.isNavResume) return;
+  pageState.changeNavResume(false);
   isLoading.value = true; // 显示加载状态
-  id.value = option.id; // 获取传递的 id
-  console.log("接收到的 id:", id.value);
+  console.log("现有的 id:", id.value);
   const res = await getCampusDetail(id.value);
   console.log("获取到的详情:", res);
   if (res.statusCode === 200) {
@@ -650,5 +657,25 @@ const navigateToResumePage = () => {
 }
 .ended {
   color: rgba(153, 151, 151, 1) !important;
+}
+.infoview{
+  width: 92%;
+ 
+  margin-left: 13px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  line-height: 17.82px;
+  color: rgb(184, 184, 184);
+  text-align: justify;
+  vertical-align: top;
+  white-space: pre-wrap;
+}
+.infoimg{
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  left: 0;
+  margin-top: 3px;
 }
 </style>

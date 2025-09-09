@@ -25,9 +25,9 @@ const _sfc_main = {
     common_vendor.onLoad(async (option) => {
       isLoading.value = true;
       id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:117", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:124", "接收到的 id:", id.value);
       const res = await api_index.getCampusDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:119", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:126", "获取到的详情:", res);
       if (res.statusCode === 200) {
         let deta = res.data.data;
         tags.value = [deta.type, deta.scale, "校园大使"];
@@ -54,14 +54,14 @@ const _sfc_main = {
         });
       }
     });
-    common_vendor.onShow(async (option) => {
+    common_vendor.onShow(async () => {
       if (!pageState.isNavResume)
         return;
+      pageState.changeNavResume(false);
       isLoading.value = true;
-      id.value = option.id;
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:151", "接收到的 id:", id.value);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:158", "现有的 id:", id.value);
       const res = await api_index.getCampusDetail(id.value);
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:153", "获取到的详情:", res);
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:160", "获取到的详情:", res);
       if (res.statusCode === 200) {
         let deta = res.data.data;
         tags.value = [deta.type, deta.scale, "校园大使"];
@@ -150,9 +150,9 @@ const _sfc_main = {
       }
     };
     const change = (event) => {
-      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:253", "Popup state changed");
+      common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:260", "Popup state changed");
       if (!event.show) {
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:255", "点击了蒙层，弹窗已关闭");
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:262", "点击了蒙层，弹窗已关闭");
         showLogin.value = false;
       }
     };
@@ -162,7 +162,7 @@ const _sfc_main = {
         showLogin.value = false;
         isLoading.value = true;
         const res = await api_index.getCampusDetail(id.value);
-        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:269", "获取到的详情:", res);
+        common_vendor.index.__f__("log", "at pkgA/detail/detail.vue:276", "获取到的详情:", res);
         if (res.statusCode === 200) {
           let deta = res.data.data;
           tags.value = [deta.type, deta.scale, "校园大使"];
@@ -257,22 +257,23 @@ const _sfc_main = {
         n: common_vendor.t(expect.value),
         o: common_vendor.t(target.value),
         p: common_vendor.t(introduce.value),
-        q: common_assets._imports_1$3,
-        r: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
-        s: common_vendor.o(collectsClick),
-        t: common_vendor.t(status.value === "已结束" ? "已结束" : submited.value ? "已投递" : "投递简历"),
-        v: common_vendor.o(submits),
-        w: common_vendor.n(status.value === "已结束" ? "endBtn" : "btn"),
-        x: common_vendor.o(handleLoginSuccess),
-        y: common_vendor.o(handleClose),
-        z: common_vendor.p({
+        q: common_assets._imports_1$5,
+        r: common_assets._imports_2$4,
+        s: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
+        t: common_vendor.o(collectsClick),
+        v: common_vendor.t(status.value === "已结束" ? "已结束" : submited.value ? "已投递" : "投递简历"),
+        w: common_vendor.o(submits),
+        x: common_vendor.n(status.value === "已结束" ? "endBtn" : "btn"),
+        y: common_vendor.o(handleLoginSuccess),
+        z: common_vendor.o(handleClose),
+        A: common_vendor.p({
           show: showLogin.value
         }),
-        A: common_vendor.sr(popups, "35bfcc75-2", {
+        B: common_vendor.sr(popups, "35bfcc75-2", {
           "k": "popups"
         }),
-        B: common_vendor.o(change),
-        C: common_vendor.p({
+        C: common_vendor.o(change),
+        D: common_vendor.p({
           type: "bottom",
           mask: "true"
         })

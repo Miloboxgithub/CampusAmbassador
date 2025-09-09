@@ -103,7 +103,7 @@ const _sfc_main = {
         a: TemplateImg.value,
         b: common_vendor.t(viewCount.value),
         c: common_vendor.t(downloadNumber.value),
-        d: common_assets._imports_1$3,
+        d: common_assets._imports_2$4,
         e: isCollected.value ? "../../static/collected.png" : "../../static/collect.png",
         f: common_vendor.o((...args) => collectsClick && collectsClick(...args)),
         g: common_vendor.o(downloadWord)

@@ -20,7 +20,6 @@
   <view class="page-container">
     <!-- 页面标题 -->
     <view class="theme">校园大使汇</view>
-    
     <!-- 搜索框 -->
     <view class="search" @click="navs1">
       <img src="../../static/搜索@2x.png" alt="搜索图标" />
@@ -34,14 +33,14 @@
     <!-- 功能跳转区域 -->
     <view class="jump">
       <!-- 实习大全功能块 -->
-      <view class="dashi">
+      <view class="dashi" @click="goToInternships">
         <view class="zizi">实习大全</view>
         <view class="zizizi">更多机会，更优选择</view>
         <image src="../../static/dashi.svg" mode="" class="imim" />
       </view>
       
       <!-- 内推码Pro功能块 -->
-      <view class="neitui">
+      <view class="neitui" @click="goToReferrals">
         <view class="zizi">内推码Pro</view>
         <view class="zizizi">内推码，求职快人一步</view>
         <image src="../../static/neitui .svg" mode="" class="imim" />
@@ -314,6 +313,27 @@ onShareAppMessage(() => {
     path: "/pages/index/index",
   };
 });
+const goToInternships = () => {
+  wx.navigateToMiniProgram({
+  appId: 'wxc5881cd75ec49524',      // 必填
+  path: '/pages/index/index',   // 可空；不传则打开首页
+  envVersion: 'release',         // 可选 release | trial | develop
+  extraData: { from: 'source' }, // 可选；目标小程序可在 App.onLaunch 获取
+  success(res) { /* 成功 */ },
+  fail(err) { console.log(err.errMsg); }
+})
+};
+const goToReferrals = () => {
+  wx.navigateToMiniProgram({
+  appId: 'wxede5715e13efa3b2',      // 必填
+  path: '/pages/index/index',   // 可空；不传则打开首页
+  envVersion: 'release',         // 可选 release | trial | develop
+  extraData: { from: 'source' }, // 可选；目标小程序可在 App.onLaunch 获取
+  success(res) { /* 成功 */ },
+  fail(err) { console.log(err.errMsg); }
+})
+
+};
 </script>
 
 <style lang="scss" scoped>

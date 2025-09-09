@@ -15,12 +15,12 @@ const _sfc_main = {
     const items = common_vendor.ref([]);
     const isRolled = common_vendor.ref(false);
     common_vendor.onLoad(async () => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:131", "页面加载");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:130", "页面加载");
       items.value = [];
       try {
         isLoading.value = true;
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:137", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:136", "获取到的校园大使数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -41,7 +41,7 @@ const _sfc_main = {
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:152", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:151", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -51,12 +51,12 @@ const _sfc_main = {
     });
     common_vendor.onShow(async () => {
       if (pageInfo.indexInfo.isFilter) {
-        common_vendor.index.__f__("log", "at pages/index/index.vue:168", pageInfo.indexInfo, "ooo");
+        common_vendor.index.__f__("log", "at pages/index/index.vue:167", pageInfo.indexInfo, "ooo");
         items.value = [];
         try {
           isLoading.value = true;
           const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-          common_vendor.index.__f__("log", "at pages/index/index.vue:174", "获取到的筛选校园大使数据:", arr);
+          common_vendor.index.__f__("log", "at pages/index/index.vue:173", "获取到的筛选校园大使数据:", arr);
           arr.forEach((e) => {
             items.value.push({
               id: e.id,
@@ -70,7 +70,7 @@ const _sfc_main = {
           });
           isLoading.value = false;
         } catch (error) {
-          common_vendor.index.__f__("error", "at pages/index/index.vue:189", "获取数据失败:", error);
+          common_vendor.index.__f__("error", "at pages/index/index.vue:188", "获取数据失败:", error);
           isLoading.value = false;
           common_vendor.index.showToast({
             title: "加载数据失败",
@@ -79,17 +79,17 @@ const _sfc_main = {
         }
         pageInfo.indexInfo.isFilter = false;
       } else {
-        common_vendor.index.__f__("log", "at pages/index/index.vue:198", "没有筛选条件，保持当前数据");
+        common_vendor.index.__f__("log", "at pages/index/index.vue:197", "没有筛选条件，保持当前数据");
       }
-      common_vendor.index.__f__("log", "at pages/index/index.vue:202", "页面显示");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:201", "页面显示");
     });
     common_vendor.onReachBottom(async () => {
       pageInfo.getNewPage();
-      common_vendor.index.__f__("log", "at pages/index/index.vue:210", "触底了", pageInfo.indexInfo);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:209", "触底了", pageInfo.indexInfo);
       try {
         isLoading.value = true;
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:214", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:213", "获取到的校园大使数据:", arr);
         if (arr.length === 0) {
           isLoading.value = false;
           pageInfo.lowPage();
@@ -108,7 +108,7 @@ const _sfc_main = {
         });
         isLoading.value = false;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:238", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:237", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -117,14 +117,14 @@ const _sfc_main = {
       }
     });
     common_vendor.onPullDownRefresh(async () => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:251", "下拉刷新了");
+      common_vendor.index.__f__("log", "at pages/index/index.vue:250", "下拉刷新了");
       pageInfo.initIndexInfo();
       items.value = [];
       try {
         isLoading.value = true;
-        common_vendor.index.__f__("log", "at pages/index/index.vue:256", pageInfo.indexInfo, "下拉刷新时的页码信息");
+        common_vendor.index.__f__("log", "at pages/index/index.vue:255", pageInfo.indexInfo, "下拉刷新时的页码信息");
         const arr = await api_index.getCampusByPage(pageInfo.indexInfo);
-        common_vendor.index.__f__("log", "at pages/index/index.vue:259", "获取到的校园大使数据:", arr);
+        common_vendor.index.__f__("log", "at pages/index/index.vue:258", "获取到的校园大使数据:", arr);
         arr.forEach((e) => {
           items.value.push({
             id: e.id,
@@ -139,7 +139,7 @@ const _sfc_main = {
         isLoading.value = false;
         common_vendor.index.stopPullDownRefresh();
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/index/index.vue:275", "获取数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/index/index.vue:274", "获取数据失败:", error);
         isLoading.value = false;
         common_vendor.index.showToast({
           title: "加载数据失败",
@@ -149,7 +149,7 @@ const _sfc_main = {
       }
     });
     common_vendor.onPageScroll((e) => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:289", e.scrollTop);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:288", e.scrollTop);
       if (e.scrollTop > 300) {
         isRolled.value = true;
       } else {
@@ -177,6 +177,40 @@ const _sfc_main = {
         path: "/pages/index/index"
       };
     });
+    const goToInternships = () => {
+      common_vendor.wx$1.navigateToMiniProgram({
+        appId: "wxc5881cd75ec49524",
+        // 必填
+        path: "/pages/index/index",
+        // 可空；不传则打开首页
+        envVersion: "release",
+        // 可选 release | trial | develop
+        extraData: { from: "source" },
+        // 可选；目标小程序可在 App.onLaunch 获取
+        success(res) {
+        },
+        fail(err) {
+          common_vendor.index.__f__("log", "at pages/index/index.vue:323", err.errMsg);
+        }
+      });
+    };
+    const goToReferrals = () => {
+      common_vendor.wx$1.navigateToMiniProgram({
+        appId: "wxede5715e13efa3b2",
+        // 必填
+        path: "/pages/index/index",
+        // 可空；不传则打开首页
+        envVersion: "release",
+        // 可选 release | trial | develop
+        extraData: { from: "source" },
+        // 可选；目标小程序可在 App.onLaunch 获取
+        success(res) {
+        },
+        fail(err) {
+          common_vendor.index.__f__("log", "at pages/index/index.vue:333", err.errMsg);
+        }
+      });
+    };
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: common_vendor.p({
@@ -193,10 +227,12 @@ const _sfc_main = {
         h: common_vendor.o(navs1),
         i: common_assets._imports_2,
         j: common_assets._imports_3,
-        k: common_assets._imports_4,
-        l: common_assets._imports_1,
-        m: common_vendor.o(navs2),
-        n: common_vendor.f(items.value, (item, k0, i0) => {
+        k: common_vendor.o(goToInternships),
+        l: common_assets._imports_4,
+        m: common_vendor.o(goToReferrals),
+        n: common_assets._imports_1,
+        o: common_vendor.o(navs2),
+        p: common_vendor.f(items.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: common_vendor.f(item.tags, (tag, k1, i1) => {
@@ -214,8 +250,8 @@ const _sfc_main = {
             i: common_vendor.o(($event) => navs3(item.id), item.id)
           };
         }),
-        o: common_assets._imports_2$1,
-        p: common_assets._imports_3$1
+        q: common_assets._imports_2$1,
+        r: common_assets._imports_3$1
       });
     };
   }

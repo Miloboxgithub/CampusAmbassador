@@ -238,3 +238,9 @@ to {
   margin-left: 5px;
   margin-top: 2px;
 }
+.resume-text {
+  max-width: calc(100% - 26px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

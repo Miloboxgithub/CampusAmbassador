@@ -331,7 +331,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         P: resumeFileName.value
       }, resumeFileName.value ? {
         Q: common_vendor.t(resumeFileName.value),
-        R: common_assets._imports_2$5
+        R: common_assets._imports_2$6
       } : {}, {
         S: common_vendor.o(submitResumeInfo)
       });

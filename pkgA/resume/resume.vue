@@ -202,7 +202,7 @@
       </view>
       <!-- 上传成功后显示文件名 -->
       <view v-if="resumeFileName" class="file-name slide-up">
-        <view>
+        <view class="resume-text">
           {{ resumeFileName }}
         </view>
           
@@ -850,5 +850,11 @@ scroll-view {
   height: 16px;
   margin-left: 5px;
   margin-top: 2px;
+}
+.resume-text{
+  max-width: calc(100% - 26px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
