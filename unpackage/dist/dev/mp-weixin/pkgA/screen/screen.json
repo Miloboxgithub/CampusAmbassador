@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "筛选",
-  "navigationBarBackgroundColor": "#ffffff",
-  "navigationBarTextStyle": "black",
-  "usingComponents": {
-    "uni-popup": "../../uni_modules/uni-popup/components/uni-popup/uni-popup"
-  }
-}

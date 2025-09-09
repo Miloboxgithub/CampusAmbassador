@@ -1,8 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "onReachBottomDistance": 200,
-  "enablePullDownRefresh": true,
-  "usingComponents": {
-    "loading": "../../components/Loading"
-  }
-}
